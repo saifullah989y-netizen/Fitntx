@@ -42,7 +42,7 @@ img{display:block;max-width:100%;height:auto;object-fit:cover}
 .w{max-width:1240px;margin:0 auto;padding:0 48px}
 .w-sm{max-width:860px;margin:0 auto;padding:0 48px}
 .w-xs{max-width:640px;margin:0 auto;padding:0 48px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .rule{border:none;border-top:0.5px solid var(--brd)}
@@ -413,6 +413,13 @@ body.nav-menu-open{overflow:hidden}
 .guided-cta-copy{flex:1;min-width:0}
 .guided-cta-btn{margin-left:auto;flex-shrink:0}
 
+/* Who is FITNTX for? — two-up cards: minmax avoids grid overflow + clipping on narrow viewports */
+.guided-panel{min-width:0;max-width:100%;box-sizing:border-box}
+.guided-audience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;min-width:0}
+.guided-audience-grid > .hover-card{min-width:0;overflow-wrap:break-word}
+.guided-audience-grid > .hover-card > div:nth-child(2){line-height:1.15}
+.guided-audience-grid > .hover-card > div:nth-child(3){line-height:1.35}
+
 .hiw-visual{margin-top:-60px}
 
 /* ════════════════════════════════════════
@@ -575,6 +582,9 @@ body.nav-menu-open{overflow:hidden}
   .guided-cta-row{flex-direction:column;align-items:stretch}
   .guided-cta-btn{margin-left:0;width:100%;text-align:center;justify-content:center}
   .hiw-visual{margin-top:0}
+  .guided-panel{padding:24px 20px!important}
+  .guided-audience-grid{gap:10px}
+  .guided-audience-grid > .hover-card{padding:16px!important}
 }
 
 @media(max-width:480px){
