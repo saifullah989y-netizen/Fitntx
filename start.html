@@ -1,0 +1,91 @@
+// START.HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Here — FITNTX</title>
+<meta name="description" content="FITNTX is the global sports networking hub connecting athletes, students, professionals, and organizations with opportunities, guidance, and growth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="journey-section" style="min-height:calc(100vh - var(--nav-h) - 38px);padding-top:80px">
+  <div class="w">
+    <div class="lbl-row"><div class="lbl-line"></div><span class="h-label red">Guided Pathway System</span></div>
+    <h1 class="d3" style="margin-bottom:8px">START HERE.</h1>
+    <p class="body-md" style="margin-bottom:48px;max-width:480px">Answer 2 quick questions and we&#39;ll point you to exactly the right path, service, or representative — no guesswork.</p>
+
+    <div id="stepIndicators" class="flow-steps">
+      <div class="flow-step-indicator">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="fsi-dot on" id="si1">1</div>
+          <div class="fsi-label">Who are you?</div>
+        </div>
+        <div class="fsi-line" id="sl1"></div>
+      </div>
+      <div class="flow-step-indicator">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="fsi-dot" id="si2">2</div>
+          <div class="fsi-label">What do you need?</div>
+        </div>
+        <div class="fsi-line" id="sl2"></div>
+      </div>
+      <div class="flow-step-indicator" style="flex:0">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="fsi-dot" id="si3">&#10003;</div>
+          <div class="fsi-label">Your pathway</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-card" id="flowStep1">
+      <div class="flow-header">
+        <div class="flow-q">Who are you?</div>
+        <div class="flow-hint">// Select the option that best describes you</div>
+      </div>
+      <div class="flow-options g2-flow">
+        <button class="fopt" onclick="selectStep1('student')">
+          <div class="fopt-left"><div class="fopt-icon">&#127891;</div><div><div class="fopt-title">Student</div><div class="fopt-desc">In education — sport, management, coaching, or adjacent</div></div></div>
+          <span class="fopt-arrow">→</span>
+        </button>
+        <button class="fopt" onclick="selectStep1('athlete')">
+          <div class="fopt-left"><div class="fopt-icon">&#127939;</div><div><div class="fopt-title">Athlete</div><div class="fopt-desc">Actively competing — amateur, semi-pro, or professional</div></div></div>
+          <span class="fopt-arrow">→</span>
+        </button>
+        <button class="fopt" onclick="selectStep1('professional')">
+          <div class="fopt-left"><div class="fopt-icon">&#128188;</div><div><div class="fopt-title">Sports Professional</div><div class="fopt-desc">Coach, manager, agent, analyst, media, or sport business</div></div></div>
+          <span class="fopt-arrow">→</span>
+        </button>
+        <button class="fopt" onclick="selectStep1('organization')">
+          <div class="fopt-left"><div class="fopt-icon">&#127970;</div><div><div class="fopt-title">Organization</div><div class="fopt-desc">Club, academy, school, university, team, or sports business</div></div></div>
+          <span class="fopt-arrow">→</span>
+        </button>
+      </div>
+      <div class="flow-footer"><span style="font-size:12px;color:var(--txt3)">2 steps · Takes under 30 seconds</span></div>
+    </div>
+
+    <div class="flow-card" id="flowStep2" style="display:none">
+      <div class="flow-header">
+        <div class="flow-q" id="flowStep2Q">What are you looking for?</div>
+        <div class="flow-hint">// Select your primary need</div>
+      </div>
+      <div class="flow-options" id="flowStep2Options" style="grid-template-columns:1fr 1fr"></div>
+      <div class="flow-footer"><button class="flow-back" onclick="resetFlow()">&#8592; Back</button></div>
+    </div>
+
+    <div class="flow-card" id="flowResult" style="display:none">
+      <div class="flow-result show" id="flowResultInner"></div>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The #1 Sports Networking Hub — FITNTX</title>
+<meta name="description" content="FITNTX is the global sports networking hub connecting athletes, students, professionals, and organizations with opportunities, guidance, and growth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="hero" id="heroSection">
+  <div class="hero-slides" aria-hidden="true">
+    <div class="hero-slide active" data-slide="0" style="background-image:url('images/athletes.jpg')"></div>
+    <div class="hero-slide" data-slide="1" style="background-image:url('images/students.jpeg')"></div>
+    <div class="hero-slide" data-slide="2" style="background-image:url('images/professionals.jpg')"></div>
+    <div class="hero-slide" data-slide="3" style="background-image:url('images/organizations.jpeg')"></div>
+  </div>
+  <div class="hero-bg">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-slash-1"></div>
+    <div class="hero-slash-2"></div>
+    <div class="hero-glow"></div>
+  </div>
+  <div class="sport-nodes" aria-hidden="true">
+    <div class="snode" style="top:15%;left:10%;animation-delay:0s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Basketball</div></div>
+    <div class="snode" style="top:30%;left:45%;animation-delay:1s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Soccer</div></div>
+    <div class="snode" style="top:50%;left:20%;animation-delay:2s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Track &amp; Field</div></div>
+    <div class="snode" style="top:65%;left:55%;animation-delay:.5s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Ice Hockey</div></div>
+    <div class="snode" style="top:20%;left:70%;animation-delay:1.5s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Rugby</div></div>
+    <div class="snode" style="top:75%;left:30%;animation-delay:2.5s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Tennis</div></div>
+    <div class="snode" style="top:40%;left:80%;animation-delay:.8s"><div class="snode-dot"></div><div class="snode-line"></div><div class="snode-label">Swimming</div></div>
+  </div>
+  <div class="w hero-body">
+    <div class="hero-tag">Global Sports Networking Hub</div>
+    <h1 class="d1 hero-h">
+      THE NETWORK<br>
+      <span class="line2">THAT MOVES</span>
+      <em class="r">SPORT</em> FORWARD.
+    </h1>
+    <p class="hero-cycle-text">
+      We help <strong class="hero-cycle-word" id="heroCycleWord">athletes</strong> accelerate their growth in sports.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn btn-red btn-lg" href="start.html">Start Your Journey <span class="arr">→</span></a>
+      <a class="btn btn-out btn-lg" href="hub.html">Access the FITNTX Hub</a>
+    </div>
+
+    <!-- ── Euro Tour Promo Banner ── -->
+    <a href="https://www.fitntx.com/euro-tour" target="_blank" rel="noopener" class="euro-banner">
+      <div class="euro-banner-bg"></div>
+      <div class="euro-banner-grad"></div>
+      <div class="euro-banner-inner">
+        <div class="euro-banner-left">
+          <div class="euro-banner-eyebrow">FITNTX × Palm City FC · Summer 2026</div>
+          <div class="euro-banner-title">BE PART OF OUR NEXT<br><em>EUROPEAN<br>SHOWCASE TOUR</em></div>
+          <div class="euro-banner-sub">Find the Forgotten Ones · Change the Game</div>
+        </div>
+        <div class="euro-banner-cta">
+          <span>Learn More</span>
+          <span class="euro-arr">→</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<style>
+.euro-banner {
+  display: block;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.16);
+  max-width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .25s, transform .25s;
+  margin-top: 20px;
+  height: 220px;
+}
+.euro-banner:hover {
+  border-color: rgba(91,200,245,0.5);
+  transform: translateY(-3px);
+}
+.euro-banner-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('images/euroImage.png');
+  background-size: cover;
+  background-position: center 35%;
+  filter: brightness(.45) saturate(.8);
+  transition: filter .3s, transform .3s;
+}
+.euro-banner:hover .euro-banner-bg {
+  filter: brightness(.55) saturate(.9);
+  transform: scale(1.03);
+}
+.euro-banner-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(4,4,10,.85) 0%, rgba(4,4,10,.5) 55%, rgba(4,4,10,.15) 100%);
+}
+.euro-banner-inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 36px;
+  gap: 24px;
+}
+.euro-banner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.euro-banner-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(91,200,245,0.8);
+  margin-bottom: 10px;
+}
+.euro-banner-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  line-height: .97;
+  color: #fff;
+}
+.euro-banner-title em {
+  font-style: normal;
+  color: #5BC8F5;
+}
+.euro-banner-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-top: 12px;
+}
+.euro-banner-cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #5BC8F5;
+  border: 1.5px solid rgba(91,200,245,0.4);
+  border-radius: 8px;
+  padding: 12px 20px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.euro-banner:hover .euro-banner-cta {
+  background: rgba(91,200,245,0.12);
+  border-color: rgba(91,200,245,0.8);
+  color: #fff;
+}
+.euro-arr {
+  font-size: 16px;
+  transition: transform .2s;
+}
+.euro-banner:hover .euro-arr {
+  transform: translateX(4px);
+}
+</style>
+
+<div class="stats-bar">
+  <div class="w">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-n"><span>#</span>1</div><div class="stat-l">Sports Networking Hub</div></div>
+      <div class="stat-item"><div class="stat-n">500<span>+</span></div><div class="stat-l">Active Members</div></div>
+      <div class="stat-item"><div class="stat-n">20<span>+</span></div><div class="stat-l">Industry Experts</div></div>
+      <div class="stat-item"><div class="stat-n">100<span>%</span></div><div class="stat-l">Custom Solutions</div></div>
+      <div class="stat-item"><div class="stat-n"><img src="images/globe.webp" alt="Globe"></div><div class="stat-l">GLOBAL NETWORK</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDED EXPERIENCE -->
+<section class="sec sec-alt">
+  <div class="w">
+    <div class="g2" style="align-items:start;gap:80px">
+      <div>
+        <div class="lbl-row"><div class="lbl-line"></div><span class="h-label red">Guided Experience</span></div>
+        <h2 class="d3" style="margin-bottom:20px">NOT SURE WHERE TO START?<br><em class="r">WE&#39;LL GUIDE YOU.</em></h2>
+        <p class="body-lg" style="margin-bottom:0">FITNTX is built as a guided system. Tell us who you are and what you need — we&#39;ll point you to exactly the right path, service, or representative.</p>
+      </div>
+      <div style="background:var(--surf);border:.5px solid var(--brd2);border-radius:var(--rxl);padding:36px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)"></div>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--txt3);margin-bottom:20px">// Who is FITNTX for?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <a href="individuals.html" class="hover-card" style="background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);padding:20px;cursor:pointer;transition:all .2s;text-decoration:none;display:block">
+            <div style="font-size:24px;margin-bottom:8px">&#127919;</div>
+            <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Individuals</div>
+            <div style="font-size:11px;color:var(--txt3)">Athletes · Students · Professionals</div>
+          </a>
+          <a href="organizations.html" class="hover-card" style="background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);padding:20px;cursor:pointer;transition:all .2s;text-decoration:none;display:block">
+            <div style="font-size:24px;margin-bottom:8px">&#127970;</div>
+            <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Organizations</div>
+            <div style="font-size:11px;color:var(--txt3)">Clubs · Academies · Businesses</div>
+          </a>
+        </div>
+        <div style="margin-top:12px;padding:16px;background:var(--red-a);border:.5px solid rgba(192,57,43,.25);border-radius:var(--rlg);display:flex;align-items:center;gap:12px">
+          <div style="font-size:20px">&#128269;</div>
+          <div>
+            <div style="font-family:var(--disp);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Not sure? Book a call</div>
+            <div style="font-size:11px;color:var(--txt3)">30 minutes. Free. We figure it out together.</div>
+          </div>
+          <a class="btn btn-red btn-sm" style="margin-left:auto;flex-shrink:0" href="contact.html">Book</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps bar -->
+    <div style="margin-top:40px;padding:28px 36px;background:var(--surf);border:.5px solid var(--brd2);border-radius:var(--rxl);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--red);flex-shrink:0">1</div>
+          <span style="font-size:14px;color:var(--txt2)">Tell us who you are</span>
+        </div>
+        <div style="flex:1;height:1px;background:var(--brd2);margin:0 20px"></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--red);flex-shrink:0">2</div>
+          <span style="font-size:14px;color:var(--txt2)">Tell us what you need</span>
+        </div>
+        <div style="flex:1;height:1px;background:var(--brd2);margin:0 20px"></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--red);flex-shrink:0">3</div>
+          <span style="font-size:14px;color:var(--txt2)">Get your personalized pathway</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <a class="btn btn-red" href="start.html">Start Here <span class="arr">→</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="sec">
+  <div class="w">
+    <div class="lbl-row"><div class="lbl-line"></div><span class="h-label red">What We Do</span></div>
+    <div style="margin-bottom:48px">
+      <h2 class="d3" style="margin-bottom:16px">EVERY SERVICE.<br><em class="r">ONE NETWORK.</em></h2>
+      <p class="body-lg" style="max-width:600px">Delivered by specialized Representatives matched to your sport, region, and exact need — whether you're an individual or an organization.</p>
+    </div>
+    <div class="g2" style="gap:32px;align-items:start">
+
+      <!-- INDIVIDUALS COLUMN -->
+      <div style="background:var(--surf);border:.5px solid var(--brd2);border-radius:var(--rxl);overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:var(--red);padding:18px 28px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:18px">🎯</span>
+          <div>
+            <div style="font-family:var(--disp);font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#fff">For Individuals</div>
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:2px">Athletes · Students · Professionals</div>
+          </div>
+        </div>
+        <div style="padding:28px;display:flex;flex-direction:column;gap:14px;flex:1">
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);flex:1">
+            <div style="width:38px;height:38px;border-radius:8px;background:var(--red-a);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🎯</div>
+            <div>
+              <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Career Strategy Consultation</div>
+              <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">Structured session mapping your goals, timeline, and next steps in sport.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);flex:1">
+            <div style="width:38px;height:38px;border-radius:8px;background:var(--red-a);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🚀</div>
+            <div>
+              <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Opportunity Placement</div>
+              <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">Your Rep works your pipeline — jobs, trials, internships, and roles globally.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);flex:1">
+            <div style="width:38px;height:38px;border-radius:8px;background:var(--red-a);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🌐</div>
+            <div>
+              <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Networking &amp; Events Access</div>
+              <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">Curated FITNTX events, Hub spaces, and networking across your sport.</div>
+            </div>
+          </div>
+          <a class="btn btn-out" href="services.html" style="margin-top:6px;justify-content:center">All Individual Services <span class="arr">→</span></a>
+        </div>
+      </div>
+
+      <!-- ORGANIZATIONS COLUMN -->
+      <div style="background:var(--surf);border:.5px solid var(--brd2);border-radius:var(--rxl);overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:var(--surf3);border-bottom:.5px solid var(--brd2);padding:18px 28px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:18px">🏢</span>
+          <div>
+            <div style="font-family:var(--disp);font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--txt)">For Organizations</div>
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);margin-top:2px">Clubs · Academies · Businesses</div>
+          </div>
+        </div>
+        <div style="padding:28px;display:flex;flex-direction:column;gap:14px;flex:1">
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);flex:1">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔍</div>
+            <div>
+              <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Talent Acquisition</div>
+              <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">End-to-end recruitment — scoping, sourcing, screening, and global placement.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);flex:1">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🤝</div>
+            <div>
+              <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Partnerships &amp; Sponsorships</div>
+              <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">Strategy, packaging, outreach, negotiation, and deal closure.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--surf2);border:.5px solid var(--brd);border-radius:var(--rlg);flex:1">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📅</div>
+            <div>
+              <div style="font-family:var(--disp);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Events Management</div>
+              <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">Local clinics to flagship international events — fully planned and executed.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn btn-out" href="services.html" style="flex:1;justify-content:center">All Org Services <span class="arr">→</span></a>
+            <a class="btn btn-ghost" href="services.html" style="flex:1;justify-content:center;font-size:13px">+ 3 More Services</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec sec-alt">
+  <div class="w">
+    <div class="g2" style="gap:80px;align-items:start">
+
+      <div>
+        <div class="lbl-row"><div class="lbl-line"></div><span class="h-label red">How It Works</span></div>
+        <h2 class="d3" style="margin-bottom:20px">POWERED BY OUR <em class="r">REPRESENTATIVES.</em></h2>
+        <p class="body-lg" style="margin-bottom:32px">FITNTX matches you with a dedicated Representative specialized for your needs — whether that's consulting, recruiting, coaching, or event coordination. Our network of Senior Representatives, Junior Representatives, and Brand Ambassadors ensures you always have the right expert supporting you.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;border-radius:var(--rxl);overflow:hidden;margin-top:-60px">
+        <img
+          src="images/FITNTX_Reps.png"
+          alt="FITNTX Representatives"
+          style="width:100%;object-fit:cover;display:block;max-height:460px;border-radius:var(--rxl)"
+        >
+        <a
+          href="about.html"
+          class="btn btn-red"
+          style="border-radius:var(--rxl);justify-content:center;padding:20px 28px;font-size:18px;letter-spacing:.1em;border:none"
+        >
+         MEET OUR REPRESENTATIVES <span class="arr">→</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="sec">
+  <div class="w">
+    <div class="lbl-row"><div class="lbl-line"></div><span class="h-label red">Results</span></div>
+    <div class="g2" style="align-items:end;margin-bottom:48px;gap:40px">
+      <h2 class="d3">REAL PEOPLE.<br>REAL <em class="r">RESULTS.</em></h2>
+      <a class="btn btn-out" href="stories.html">All Success Stories <span class="arr">→</span></a>
+    </div>
+    <div class="stories-grid">
+      <div class="story-card"><div class="story-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="story-q">&#8220;My FITNTX Representative gave me a career roadmap I could actually execute. Within 8 weeks I had two serious opportunities in front of me.&#8221;</p><div class="story-person"><div class="story-av">JM</div><div><div class="story-name">Jordan M.</div><div class="story-role">Professional Athlete · Basketball · Canada</div></div></div></div>
+      <div class="story-card"><div class="story-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="story-q">&#8220;Our academy&#39;s recruitment went from reactive to structured. FITNTX placed 8 athletes in one project cycle and ran our best event yet.&#8221;</p><div class="story-person"><div class="story-av" style="background:#1A6FA8">SC</div><div><div class="story-name">Sarah C.</div><div class="story-role">Director · Soccer Academy · UK</div></div></div></div>
+      <div class="story-card"><div class="story-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="story-q">&#8220;I had no idea the sports career I wanted was even accessible. My FITNTX Rep connected me to an internship that changed everything.&#8221;</p><div class="story-person"><div class="story-av">RA</div><div><div class="story-name">Rami A.</div><div class="story-role">Student Athlete · Track &amp; Field · UAE</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- START TODAY -->
+<section class="sec sec-alt" style="text-align:center">
+  <div class="w-xs">
+    <div class="lbl-row" style="justify-content:center"><div class="lbl-line"></div><span class="h-label red">Start Today</span><div class="lbl-line"></div></div>
+    <h2 class="d2" style="margin-bottom:18px">READY TO <em class="r">MOVE?</em></h2>
+    <p class="body-lg" style="margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto">One conversation changes the direction. Book a free 30-minute discovery call and find out exactly where FITNTX can take you.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-red btn-lg" href="start.html">Start Your Journey <span class="arr">→</span></a>
+      <a class="btn btn-out btn-lg" href="contact.html">Book a Discovery Call</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="main.js"></script>
+</body>
+</html>

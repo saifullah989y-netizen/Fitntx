@@ -1,0 +1,89 @@
+// contact-body.HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Discovery Call — FITNTX</title>
+<meta name="description" content="FITNTX is the global sports networking hub connecting athletes, students, professionals, and organizations with opportunities, guidance, and growth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section style="padding:80px 0 60px;background:var(--blk2)"><div class="w">
+  <div class="hero-tag">Book a Discovery Call</div>
+  <h1 class="d2" style="margin-bottom:16px">LET&#39;S FIGURE<br>OUT YOUR <em class="r">NEXT MOVE.</em></h1>
+  <p class="body-lg" style="max-width:520px">Free. 30 minutes. No commitment. One conversation to understand where you are and where FITNTX can take you.</p>
+</div></section>
+<section class="sec sec-alt"><div class="w">
+  <div class="contact-grid">
+    <div>
+      <div class="contact-card">
+        <div class="contact-card-hdr">
+          <div class="contact-card-title">Book Your Free 30-Min Discovery Call</div>
+          <div class="ghl-badge"><div class="ldot"></div>GHL Live</div>
+        </div>
+        <div class="contact-body">
+          <div class="frow">
+            <div class="fgrp"><label class="flbl">First name *</label><input class="finp" type="text" placeholder="Alex"></div>
+            <div class="fgrp"><label class="flbl">Last name *</label><input class="finp" type="text" placeholder="Chen"></div>
+          </div>
+          <div class="fgrp"><label class="flbl">Email *</label><input class="finp" type="email" placeholder="alex@example.com"></div>
+          <div class="fgrp"><label class="flbl">Phone / WhatsApp</label><input class="finp" type="tel" placeholder="+1 416 555 0100"></div>
+          <div class="fgrp"><label class="flbl">I am a&#8230; *</label>
+            <select class="fsel">
+              <option value="">Select your profile</option>
+              <option>Student Athlete</option>
+              <option>Professional Athlete</option>
+              <option>Sports Professional / Coach / Manager</option>
+              <option>Sports Club / Academy</option>
+              <option>School / University</option>
+              <option>Sports Business / Organization</option>
+            </select>
+          </div>
+          <div class="frow">
+            <div class="fgrp"><label class="flbl">Primary sport</label><input class="finp" type="text" placeholder="e.g. Soccer"></div>
+            <div class="fgrp"><label class="flbl">Country</label><input class="finp" type="text" placeholder="e.g. Canada"></div>
+          </div>
+          <div class="fgrp"><label class="flbl">Primary goal *</label>
+            <select class="fsel">
+              <option value="">What are you looking to achieve?</option>
+              <option>Career strategy &amp; roadmap</option>
+              <option>Find or recruit talent</option>
+              <option>Partnerships or sponsorships</option>
+              <option>Plan or manage an event</option>
+              <option>Media &amp; marketing support</option>
+              <option>Expand my professional network</option>
+              <option>Strategic business growth</option>
+              <option>Not sure yet — want to explore</option>
+            </select>
+          </div>
+          <button class="fsub" onclick="handleContact(this)">See Available Times → Book My Call</button>
+          <p class="fnote">Your info creates your FITNTX profile · No spam · You&#39;ll be redirected to the GHL booking calendar</p>
+        </div>
+      </div>
+    </div>
+    <div class="contact-info">
+      <div style="font-family:var(--disp);font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:24px">What to expect on the call</div>
+      <div class="ci-item"><div class="ci-icon">&#128100;</div><div><div class="ci-label">Who you&#39;ll speak with</div><div class="ci-value">A Senior or Junior Representative matched to your sport, region, and service interest.</div></div></div>
+      <div class="ci-item"><div class="ci-icon">&#9201;</div><div><div class="ci-label">Duration</div><div class="ci-value">30 minutes. Structured and focused — not a sales pitch.</div></div></div>
+      <div class="ci-item"><div class="ci-icon">&#127919;</div><div><div class="ci-label">What we cover</div><div class="ci-value">Who you are, what you want, your constraints, and the best FITNTX path for you.</div></div></div>
+      <div class="ci-item"><div class="ci-icon">&#128176;</div><div><div class="ci-label">Cost</div><div class="ci-value">Completely free. No commitment required before, during, or after.</div></div></div>
+      <div class="ci-item"><div class="ci-icon">&#128203;</div><div><div class="ci-label">What comes next</div><div class="ci-value">A clear route: Strategy engagement, specific service, free Hub access — or nothing. Your choice.</div></div></div>
+      <div style="margin-top:24px;padding:20px;background:var(--red-a);border:.5px solid rgba(192,57,43,.25);border-radius:var(--rlg)">
+        <div style="font-family:var(--disp);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">All 80+ sports covered</div>
+        <p class="body-sm" style="color:var(--txt3)">If your sport isn&#39;t listed, contact us anyway. We almost certainly have a relevant Representative or connection for your discipline.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<div id="site-footer"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
