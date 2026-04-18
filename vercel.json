@@ -1,0 +1,11 @@
+{
+  "redirects": [
+    { "source": "/services", "destination": "/services.html", "permanent": true },
+    { "source": "/start", "destination": "/start.html", "permanent": true },
+    { "source": "/hub", "destination": "/hub.html", "permanent": true },
+    { "source": "/opportunities", "destination": "/opportunities.html", "permanent": true },
+    { "source": "/memberships", "destination": "/memberships.html", "permanent": true },
+    { "source": "/organizations", "destination": "/organizations.html", "permanent": true },
+    { "source": "/stories", "destination": "/stories.html", "permanent": true }
+  ]
+}
