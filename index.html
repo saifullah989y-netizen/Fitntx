@@ -178,6 +178,12 @@
 .euro-banner:hover .euro-arr {
   transform: translateX(4px);
 }
+@media (max-width: 640px) {
+  .euro-banner { height: auto; min-height: 168px; }
+  .euro-banner-inner { flex-direction: column; align-items: stretch; padding: 18px 20px; gap: 14px; }
+  .euro-banner-cta { align-self: flex-start; }
+  .euro-banner-title { font-size: clamp(22px, 6.5vw, 32px); }
+}
 </style>
 
 <div class="stats-bar">
@@ -216,36 +222,36 @@
             <div style="font-size:11px;color:var(--txt3)">Clubs · Academies · Businesses</div>
           </a>
         </div>
-        <div style="margin-top:12px;padding:16px;background:var(--red-a);border:.5px solid rgba(192,57,43,.25);border-radius:var(--rlg);display:flex;align-items:center;gap:12px">
+        <div class="guided-cta-row" style="margin-top:12px;padding:16px;background:var(--red-a);border:.5px solid rgba(192,57,43,.25);border-radius:var(--rlg);display:flex;align-items:center;gap:12px">
           <div style="font-size:20px">&#128269;</div>
-          <div>
+          <div class="guided-cta-copy">
             <div style="font-family:var(--disp);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Not sure? Book a call</div>
             <div style="font-size:11px;color:var(--txt3)">30 minutes. Free. We figure it out together.</div>
           </div>
-          <a class="btn btn-red btn-sm" style="margin-left:auto;flex-shrink:0" href="contact.html">Book</a>
+          <a class="btn btn-red btn-sm guided-cta-btn" href="contact.html">Book</a>
         </div>
       </div>
     </div>
 
     <!-- Steps bar -->
-    <div style="margin-top:40px;padding:28px 36px;background:var(--surf);border:.5px solid var(--brd2);border-radius:var(--rxl);display:flex;flex-direction:column;gap:24px">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--red);flex-shrink:0">1</div>
-          <span style="font-size:14px;color:var(--txt2)">Tell us who you are</span>
+    <div class="home-steps-bar">
+      <div class="home-steps-flow">
+        <div class="home-step-item">
+          <div class="home-step-num">1</div>
+          <span class="home-step-label">Tell us who you are</span>
         </div>
-        <div style="flex:1;height:1px;background:var(--brd2);margin:0 20px"></div>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--red);flex-shrink:0">2</div>
-          <span style="font-size:14px;color:var(--txt2)">Tell us what you need</span>
+        <div class="home-step-line" aria-hidden="true"></div>
+        <div class="home-step-item">
+          <div class="home-step-num">2</div>
+          <span class="home-step-label">Tell us what you need</span>
         </div>
-        <div style="flex:1;height:1px;background:var(--brd2);margin:0 20px"></div>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--red);flex-shrink:0">3</div>
-          <span style="font-size:14px;color:var(--txt2)">Get your personalized pathway</span>
+        <div class="home-step-line" aria-hidden="true"></div>
+        <div class="home-step-item">
+          <div class="home-step-num">3</div>
+          <span class="home-step-label">Get your personalized pathway</span>
         </div>
       </div>
-      <div style="display:flex;justify-content:center">
+      <div class="home-steps-cta">
         <a class="btn btn-red" href="start.html">Start Here <span class="arr">→</span></a>
       </div>
     </div>
@@ -329,7 +335,7 @@
               <div style="font-size:12px;color:var(--txt2);font-weight:300;line-height:1.6">Local clinics to flagship international events — fully planned and executed.</div>
             </div>
           </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
+          <div class="org-cta-row" style="display:flex;gap:10px;margin-top:6px">
             <a class="btn btn-out" href="services.html" style="flex:1;justify-content:center">All Org Services <span class="arr">→</span></a>
             <a class="btn btn-ghost" href="services.html" style="flex:1;justify-content:center;font-size:13px">+ 3 More Services</a>
           </div>
@@ -351,7 +357,7 @@
         <p class="body-lg" style="margin-bottom:32px">FITNTX matches you with a dedicated Representative specialized for your needs — whether that's consulting, recruiting, coaching, or event coordination. Our network of Senior Representatives, Junior Representatives, and Brand Ambassadors ensures you always have the right expert supporting you.</p>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:12px;border-radius:var(--rxl);overflow:hidden;margin-top:-60px">
+      <div class="hiw-visual" style="display:flex;flex-direction:column;gap:12px;border-radius:var(--rxl);overflow:hidden;margin-top:-60px">
         <img
           src="images/FITNTX_Reps.png"
           alt="FITNTX Representatives"

@@ -3,7 +3,7 @@
     <a class="logo" href="index.html">
       <img src="images/FITNTX_LOGO.png" alt="FITNTX" class="logo-img">
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navMenu">
       <li><a href="index.html">Home</a></li>
       <li><a href="start.html">Start Here</a></li>
       <li><a href="services.html">Services</a></li>
@@ -15,8 +15,16 @@
     <div class="nav-r">
       <a class="btn btn-ghost btn-sm" href="memberships.html">Memberships</a>
       <a class="nav-cta" href="contact.html">Book a Discovery Call</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+        <span class="nav-toggle-inner" aria-hidden="true">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </span>
+      </button>
     </div>
   </div>
+  <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 </nav>
 
 <!-- Logo ticker strip — one set only, JS clones for seamless loop -->

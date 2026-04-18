@@ -16,6 +16,7 @@ async function loadPartials() {
     });
     // Init ticker now that header HTML (and images) are in the DOM
     initTicker();
+    initMobileNav();
   }
 
   // Footer
@@ -26,6 +27,45 @@ async function loadPartials() {
 }
 
 loadPartials();
+
+// ── Mobile nav (hamburger) ─────────────────────────────────────────────
+function initMobileNav() {
+  const nav = document.getElementById('mainNav');
+  const toggle = document.getElementById('navToggle');
+  const backdrop = document.getElementById('navBackdrop');
+  const menu = document.getElementById('navMenu');
+  if (!nav || !toggle) return;
+
+  const mq = window.matchMedia('(max-width: 1024px)');
+
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('nav-menu-open', open);
+  }
+
+  toggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(!nav.classList.contains('is-open'));
+  });
+  backdrop?.addEventListener('click', () => setOpen(false));
+  menu?.addEventListener('click', (e) => {
+    if (e.target === menu) setOpen(false);
+  });
+  nav.querySelectorAll('.nav-links a').forEach((a) => {
+    a.addEventListener('click', () => setOpen(false));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) setOpen(false);
+  });
+  const onMqChange = () => {
+    if (!mq.matches) setOpen(false);
+  };
+  if (mq.addEventListener) mq.addEventListener('change', onMqChange);
+  else mq.addListener(onMqChange);
+}
 
 // ── Logo ticker — rAF-driven, pixel-perfect seamless loop ────────────
 function initTicker() {
