@@ -1,17 +1,13 @@
 {
-  "redirects": [
-    { "source": "/services", "destination": "/services.html", "permanent": true },
-    { "source": "/start", "destination": "/start.html", "permanent": true },
-    { "source": "/hub", "destination": "/hub.html", "permanent": true },
-    { "source": "/opportunities", "destination": "/opportunities.html", "permanent": true },
-    { "source": "/memberships", "destination": "/memberships.html", "permanent": true },
-    { "source": "/organizations", "destination": "/organizations.html", "permanent": true },
-    { "source": "/stories", "destination": "/stories.html", "permanent": true }
-  ],
   "rewrites": [
-    {
-      "source": "/euro-tour",
-      "destination": "https://tour.fitntx.com/optin"
-    }
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/start", "destination": "/start.html" },
+    { "source": "/hub", "destination": "/hub.html" },
+    { "source": "/opportunities", "destination": "/opportunities.html" },
+    { "source": "/memberships", "destination": "/memberships.html" },
+    { "source": "/organizations", "destination": "/organizations.html" },
+    { "source": "/stories", "destination": "/stories.html" },
+
+    { "source": "/euro-tour", "destination": "https://tour.fitntx.com/optin" }
   ]
 }
