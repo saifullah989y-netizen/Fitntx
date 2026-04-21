@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/start", "destination": "/start.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/hub", "destination": "/hub.html" },
+    { "source": "/opportunities", "destination": "/opportunities.html" },
+    { "source": "/events", "destination": "/events.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/memberships", "destination": "/memberships.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/euro-tour", "destination": "https://tour.fitntx.com/optin" }
+  ]
+}
