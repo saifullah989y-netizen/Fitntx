@@ -389,8 +389,12 @@ body.nav-menu-open{overflow:hidden}
    SUCCESS STORIES
 ════════════════════════════════════════ */
 .stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.stories-carousel{
+.stories-shell{
   margin-top:48px;
+  position:relative;
+  padding:0 44px;
+}
+.stories-carousel{
   overflow:hidden;
   position:relative;
   mask-image:linear-gradient(to right, transparent 0, black 4.5%, black 95.5%, transparent 100%);
@@ -414,23 +418,24 @@ body.nav-menu-open{overflow:hidden}
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:34px;
-  height:34px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
   font-family:var(--disp);
-  font-size:24px;
+  font-size:26px;
   line-height:1;
-  color:rgba(242,241,237,.78);
-  background:rgba(6,6,6,.45);
-  border:.5px solid var(--brd2);
+  color:#fff;
+  background:linear-gradient(180deg,var(--red),var(--red-dk));
+  border:1px solid rgba(0,0,0,.55);
+  box-shadow:0 8px 18px rgba(0,0,0,.35);
   z-index:2;
   pointer-events:none;
 }
-.stories-edge-arrow.left{left:8px}
-.stories-edge-arrow.right{right:8px}
+.stories-edge-arrow.left{left:0}
+.stories-edge-arrow.right{right:0}
 @keyframes storiesMarquee{
   from{transform:translateX(0)}
   to{transform:translateX(calc(-50% - 10px))}
@@ -663,6 +668,7 @@ body.nav-menu-open{overflow:hidden}
     mask-image:none;
     -webkit-mask-image:none;
   }
+  .stories-shell{padding:0}
   .stories-edge-arrow{display:none}
   .stories-track{
     animation-duration:42s;
