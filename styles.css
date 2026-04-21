@@ -677,3 +677,18 @@ body.nav-menu-open{overflow:hidden}
 a.svc-card,a.opp-card,a.rpath,a.btn{text-decoration:none}
 a.svc-card{display:block}
 a.hover-card:hover{border-color:var(--red) !important}
+
+/* GHL embedded form layout */
+.hl-app form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.hl-app .form-builder--field {
+  width: 48% !important;
+}
+
+.hl-app button {
+  width: 100% !important;
+}
