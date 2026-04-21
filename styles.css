@@ -405,10 +405,6 @@ body.nav-menu-open{overflow:hidden}
   gap:20px;
   width:max-content;
   will-change:transform;
-  animation:storiesMarquee 55s linear infinite;
-}
-.stories-carousel:hover .stories-track{
-  animation-play-state:paused;
 }
 .stories-carousel .story-card{
   width:min(380px, 82vw);
@@ -425,21 +421,25 @@ body.nav-menu-open{overflow:hidden}
   align-items:center;
   justify-content:center;
   font-family:var(--disp);
-  font-size:26px;
+  font-size:0;
   line-height:1;
   color:#fff;
   background:linear-gradient(180deg,var(--red),var(--red-dk));
   border:1px solid rgba(0,0,0,.55);
   box-shadow:0 8px 18px rgba(0,0,0,.35);
   z-index:2;
-  pointer-events:none;
+  cursor:pointer;
+  transition:transform .18s, filter .18s;
+}
+.stories-edge-arrow:hover{
+  transform:translateY(-50%) scale(1.06);
+  filter:brightness(1.06);
+}
+.stories-edge-arrow svg{
+  display:block;
 }
 .stories-edge-arrow.left{left:0}
 .stories-edge-arrow.right{right:0}
-@keyframes storiesMarquee{
-  from{transform:translateX(0)}
-  to{transform:translateX(calc(-50% - 10px))}
-}
 .story-card{background:var(--surf);border:.5px solid var(--brd);border-radius:var(--rlg);padding:32px;transition:all .2s}
 .story-card:hover{border-color:var(--brd2);transform:translateY(-3px)}
 .story-stars{color:var(--red);font-size:13px;margin-bottom:14px}
@@ -670,9 +670,6 @@ body.nav-menu-open{overflow:hidden}
   }
   .stories-shell{padding:0}
   .stories-edge-arrow{display:none}
-  .stories-track{
-    animation-duration:42s;
-  }
 }
 
 @media(max-width:480px){
