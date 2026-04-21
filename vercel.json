@@ -7,6 +7,7 @@
     { "source": "/opportunities", "destination": "/opportunities.html" },
     { "source": "/events", "destination": "/events.html" },
     { "source": "/about", "destination": "/about.html" },
+    { "source": "/individuals", "destination": "/individuals.html" },
     { "source": "/memberships", "destination": "/memberships.html" },
     { "source": "/contact", "destination": "/contact.html" },
     { "source": "/organizations", "destination": "/organizations.html" },
