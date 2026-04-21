@@ -468,7 +468,6 @@ body.nav-menu-open{overflow:hidden}
 .pulse-step-n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
 .pulse-step-title{font-family:var(--disp);font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
 .pulse-step-copy{font-size:12px;color:var(--txt2);line-height:1.6}
-
 /* ════════════════════════════════════════
    CONTACT / BOOK
 ════════════════════════════════════════ */

@@ -9,6 +9,8 @@
     { "source": "/about", "destination": "/about.html" },
     { "source": "/memberships", "destination": "/memberships.html" },
     { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/organizations", "destination": "/organizations.html" },
+    { "source": "/stories", "destination": "/stories.html" },
     { "source": "/euro-tour", "destination": "https://tour.fitntx.com/optin" }
   ]
 }
