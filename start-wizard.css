@@ -63,32 +63,17 @@
   text-align: center;
   margin-bottom: 36px;
 }
-.start-wizard .logo-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  margin-bottom: 18px;
+.start-wizard .fhdr-logo-wrap {
+  margin-bottom: 20px;
+  line-height: 0;
 }
-.start-wizard .logo-blk {
-  background: var(--red);
-  font-family: var(--disp);
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 0.09em;
-  color: var(--whi);
-  padding: 5px 18px 5px 12px;
-  clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
-  line-height: 1;
-}
-.start-wizard .logo-sub {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  color: var(--txt3);
-  text-transform: uppercase;
-  margin-left: 8px;
-  align-self: flex-end;
-  padding-bottom: 2px;
+.start-wizard .fhdr-logo {
+  height: clamp(44px, 10vw, 56px);
+  width: auto;
+  max-width: min(280px, 88vw);
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: top;
 }
 .start-wizard .fhdr h1 {
   font-family: var(--disp);
@@ -434,7 +419,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-top: 0;
+  margin-top: 18px;
 }
 .start-wizard .entry-card {
   background: var(--surf);
@@ -750,40 +735,6 @@
   font-size: 12px;
   color: var(--txt2);
   line-height: 1.6;
-}
-
-/* ─── GHL STATUS ─── */
-.start-wizard .ghl-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surf2);
-  border: 1px solid var(--brd);
-  border-radius: var(--r);
-  padding: 8px 12px;
-  margin-bottom: 20px;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--txt3);
-}
-.start-wizard .ghl-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #27ae60;
-  animation: startWizardBlink 2s infinite;
-  flex-shrink: 0;
-}
-@keyframes startWizardBlink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
 }
 
 /* ─── PIPELINE TAG ─── */

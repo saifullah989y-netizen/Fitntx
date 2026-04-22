@@ -11,7 +11,7 @@ async function loadPartials() {
     headerEl.querySelectorAll('.nav-links a').forEach(a => {
       const href = a.getAttribute('href');
       const isStartHere =
-        (href === 'start.html' || href === '/start') &&
+        href === '/start' &&
         (currentFile === 'start.html' || currentFile === 'start');
       if (href === currentFile || (currentFile === '' && href === 'index.html') || isStartHere) {
         a.classList.add('active');
