@@ -10,7 +10,10 @@ async function loadPartials() {
     const currentFile = window.location.pathname.split('/').pop() || 'index.html';
     headerEl.querySelectorAll('.nav-links a').forEach(a => {
       const href = a.getAttribute('href');
-      if (href === currentFile || (currentFile === '' && href === 'index.html')) {
+      const isStartHere =
+        (href === 'start.html' || href === '/start') &&
+        (currentFile === 'start.html' || currentFile === 'start');
+      if (href === currentFile || (currentFile === '' && href === 'index.html') || isStartHere) {
         a.classList.add('active');
       }
     });
@@ -305,10 +308,11 @@ const results = {
   organization_talent:    { h:'Your Path: Talent Acquisition',       p:'A Senior Recruitment Representative will scope your talent needs, design your recruitment campaign, and manage the full pipeline — from sourcing to placement.', cta:'Book an Org Discovery Call', page:'contact.html', paths:[{icon:'🔍',t:'Talent Acquisition',d:'Full recruitment service'},{icon:'📋',t:'Scoping & Pricing',d:'Confirmed at discovery'},{icon:'🏢',t:'Org Package Option',d:'Bundle + save'}] },
   organization_partnerships:{ h:'Your Path: Partnerships & Sponsorships', p:'Your Representative will package your assets, identify the right partners, build the pitch, and close deals — structured around your commercial objectives and sport context.', cta:'Book an Org Discovery Call', page:'contact.html', paths:[{icon:'🤝',t:'Partnerships Service',d:'Strategy to close'},{icon:'💰',t:'Retainer + Success Fee',d:'Aligned incentives'},{icon:'🏢',t:'Org Package Option',d:'Bundle + save'}] },
   organization_events:    { h:'Your Path: Events Management',        p:'FITNTX plans and delivers events of any scale — from local clinics to international showcases. Your Rep will scope the brief, coordinate logistics, and deliver the outcome.', cta:'Book an Events Call', page:'contact.html', paths:[{icon:'📅',t:'Events Management',d:'End-to-end delivery'},{icon:'📋',t:'Get a Quote',d:'Scoped at discovery'},{icon:'🏢',t:'Org Package Option',d:'Events + more, bundled'}] },
-  organization_growth:    { h:'Your Path: Strategic Growth',         p:'Start with an Organizational Growth Strategy Consultation. Your Rep will map your priorities, challenges, and constraints — and recommend whether a full annual package or specific service fits best.', cta:'Book an Org Strategy Call', page:'contact.html', paths:[{icon:'⚡',t:'Org Growth Consultation',d:'Your starting point'},{icon:'🏢',t:'Annual Packages',d:'$15K–$200K/yr'},{icon:'📋',t:'Custom Solutions',d:'Scoped to your org'}] }
+  organization_growth:    { h:'Your Path: Strategic Growth',         p:'Start with an Organizational Growth Strategy Consultation. Your Rep will map your priorities, challenges, and constraints — and recommend whether a full annual package or specific service fits best.', cta:'Book an Org Strategy Call', page:'contact.html', paths:[{icon:'⚡',t:'Org Growth Consultation',d:'Your starting point'},{icon:'🏢',t:'Annual Packages',d:'Custom / yr'},{icon:'📋',t:'Custom Solutions',d:'Scoped to your org'}] }
 };
 
 function selectStep1(choice) {
+  if (!document.getElementById('flowStep1')) return;
   flowStep1Choice = choice;
   document.getElementById('si1').classList.add('done');
   document.getElementById('si1').textContent = '✓';
@@ -331,6 +335,7 @@ function selectStep1(choice) {
 }
 
 function selectStep2(choice) {
+  if (!document.getElementById('flowResultInner')) return;
   const key = flowStep1Choice + '_' + choice;
   const result = results[key];
   if (!result) return;

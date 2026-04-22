@@ -3,87 +3,944 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Start Here — FITNTX</title>
-<meta name="description" content="FITNTX is the global sports networking hub connecting athletes, students, professionals, and organizations with opportunities, guidance, and growth.">
+<title>FITNTX — Start Here</title>
+<meta name="description" content="Tell FITNTX who you are and what you need — guided path to the right representative and a free discovery call.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="start-wizard.css">
 </head>
 <body>
 <div id="site-header"></div>
 
-<div class="journey-section" style="min-height:calc(100vh - var(--nav-h) - 38px);padding-top:80px">
-  <div class="w">
-    <div class="lbl-row"><div class="lbl-line"></div><span class="h-label red">Guided Pathway System</span></div>
-    <h1 class="d3" style="margin-bottom:8px">START HERE.</h1>
-    <p class="body-md" style="margin-bottom:48px;max-width:480px">Answer 2 quick questions and we&#39;ll point you to exactly the right path, service, or representative — no guesswork.</p>
+<main class="start-wizard" id="startWizard">
 
-    <div id="stepIndicators" class="flow-steps">
-      <div class="flow-step-indicator">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div class="fsi-dot on" id="si1">1</div>
-          <div class="fsi-label">Who are you?</div>
-        </div>
-        <div class="fsi-line" id="sl1"></div>
-      </div>
-      <div class="flow-step-indicator">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div class="fsi-dot" id="si2">2</div>
-          <div class="fsi-label">What do you need?</div>
-        </div>
-        <div class="fsi-line" id="sl2"></div>
-      </div>
-      <div class="flow-step-indicator" style="flex:0">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div class="fsi-dot" id="si3">&#10003;</div>
-          <div class="fsi-label">Your pathway</div>
-        </div>
-      </div>
+<div class="pw">
+
+  <!-- ══════════ HEADER ══════════ -->
+  <div class="fhdr">
+    <div class="logo-pill">
+      <span class="logo-blk">FITNTX</span>
+      <span class="logo-sub">Worldwide</span>
     </div>
+    <h1>Start <span class="accent" id="hdrAccent">Here.</span></h1>
+    <p id="hdrSub">Tell us who you are — we'll guide you to the right path, representative, and discovery call.</p>
+  </div>
 
-    <div class="flow-card" id="flowStep1">
-      <div class="flow-header">
-        <div class="flow-q">Who are you?</div>
-        <div class="flow-hint">// Select the option that best describes you</div>
-      </div>
-      <div class="flow-options g2-flow">
-        <button class="fopt" onclick="selectStep1('student')">
-          <div class="fopt-left"><div class="fopt-icon">&#127891;</div><div><div class="fopt-title">Student</div><div class="fopt-desc">In education — sport, management, coaching, or adjacent</div></div></div>
-          <span class="fopt-arrow">→</span>
-        </button>
-        <button class="fopt" onclick="selectStep1('athlete')">
-          <div class="fopt-left"><div class="fopt-icon">&#127939;</div><div><div class="fopt-title">Athlete</div><div class="fopt-desc">Actively competing — amateur, semi-pro, or professional</div></div></div>
-          <span class="fopt-arrow">→</span>
-        </button>
-        <button class="fopt" onclick="selectStep1('professional')">
-          <div class="fopt-left"><div class="fopt-icon">&#128188;</div><div><div class="fopt-title">Sports Professional</div><div class="fopt-desc">Coach, manager, agent, analyst, media, or sport business</div></div></div>
-          <span class="fopt-arrow">→</span>
-        </button>
-        <button class="fopt" onclick="selectStep1('organization')">
-          <div class="fopt-left"><div class="fopt-icon">&#127970;</div><div><div class="fopt-title">Organization</div><div class="fopt-desc">Club, academy, school, university, team, or sports business</div></div></div>
-          <span class="fopt-arrow">→</span>
-        </button>
-      </div>
-      <div class="flow-footer"><span style="font-size:12px;color:var(--txt3)">2 steps · Takes under 30 seconds</span></div>
-    </div>
-
-    <div class="flow-card" id="flowStep2" style="display:none">
-      <div class="flow-header">
-        <div class="flow-q" id="flowStep2Q">What are you looking for?</div>
-        <div class="flow-hint">// Select your primary need</div>
-      </div>
-      <div class="flow-options" id="flowStep2Options" style="grid-template-columns:1fr 1fr"></div>
-      <div class="flow-footer"><button class="flow-back" onclick="resetFlow()">&#8592; Back</button></div>
-    </div>
-
-    <div class="flow-card" id="flowResult" style="display:none">
-      <div class="flow-result show" id="flowResultInner"></div>
+  <!-- ══════════ PROGRESS ══════════ -->
+  <div class="prog-wrap" id="progWrap" style="display:none">
+    <div class="prog-steps" id="progSteps"></div>
+    <div class="prog-bar-track">
+      <div class="prog-bar-fill" id="progFill" style="width:0%"></div>
     </div>
   </div>
-</div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 0 — ENTRY SELECTOR
+  ══════════════════════════════════════ -->
+  <div id="screen-entry" class="fstep">
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-hdr-title">Who Are You?</span>
+        <span class="card-hdr-step">Select your path</span>
+      </div>
+      <div class="card-accent-line" style="background:var(--red)"></div>
+      <div class="card-body">
+        <div class="slbl"><div class="slbl-line" style="background:var(--red)"></div><span class="slbl-text" style="color:var(--red)">Choose Your Path</span></div>
+        <div class="qh">Are you an individual or do you represent an organization?</div>
+        <div class="qsub">// Your answer determines which form and pipeline you enter in FITNTX</div>
+        <div class="entry-split">
+          <div class="entry-card ind" onclick="choosePath('individual')">
+            <div class="ec-icon">🏃</div>
+            <div class="ec-title">I'm an Individual</div>
+            <p class="ec-desc">Student, athlete, or sports professional looking for career guidance, opportunities, or network access.</p>
+            <div class="ec-tags">
+              <span class="ec-tag">Student</span>
+              <span class="ec-tag">Athlete</span>
+              <span class="ec-tag">Professional</span>
+            </div>
+          </div>
+          <div class="entry-card org" onclick="choosePath('organization')">
+            <div class="ec-icon">🏢</div>
+            <div class="ec-title">I Represent an Org</div>
+            <p class="ec-desc">Club, academy, school, university, or sports business looking for talent, events, media, or growth solutions.</p>
+            <div class="ec-tags">
+              <span class="ec-tag">Club / Academy</span>
+              <span class="ec-tag">School / Uni</span>
+              <span class="ec-tag">Sports Business</span>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--txt3);margin-top:18px;font-family:var(--mono);letter-spacing:.06em">Both paths end with a free 30-minute discovery call · No commitment required</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IND S1 — Who Are You -->
+  <div id="ind-s1" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">Individual — Tell Us Who You Are</span><span class="card-hdr-step">Step 1 of 4</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Your Profile Type</span></div>
+        <div class="qh">Who are you?</div>
+        <div class="qsub">// Select the option that best describes you</div>
+        <div class="og c3" id="ind-l1">
+          <div class="oc" onclick="indSelectL1('student',this)"><div class="oc-icon">🎓</div><div class="oc-text"><div class="oc-title">Student</div><div class="oc-desc">Currently in education</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="indSelectL1('athlete',this)"><div class="oc-icon">🏃</div><div class="oc-text"><div class="oc-title">Athlete</div><div class="oc-desc">Actively competing</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="indSelectL1('professional',this)"><div class="oc-icon">💼</div><div class="oc-text"><div class="oc-title">Professional</div><div class="oc-desc">Working in sport</div></div><div class="oc-chk"></div></div>
+        </div>
+        <div id="ind-l2-wrap" class="sub-wrap" style="display:none">
+          <div class="divider-lbl">Now be more specific</div>
+          <div class="qh" id="ind-l2-heading" style="font-size:19px">Select your stage</div>
+          <div class="qsub">// Choose the option that fits best</div>
+          <div class="og c1" id="ind-l2"></div>
+        </div>
+        <div class="btn-actions">
+          <button type="button" class="btn btn-ghost" onclick="showScreen('screen-entry');resetAll()">← Back</button>
+          <button type="button" class="btn btn-primary" style="flex:1" id="ind-s1-next" onclick="indGoStep(2)" disabled>Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IND S2 — Contact Details -->
+  <div id="ind-s2" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">Your Contact Details</span><span class="card-hdr-step">Step 2 of 4</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="ghl-bar"><div class="ghl-dot"></div><span>GHL CRM Connected · Profile created automatically on submission</span></div>
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Personal Information</span></div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp"><label class="flbl">Full Name <span class="req">*</span></label><input class="finp" id="ind-fullname" placeholder="Alex Chen" required></div>
+          <div class="fgrp"><label class="flbl">Email Address <span class="req">*</span></label><input class="finp" type="email" id="ind-email" placeholder="alex@example.com" required></div>
+        </div>
+        <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">WhatsApp Number <span class="req">*</span></label>
+          <div class="phone-row">
+            <div class="phone-cc">🌍 +<input id="ind-cc" value="1" placeholder="1"></div>
+            <input class="finp" type="tel" id="ind-phone" placeholder="416 555 0100" style="flex:1" required>
+          </div>
+          <div class="fnote">Used for WhatsApp reminders and discovery call coordination</div>
+        </div>
+        <div class="divider-lbl">Sport &amp; Location</div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp">
+            <label class="flbl">Primary Sport <span class="req">*</span></label>
+            <select class="fsel" id="ind-sport" required>
+              <option value="">Select your sport</option>
+              <optgroup label="Team Sports"><option>Soccer / Football</option><option>Basketball</option><option>American Football</option><option>Ice Hockey</option><option>Rugby</option><option>Volleyball</option><option>Baseball</option><option>Softball</option><option>Lacrosse</option><option>Field Hockey</option><option>Handball</option><option>Water Polo</option><option>Cricket</option></optgroup>
+              <optgroup label="Individual Sports"><option>Tennis</option><option>Golf</option><option>Track &amp; Field</option><option>Swimming</option><option>Gymnastics</option><option>Boxing</option><option>MMA / Combat Sports</option><option>Wrestling</option><option>Judo</option><option>Taekwondo</option><option>Cycling</option><option>Triathlon</option><option>Rowing</option><option>Badminton</option><option>Table Tennis</option><option>Squash</option></optgroup>
+              <optgroup label="Other"><option>E-Sports / Gaming</option><option>Equestrian</option><option>Motorsports</option><option>Skateboarding</option><option>Surfing</option><option>Snowboarding</option><option>Kabaddi</option><option>Other / Multiple</option></optgroup>
+            </select>
+          </div>
+          <div class="fgrp" id="ind-disc-wrap">
+            <label class="flbl">Primary Discipline <span class="req" id="ind-disc-req">*</span></label>
+            <select class="fsel" id="ind-discipline">
+              <option value="">Select your discipline</option>
+              <option>Sports Medicine &amp; Rehab</option><option>Mental Performance &amp; Psychology</option><option>Nutrition &amp; Dietetics</option><option>Athletic Performance &amp; Coaching</option><option>Sports Science &amp; Analytics</option><option>Sports Media &amp; Content</option>
+            </select>
+            <div class="fnote" id="ind-disc-note"></div>
+          </div>
+        </div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp"><label class="flbl">City <span class="req">*</span></label><input class="finp" id="ind-city" placeholder="Toronto" required></div>
+          <div class="fgrp">
+            <label class="flbl">Country <span class="req">*</span></label>
+            <select class="fsel" id="ind-country" required>
+              <option value="">Select country</option>
+              <option>Canada</option><option>United States</option><option>United Kingdom</option><option>Australia</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>Kenya</option><option>Egypt</option><option>Jamaica</option><option>Trinidad &amp; Tobago</option><option>Barbados</option><option>India</option><option>UAE</option><option>Germany</option><option>France</option><option>Spain</option><option>Brazil</option><option>Mexico</option><option>Argentina</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="fgrp" style="margin-bottom:4px">
+          <label class="flbl">How did you hear about us? <span class="req">*</span></label>
+          <select class="fsel" id="ind-source" required>
+            <option value="">Select source</option>
+            <option>Website</option><option>Event</option><option>Referral</option><option>Organization</option><option>Social Media</option><option>Other</option>
+          </select>
+        </div>
+        <div class="btn-actions">
+          <button type="button" class="btn btn-ghost" onclick="indGoStep(1)">← Back</button>
+          <button type="button" class="btn btn-primary" style="flex:1" onclick="indValidateS2()">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IND S3 — Goals -->
+  <div id="ind-s3" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">What Are You Looking For?</span><span class="card-hdr-step">Step 3 of 4</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Primary Goal</span></div>
+        <div class="qh">What's your primary goal?</div>
+        <div class="qsub">// Select one — additional fields will appear based on your choice</div>
+        <div class="og c1" id="ind-goals"></div>
+
+        <div id="ind-extras" style="display:none">
+          <div class="divider-lbl">A few more details</div>
+
+          <div id="ind-expert-wrap" style="display:none;margin-bottom:16px">
+            <label class="flbl" style="margin-bottom:8px">Select the type of expert you need <span class="req">*</span></label>
+            <div class="expert-grid" id="ind-expert-grid">
+              <div class="exp-opt" onclick="selExpert('Sports Medicine &amp; Rehab',this)">🩺 Sports Medicine &amp; Rehab</div>
+              <div class="exp-opt" onclick="selExpert('Mental Performance &amp; Psychology',this)">🧠 Mental Performance &amp; Psychology</div>
+              <div class="exp-opt" onclick="selExpert('Nutrition &amp; Dietetics',this)">🥗 Nutrition &amp; Dietetics</div>
+              <div class="exp-opt" onclick="selExpert('Athletic Performance &amp; Coaching',this)">⚡ Athletic Performance &amp; Coaching</div>
+              <div class="exp-opt" onclick="selExpert('Sports Science &amp; Analytics',this)">📊 Sports Science &amp; Analytics</div>
+              <div class="exp-opt" onclick="selExpert('Sports Media &amp; Content',this)">📸 Sports Media &amp; Content</div>
+              <div class="exp-opt" onclick="selExpert('Other',this)" style="grid-column:1/-1">🔍 Other — I'll explain on the call</div>
+            </div>
+          </div>
+
+          <div id="ind-cv-wrap" style="display:none;margin-bottom:14px">
+            <label class="flbl" style="margin-bottom:8px">Upload CV / Resume <span style="color:var(--txt3);font-weight:300">(Optional — recommended)</span></label>
+            <div class="fua" id="ind-cv-zone" onclick="document.getElementById('ind-cv-file').click()">
+              <div class="fua-icon">📄</div><div class="fua-title">Upload CV / Resume</div><div class="fua-sub">PDF, DOC, DOCX · Max 10MB</div>
+              <div class="fua-name" id="ind-cv-name"></div>
+              <input type="file" id="ind-cv-file" accept=".pdf,.doc,.docx" onchange="handleFile('ind-cv-file','ind-cv-name','ind-cv-zone')">
+            </div>
+          </div>
+
+          <div id="ind-hl-wrap" style="display:none;margin-bottom:14px">
+            <label class="flbl" style="margin-bottom:8px">Player Highlights / Profile <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
+            <div class="fua" id="ind-hl-zone" onclick="document.getElementById('ind-hl-file').click()">
+              <div class="fua-icon">🎬</div><div class="fua-title">Upload Highlights or Profile</div><div class="fua-sub">PDF, MP4, MOV · Max 50MB</div>
+              <div class="fua-name" id="ind-hl-name"></div>
+              <input type="file" id="ind-hl-file" accept=".pdf,.mp4,.mov,.avi,.doc,.docx" onchange="handleFile('ind-hl-file','ind-hl-name','ind-hl-zone')">
+            </div>
+          </div>
+
+          <div id="ind-li-wrap" style="display:none;margin-bottom:14px">
+            <div class="fgrp">
+              <label class="flbl">LinkedIn / Social Media Profile <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
+              <input class="finp" type="url" id="ind-linkedin" placeholder="https://linkedin.com/in/yourprofile">
+              <div class="fnote">LinkedIn, Instagram, or any relevant professional profile</div>
+            </div>
+          </div>
+
+          <div id="ind-timeline-wrap" style="display:none;margin-bottom:14px">
+            <div class="fgrp">
+              <label class="flbl">Timeline <span class="req">*</span></label>
+              <select class="fsel" id="ind-timeline">
+                <option value="">When are you looking to move?</option>
+                <option value="Immediate">Immediate — I want to start now</option>
+                <option value="3-6 months">3–6 months</option>
+                <option value="6-12 months">6–12 months</option>
+                <option value="1+ years">1+ years — exploring for now</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="ind-challenges-wrap" style="display:none;margin-bottom:4px">
+            <div class="fgrp">
+              <label class="flbl">Key Challenges You Are Facing <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
+              <textarea class="ftxt" id="ind-challenges" placeholder="Describe the main obstacles or challenges you're currently facing in your sports career..."></textarea>
+              <div class="fnote">This helps your Representative prepare for your discovery call</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-actions">
+          <button type="button" class="btn btn-ghost" onclick="indGoStep(2)">← Back</button>
+          <button type="button" class="btn btn-primary" style="flex:1" id="ind-s3-next" onclick="indGoStep(4)" disabled>Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IND S4 — Book Call -->
+  <div id="ind-s4" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">Book Your Free Discovery Call</span><span class="card-hdr-step">Step 4 of 4</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="ibox"><div class="ibox-title">Your Profile Summary</div><div class="ibox-text" id="ind-summary"></div></div>
+        <div style="margin-bottom:18px"><div class="flbl" style="margin-bottom:8px">GHL tags to be applied to your profile</div><div class="tags-row" id="ind-tags-preview"></div></div>
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
+        <div class="qh">Choose a time that works for you.</div>
+        <div class="qsub">// 30 minutes · Free · No commitment · Your timezone detected automatically</div>
+        <div class="cal-wrap">
+          <div class="cal-ph">
+            <div class="cal-icon">📅</div>
+            <div class="cal-title">GHL Calendar — Individuals</div>
+            <div class="cal-sub">Replace this block with your GoHighLevel individual booking calendar iframe.</div>
+            <div class="cal-code">&lt;iframe src="YOUR_GHL_IND_CALENDAR_URL" width="100%" height="600" frameborder="0"&gt;&lt;/iframe&gt;</div>
+          </div>
+          <div class="fnote" style="text-align:center">After selecting a time, your profile is created in the FITNTX CRM → Individuals Pipeline → Discovery Scheduled</div>
+        </div>
+        <div style="margin-top:20px">
+          <button type="button" class="btn btn-primary btn-full" onclick="indSubmit(this)">Confirm &amp; Create My Profile →</button>
+          <p style="text-align:center;font-size:11px;color:var(--txt3);margin-top:10px;font-family:var(--mono);letter-spacing:.05em;line-height:1.5">Logged to Individuals Pipeline → Discovery Scheduled · No spam · Unsubscribe anytime</p>
+        </div>
+        <div class="btn-actions" style="margin-top:10px"><button type="button" class="btn btn-ghost btn-full" onclick="indGoStep(3)">← Back</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORG S1 — About Your Org -->
+  <div id="org-s1" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">Tell Us About Your Organization</span><span class="card-hdr-step">Step 1 of 3</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="ghl-bar"><div class="ghl-dot"></div><span>GHL CRM Connected · Organization profile created automatically</span></div>
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Primary Contact</span></div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp"><label class="flbl">Your Full Name <span class="req">*</span></label><input class="finp" id="org-contact-name" placeholder="Sarah Chen" required></div>
+          <div class="fgrp"><label class="flbl">Email Address <span class="req">*</span></label><input class="finp" type="email" id="org-email" placeholder="sarah@academy.com" required></div>
+        </div>
+        <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">WhatsApp Number <span class="req">*</span></label>
+          <div class="phone-row">
+            <div class="phone-cc">🌍 +<input id="org-cc" value="1" placeholder="1"></div>
+            <input class="finp" type="tel" id="org-phone" placeholder="416 555 0100" style="flex:1" required>
+          </div>
+          <div class="fnote">Used for WhatsApp coordination and discovery call reminders</div>
+        </div>
+        <div class="divider-lbl">Organization Details</div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp"><label class="flbl">Organization Name <span class="req">*</span></label><input class="finp" id="org-name" placeholder="Elite Sports Academy" required></div>
+          <div class="fgrp"><label class="flbl">Organization Website <span class="req">*</span></label><input class="finp" type="url" id="org-website" placeholder="https://eliteacademy.com" required></div>
+        </div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp">
+            <label class="flbl">Organization Type <span class="req">*</span></label>
+            <select class="fsel" id="org-type" required>
+              <option value="">Select type</option>
+              <option value="Sports Club / Academy">Sports Club / Academy</option>
+              <option value="Sports School / University">Sports School / University</option>
+              <option value="Sports Enterprise / Business">Sports Enterprise / Business</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Primary Sport <span class="req">*</span></label>
+            <select class="fsel" id="org-sport" required>
+              <option value="">Select primary sport</option>
+              <optgroup label="Team Sports"><option>Soccer / Football</option><option>Basketball</option><option>American Football</option><option>Ice Hockey</option><option>Rugby</option><option>Volleyball</option><option>Baseball</option><option>Softball</option><option>Lacrosse</option><option>Field Hockey</option><option>Handball</option><option>Cricket</option></optgroup>
+              <optgroup label="Individual Sports"><option>Tennis</option><option>Golf</option><option>Track &amp; Field</option><option>Swimming</option><option>Gymnastics</option><option>Boxing</option><option>MMA / Combat Sports</option><option>Wrestling</option><option>Cycling</option><option>Triathlon</option><option>Rowing</option><option>Badminton</option></optgroup>
+              <optgroup label="Other"><option>Multiple Sports</option><option>E-Sports / Gaming</option><option>Equestrian</option><option>Motorsports</option><option>Other</option></optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">Discipline of Your Organization / Solution Needed <span class="req">*</span></label>
+          <select class="fsel" id="org-discipline" required>
+            <option value="">Select primary discipline</option>
+            <option>Sports Medicine &amp; Rehab</option>
+            <option>Mental Performance &amp; Psychology</option>
+            <option>Nutrition &amp; Dietetics</option>
+            <option>Athletic Performance &amp; Coaching</option>
+            <option>Sports Science &amp; Analytics</option>
+            <option>Sports Media &amp; Content</option>
+            <option>Other / Multiple Disciplines</option>
+          </select>
+        </div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp"><label class="flbl">City <span class="req">*</span></label><input class="finp" id="org-city" placeholder="London" required></div>
+          <div class="fgrp">
+            <label class="flbl">Country <span class="req">*</span></label>
+            <select class="fsel" id="org-country" required>
+              <option value="">Select country</option>
+              <option>Canada</option><option>United States</option><option>United Kingdom</option><option>Australia</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>Kenya</option><option>Egypt</option><option>Jamaica</option><option>Trinidad &amp; Tobago</option><option>Barbados</option><option>India</option><option>UAE</option><option>Germany</option><option>France</option><option>Spain</option><option>Brazil</option><option>Mexico</option><option>Argentina</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-actions">
+          <button type="button" class="btn btn-ghost" onclick="showScreen('screen-entry');resetAll()">← Back</button>
+          <button type="button" class="btn btn-primary" style="flex:1" onclick="orgValidateS1()">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORG S2 — Solutions Needed -->
+  <div id="org-s2" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">What Solutions Are You Looking For?</span><span class="card-hdr-step">Step 2 of 3</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Primary Solution</span></div>
+        <div class="qh">What does your organization need most?</div>
+        <div class="qsub">// Select your primary need — all fields below are required for your discovery call</div>
+
+        <div class="og c1" id="org-solutions">
+          <div class="oc" onclick="orgSelSolution('talent',this)"><div class="oc-icon">🔍</div><div class="oc-text"><div class="oc-title">Find or Recruit Talent</div><div class="oc-desc">Athletes, coaches, staff, or personnel for your organization</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="orgSelSolution('events',this)"><div class="oc-icon">📅</div><div class="oc-text"><div class="oc-title">Host and Manage Events</div><div class="oc-desc">Plan and execute clinics, showcases, tournaments, or conferences</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="orgSelSolution('media',this)"><div class="oc-icon">📸</div><div class="oc-text"><div class="oc-title">Media &amp; Marketing Solutions</div><div class="oc-desc">Content strategy, production, campaigns, and brand development</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="orgSelSolution('partnerships',this)"><div class="oc-icon">🤝</div><div class="oc-text"><div class="oc-title">Find Sponsors &amp; Partners</div><div class="oc-desc">Partnerships, sponsorships, and commercial deals for your org</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="orgSelSolution('growth',this)"><div class="oc-icon">📈</div><div class="oc-text"><div class="oc-title">Organizational Growth &amp; Scaling</div><div class="oc-desc">Strategic consulting, roadmaps, restructuring, and commercial model design</div></div><div class="oc-chk"></div></div>
+          <div class="oc" onclick="orgSelSolution('other',this)"><div class="oc-icon">🔄</div><div class="oc-text"><div class="oc-title">Other / Multiple Solutions</div><div class="oc-desc">We need a combination — we'll discuss on the discovery call</div></div><div class="oc-chk"></div></div>
+        </div>
+
+        <div class="divider-lbl">Discovery Details</div>
+        <div class="slbl" style="margin-bottom:8px"><div class="slbl-line"></div><span class="slbl-text">Tell Us More</span></div>
+        <p style="font-size:12px;color:var(--txt3);margin-bottom:18px;font-family:var(--mono);letter-spacing:.04em">// These details help your Senior Representative prepare for your discovery call</p>
+
+        <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">Primary Objectives <span class="req">*</span></label>
+          <textarea class="ftxt" id="org-objectives" placeholder="What are you hoping to achieve with FITNTX in the next 12–24 months? What does success look like for your organization?" required></textarea>
+        </div>
+        <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">Current Approach &amp; Challenges <span class="req">*</span></label>
+          <textarea class="ftxt" id="org-challenges" placeholder="How are you currently handling recruitment, events, media, or growth? Where are the main gaps or frustrations?" required></textarea>
+        </div>
+        <div class="fg c2" style="margin-bottom:14px">
+          <div class="fgrp">
+            <label class="flbl">Timeline <span class="req">*</span></label>
+            <select class="fsel" id="org-timeline" required>
+              <option value="">When do you want to start?</option>
+              <option value="Immediate">Immediate — ready to move now</option>
+              <option value="3-6 months">3–6 months</option>
+              <option value="6-12 months">6–12 months</option>
+              <option value="1+ years">1+ years — exploring options</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Budget Comfort <span class="req">*</span></label>
+            <select class="fsel" id="org-budget" required>
+              <option value="">Select budget range</option>
+              <option value="Under $5K">Under $5,000</option>
+              <option value="$5K–$15K">$5,000 – $15,000</option>
+              <option value="$20K–$50K">$20,000 – $50,000</option>
+              <option value="$50K+">$50,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">Decision Makers <span class="req">*</span></label>
+          <input class="finp" id="org-decision-makers" placeholder="Who approves decisions at your organization? (e.g. Director, Head Coach, Owner, Board)" required>
+          <div class="fnote">Helps us understand who should be on the discovery call</div>
+        </div>
+        <div class="fgrp" style="margin-bottom:4px">
+          <label class="flbl">How did you hear about us? <span class="req">*</span></label>
+          <select class="fsel" id="org-source" required>
+            <option value="">Select source</option>
+            <option>Website</option><option>Event</option><option>Referral</option><option>Organization</option><option>Social Media</option><option>Other</option>
+          </select>
+        </div>
+
+        <div class="btn-actions">
+          <button type="button" class="btn btn-ghost" onclick="orgGoStep(1)">← Back</button>
+          <button type="button" class="btn btn-primary" style="flex:1" onclick="orgValidateS2()">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORG S3 — Book Call -->
+  <div id="org-s3" class="fstep" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-title">Book Your Free Discovery Call</span><span class="card-hdr-step">Step 3 of 3</span></div>
+      <div class="card-accent-line"></div>
+      <div class="card-body">
+        <div class="ibox"><div class="ibox-title">Organization Summary</div><div class="ibox-text" id="org-summary"></div></div>
+        <div style="margin-bottom:18px"><div class="flbl" style="margin-bottom:8px">GHL tags to be applied to your organization profile</div><div class="tags-row" id="org-tags-preview"></div></div>
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
+        <div class="qh">Book your Org Discovery Call.</div>
+        <div class="qsub">// 30 minutes · Free · No commitment required · Your timezone detected automatically</div>
+        <div class="cal-wrap">
+          <div class="cal-ph">
+            <div class="cal-icon">📅</div>
+            <div class="cal-title">GHL Calendar — Organizations</div>
+            <div class="cal-sub">Replace this block with your GoHighLevel organization booking calendar iframe.</div>
+            <div class="cal-code">&lt;iframe src="YOUR_GHL_ORG_CALENDAR_URL" width="100%" height="600" frameborder="0"&gt;&lt;/iframe&gt;</div>
+          </div>
+          <div class="fnote" style="text-align:center">After booking, your org profile is created → Organizations Pipeline → Discovery Scheduled</div>
+        </div>
+        <div style="margin-top:20px">
+          <button type="button" class="btn btn-primary btn-full" onclick="orgSubmit(this)" style="background:var(--blue)">Confirm &amp; Create Our Org Profile →</button>
+          <p style="text-align:center;font-size:11px;color:var(--txt3);margin-top:10px;font-family:var(--mono);letter-spacing:.05em;line-height:1.5">Logged to Organizations Pipeline → Discovery Scheduled · No spam · Unsubscribe anytime</p>
+        </div>
+        <div class="btn-actions" style="margin-top:10px"><button type="button" class="btn btn-ghost btn-full" onclick="orgGoStep(2)">← Back</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ SUCCESS — INDIVIDUAL ══════════ -->
+  <div id="success-ind" class="fstep" style="display:none">
+    <div class="success-card">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're in the <span>System.</span></div>
+      <p class="success-p">Your FITNTX profile has been created and your discovery call is scheduled. Check your email and WhatsApp for your confirmation and call details.</p>
+      <div class="tags-row"><div class="pipe-tag ind-tag">Individual Pipeline</div><div class="pipe-tag status-tag">✓ Discovery Call Scheduled</div></div>
+      <div class="success-next">
+        <div class="sn-title">// What happens next</div>
+        <div class="sn-row"><div class="sn-key">Now</div><div class="sn-val">Confirmation email + WhatsApp sent</div></div>
+        <div class="sn-row"><div class="sn-key">24h before</div><div class="sn-val">Automated SMS reminder via GHL</div></div>
+        <div class="sn-row"><div class="sn-key">1h before</div><div class="sn-val">Final reminder with call link</div></div>
+        <div class="sn-row"><div class="sn-key">On the call</div><div class="sn-val">30-min discovery · Goals · Route decision</div></div>
+        <div class="sn-row"><div class="sn-key">After the call</div><div class="sn-val">Rep logs route tag + next steps in GHL</div></div>
+      </div>
+      <div style="margin-top:20px"><div class="flbl" style="justify-content:center;margin-bottom:8px">GHL tags applied to your profile</div><div class="tags-row" id="success-ind-tags"></div></div>
+    </div>
+  </div>
+
+  <!-- ══════════ SUCCESS — ORGANIZATION ══════════ -->
+  <div id="success-org" class="fstep" style="display:none">
+    <div class="success-card">
+      <div class="success-icon">🏢</div>
+      <div class="success-title" style="color:var(--blue)">Organization <span style="color:var(--grn)">Profile Created.</span></div>
+      <p class="success-p">Your organization's FITNTX profile has been created and your discovery call is scheduled. Your Senior Representative will be in touch before the call.</p>
+      <div class="tags-row"><div class="pipe-tag org-tag">Organizations Pipeline</div><div class="pipe-tag status-tag">✓ Discovery Call Scheduled</div></div>
+      <div class="success-next">
+        <div class="sn-title">// What happens next</div>
+        <div class="sn-row"><div class="sn-key">Now</div><div class="sn-val">Confirmation email + WhatsApp sent</div></div>
+        <div class="sn-row"><div class="sn-key">Before the call</div><div class="sn-val">SR reviews your org profile and objectives</div></div>
+        <div class="sn-row"><div class="sn-key">On the call</div><div class="sn-val">30-min discovery · Objectives · Route decision</div></div>
+        <div class="sn-row"><div class="sn-key">After the call</div><div class="sn-val">SR prepares proposal or next steps</div></div>
+        <div class="sn-row"><div class="sn-key">Within 3–5 days</div><div class="sn-val">Scope, timeline, and investment confirmed</div></div>
+      </div>
+      <div style="margin-top:20px"><div class="flbl" style="justify-content:center;margin-bottom:8px">GHL tags applied to your org profile</div><div class="tags-row" id="success-org-tags"></div></div>
+    </div>
+  </div>
+
+</div><!-- /pw -->
+
+</main>
 
 <div id="site-footer"></div>
 
 <script src="main.js"></script>
+<script>
+function startWizardRoot() {
+  return document.getElementById('startWizard');
+}
+
+const ALL_SCREENS = ['screen-entry','ind-s1','ind-s2','ind-s3','ind-s4','org-s1','org-s2','org-s3','success-ind','success-org'];
+
+function showScreen(id) {
+  ALL_SCREENS.forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.style.display = 'block';
+  target.className = 'fstep';
+  void target.offsetWidth;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetAll() {
+  const root = startWizardRoot();
+  if (root) root.classList.remove('org-mode');
+  document.getElementById('hdrAccent').textContent = 'Here.';
+  document.getElementById('hdrSub').textContent = "Tell us who you are — we'll guide you to the right path, representative, and discovery call.";
+  document.getElementById('progWrap').style.display = 'none';
+  IND.l1 = null; IND.l2 = null; IND.goal = null; IND.expert = null;
+  ORG.solution = null;
+}
+
+function choosePath(path) {
+  const root = startWizardRoot();
+  if (path === 'individual') {
+    if (root) root.classList.remove('org-mode');
+    document.getElementById('hdrAccent').textContent = 'Individual.';
+    document.getElementById('hdrSub').textContent = "Tell us who you are and what you're looking for — we'll match you to the right representative.";
+    setupIndProgress();
+    showScreen('ind-s1');
+    updateIndProgress(1);
+  } else {
+    if (root) root.classList.add('org-mode');
+    document.getElementById('hdrAccent').textContent = 'Organization.';
+    document.getElementById('hdrSub').textContent = "Tell us about your organization and what solutions you need — we'll connect you with the right Senior Representative.";
+    setupOrgProgress();
+    showScreen('org-s1');
+    updateOrgProgress(1);
+  }
+  document.getElementById('progWrap').style.display = 'block';
+}
+
+const IND_STEPS = ['Who You Are','Your Details','Your Goals','Book Call'];
+
+function setupIndProgress() {
+  buildProgress(IND_STEPS);
+}
+
+function updateIndProgress(step) {
+  updateProgress(IND_STEPS.length, step);
+}
+
+const ORG_STEPS = ['About Your Org','Solutions Needed','Book Call'];
+
+function setupOrgProgress() {
+  buildProgress(ORG_STEPS);
+}
+
+function updateOrgProgress(step) {
+  updateProgress(ORG_STEPS.length, step);
+}
+
+function buildProgress(steps) {
+  const container = document.getElementById('progSteps');
+  container.innerHTML = '';
+  steps.forEach((label, i) => {
+    const num = i + 1;
+    const item = document.createElement('div');
+    item.className = 'psi';
+    item.id = 'psi-' + num;
+    item.innerHTML = `<div class="psi-dot" id="pd-${num}"><span>${num}</span></div><div class="psi-lbl" id="pl-${num}">${label}</div>`;
+    container.appendChild(item);
+    if (i < steps.length - 1) {
+      const line = document.createElement('div');
+      line.className = 'psi-line';
+      line.id = 'pline-' + num;
+      container.appendChild(line);
+    }
+  });
+}
+
+function updateProgress(total, step) {
+  const pct = Math.round(((step - 1) / total) * 100 + (100 / total) * 0.25);
+  document.getElementById('progFill').style.width = Math.min(pct, 95) + '%';
+  for (let i = 1; i <= total; i++) {
+    const dot = document.getElementById('pd-' + i);
+    const lbl = document.getElementById('pl-' + i);
+    const line = document.getElementById('pline-' + i);
+    if (!dot) continue;
+    dot.classList.remove('on','done');
+    lbl.classList.remove('on','done');
+    if (i < step) {
+      dot.classList.add('done'); lbl.classList.add('done');
+      dot.innerHTML = '';
+    } else if (i === step) {
+      dot.classList.add('on'); lbl.classList.add('on');
+      dot.innerHTML = '<span>' + i + '</span>';
+    } else {
+      dot.innerHTML = '<span>' + i + '</span>';
+    }
+    if (line) line.classList.toggle('done', i < step);
+  }
+}
+
+const IND = { l1: null, l2: null, goal: null, expert: null };
+
+const IND_L2 = {
+  student: [
+    { v:'high_school', icon:'📚', t:'High School Student', d:'Currently in secondary / high school' },
+    { v:'university', icon:'🏫', t:'University / College Student', d:'Currently in post-secondary education' }
+  ],
+  athlete: [
+    { v:'student_athlete', icon:'🎓', t:'Student Athlete', d:'Competing while studying' },
+    { v:'semi_pro', icon:'⚽', t:'Semi-Professional Athlete', d:'Competing at a competitive / semi-pro level' },
+    { v:'professional_athlete', icon:'⭐', t:'Professional Athlete', d:'Full-time competitive athlete' }
+  ],
+  professional: [
+    { v:'working_professional', icon:'💼', t:'Working Professional', d:'Currently employed in sport or adjacent field' },
+    { v:'recent_graduate', icon:'🎓', t:'Recent Graduate', d:'Graduated within the last 2 years' },
+    { v:'manager_director', icon:'📊', t:'Manager / Director', d:'Leading a team, department, or organization' }
+  ]
+};
+
+const IND_L2_Q = { student:'What type of student are you?', athlete:'What level are you competing at?', professional:'What describes your current role?' };
+
+const IND_GOALS = {
+  student: [
+    { v:'career_roadmap', icon:'🗺️', t:'Build a Career Strategy Roadmap', d:'Map your path in sport with expert guidance' },
+    { v:'internship_job', icon:'💼', t:'Find an Internship or Job Opportunity', d:'Access the FITNTX opportunity pipeline' },
+    { v:'network', icon:'🌐', t:'Expand Your Network', d:'Connect with athletes, professionals, and orgs' },
+    { v:'events', icon:'📅', t:'Attend Events & Workshops', d:'Join FITNTX events, showcases, and sessions' },
+    { v:'other', icon:'🔍', t:'Other', d:"Tell us more on the call" }
+  ],
+  athlete: [
+    { v:'career_roadmap', icon:'🗺️', t:'Build a Career Strategy Roadmap', d:'Map your career with a dedicated Rep' },
+    { v:'playing_opportunity', icon:'⚽', t:'Find a Playing Opportunity', d:'Placement into clubs, trials, or contracts' },
+    { v:'branding', icon:'📸', t:'Athlete Branding & Marketing', d:'Build your personal brand in sport' },
+    { v:'scholarship', icon:'🎓', t:'Scholarship Opportunities', d:'Find and apply for athletic scholarships' },
+    { v:'network', icon:'🌐', t:'Expand Your Network', d:'Build connections globally in your sport' },
+    { v:'showcase_events', icon:'🏟️', t:'Attend Showcase Events', d:'Get seen at FITNTX-run showcases' },
+    { v:'expert', icon:'🩺', t:'Connect with a Specific Expert', d:'Sports medicine, psychology, nutrition, coaching & more' }
+  ],
+  professional: [
+    { v:'career_consulting', icon:'📈', t:'Career Consulting', d:'Strategic advice for your sports career' },
+    { v:'new_job', icon:'💼', t:'Find a New Job Opportunity', d:'Access senior roles and positions in sport' },
+    { v:'network', icon:'🌐', t:'Expand Your Network', d:'Build global connections in the sports industry' },
+    { v:'events', icon:'📅', t:'Attend Events & Workshops', d:'Access FITNTX industry events and sessions' },
+    { v:'other', icon:'🔍', t:'Other', d:"Tell us more on the call" }
+  ]
+};
+
+const GOALS_WITH = {
+  cv: ['career_roadmap','internship_job','career_consulting','new_job','other'],
+  hl: ['playing_opportunity','scholarship','showcase_events','branding','expert'],
+  li: ['career_roadmap','internship_job','network','career_consulting','new_job','other'],
+  timeline: ['career_roadmap','internship_job','playing_opportunity','branding','scholarship','network','showcase_events','career_consulting','new_job','expert','other','events'],
+  challenges: ['career_roadmap','internship_job','playing_opportunity','branding','scholarship','network','showcase_events','career_consulting','new_job','expert','other','events'],
+  expert: ['expert']
+};
+
+function indSelectL1(val, el) {
+  IND.l1 = val; IND.l2 = null; IND.goal = null;
+  document.querySelectorAll('#ind-l1 .oc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  const opts = IND_L2[val];
+  const grid = document.getElementById('ind-l2');
+  grid.innerHTML = opts.map(o => `<div class="oc" onclick="indSelectL2('${o.v}',this)"><div class="oc-icon">${o.icon}</div><div class="oc-text"><div class="oc-title">${o.t}</div><div class="oc-desc">${o.d}</div></div><div class="oc-chk"></div></div>`).join('');
+  document.getElementById('ind-l2-heading').textContent = IND_L2_Q[val];
+  document.getElementById('ind-l2-wrap').style.display = 'block';
+  document.getElementById('ind-s1-next').disabled = true;
+  const dw = document.getElementById('ind-disc-wrap');
+  if (val === 'athlete') { dw.style.display = 'none'; document.getElementById('ind-discipline').removeAttribute('required'); }
+  else { dw.style.display = 'block'; document.getElementById('ind-discipline').setAttribute('required',''); document.getElementById('ind-disc-note').textContent = val === 'student' ? 'Your field of study / specialization' : 'Your professional discipline'; }
+}
+
+function indSelectL2(val, el) {
+  IND.l2 = val;
+  document.querySelectorAll('#ind-l2 .oc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('ind-s1-next').disabled = false;
+}
+
+function indGoStep(n) {
+  const map = { 1:'ind-s1', 2:'ind-s2', 3:'ind-s3', 4:'ind-s4' };
+  if (n === 3) buildIndGoals();
+  if (n === 4) buildIndSummary();
+  showScreen(map[n]);
+  updateIndProgress(n);
+}
+
+function buildIndGoals() {
+  const goals = IND_GOALS[IND.l1] || [];
+  document.getElementById('ind-goals').innerHTML = goals.map(g =>
+    `<div class="oc" onclick="indSelGoal('${g.v}',this)"><div class="oc-icon">${g.icon}</div><div class="oc-text"><div class="oc-title">${g.t}</div><div class="oc-desc">${g.d}</div></div><div class="oc-chk"></div></div>`
+  ).join('');
+  document.getElementById('ind-s3-next').disabled = true;
+  document.getElementById('ind-extras').style.display = 'none';
+}
+
+function indSelGoal(val, el) {
+  IND.goal = val;
+  IND.expert = null;
+  document.querySelectorAll('#ind-goals .oc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  buildIndExtras(val);
+  document.getElementById('ind-s3-next').disabled = false;
+}
+
+function buildIndExtras(goal) {
+  const show = (id, cond) => document.getElementById(id).style.display = cond ? 'block' : 'none';
+  const isAth = IND.l1 === 'athlete';
+  const any = GOALS_WITH.timeline.includes(goal);
+  document.getElementById('ind-extras').style.display = any ? 'block' : 'none';
+  show('ind-expert-wrap', GOALS_WITH.expert.includes(goal) && isAth);
+  show('ind-cv-wrap', GOALS_WITH.cv.includes(goal) && !isAth);
+  show('ind-hl-wrap', GOALS_WITH.hl.includes(goal) && isAth);
+  show('ind-li-wrap', GOALS_WITH.li.includes(goal) && !isAth);
+  show('ind-timeline-wrap', GOALS_WITH.timeline.includes(goal));
+  show('ind-challenges-wrap', GOALS_WITH.challenges.includes(goal));
+  if (!GOALS_WITH.expert.includes(goal)) {
+    IND.expert = null;
+    document.querySelectorAll('#ind-expert-grid .exp-opt').forEach(e => e.classList.remove('sel'));
+  }
+}
+
+function selExpert(val, el) {
+  IND.expert = val;
+  document.querySelectorAll('#ind-expert-grid .exp-opt').forEach(e => e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function indValidateS2() {
+  const req = ['ind-fullname','ind-email','ind-phone','ind-sport','ind-city','ind-country','ind-source'];
+  if (IND.l1 !== 'athlete') req.push('ind-discipline');
+  let ok = true;
+  req.forEach(id => { const el = document.getElementById(id); el.classList.remove('err'); if (!el.value.trim()) { el.classList.add('err'); ok = false; } });
+  const em = document.getElementById('ind-email');
+  if (em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) { em.classList.add('err'); ok = false; }
+  if (!ok) { showErr('ind-s2', 'Please fill in all required fields.'); return; }
+  indGoStep(3);
+}
+
+const IND_GOAL_LABELS = { career_roadmap:'Build a Career Strategy Roadmap', internship_job:'Find an Internship or Job', playing_opportunity:'Find a Playing Opportunity', branding:'Athlete Branding & Marketing', scholarship:'Scholarship Opportunities', network:'Expand Network', events:'Attend Events & Workshops', showcase_events:'Attend Showcase Events', career_consulting:'Career Consulting', new_job:'Find a New Job', expert:'Connect with a Specific Expert', other:'Other' };
+const IND_L2_LABELS = { high_school:'High School Student', university:'University / College Student', student_athlete:'Student Athlete', semi_pro:'Semi-Pro Athlete', professional_athlete:'Professional Athlete', working_professional:'Working Professional', recent_graduate:'Recent Graduate', manager_director:'Manager / Director' };
+
+function buildIndSummary() {
+  const name = val('ind-fullname'), sport = val('ind-sport'), country = val('ind-country');
+  const goal = IND_GOAL_LABELS[IND.goal] || IND.goal;
+  document.getElementById('ind-summary').innerHTML = `<strong>${name}</strong> · ${IND_L2_LABELS[IND.l2]||''} · ${sport} · ${country}<br>Primary Goal: <strong>${goal}</strong>${IND.expert ? ` · Expert needed: <strong>${IND.expert}</strong>` : ''}`;
+  const tags = buildIndTags();
+  document.getElementById('ind-tags-preview').innerHTML = tags.map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
+}
+
+function buildIndTags() {
+  const tags = [];
+  const segMap = { student:'SEG:Student', athlete:'SEG:Athlete', professional:'SEG:Professional' };
+  if (IND.l1) tags.push({ label: segMap[IND.l1], cls: 'ind-tag' });
+  const subMap = { high_school:'SUB:HighSchool', university:'SUB:University', student_athlete:'SUB:StudentAthlete', semi_pro:'SUB:SemiPro', professional_athlete:'SUB:ProAthlete', working_professional:'SUB:WorkingPro', recent_graduate:'SUB:RecentGrad', manager_director:'SUB:Manager' };
+  if (IND.l2 && subMap[IND.l2]) tags.push({ label: subMap[IND.l2], cls: 'ind-tag' });
+  const sport = val('ind-sport');
+  if (sport) tags.push({ label: 'SPORT:' + sport.split('/')[0].trim().replace(/\s+/g,''), cls: 'sport-tag' });
+  const country = val('ind-country');
+  if (country) tags.push({ label: 'REG:' + country.replace(/\s+/g,''), cls: 'sport-tag' });
+  const intMap = { career_roadmap:'INT:CareerAdvisory', internship_job:'INT:OpportunityPlacement', playing_opportunity:'INT:OpportunityPlacement', branding:'INT:Media&Marketing', scholarship:'INT:OpportunityPlacement', network:'INT:Networking&Events', events:'INT:Networking&Events', showcase_events:'INT:Networking&Events', career_consulting:'INT:CareerAdvisory', new_job:'INT:OpportunityPlacement', expert:'INT:CareerAdvisory', other:'INT:CareerAdvisory' };
+  if (IND.goal && intMap[IND.goal]) tags.push({ label: intMap[IND.goal], cls: 'ind-tag' });
+  if (IND.expert) tags.push({ label: 'EXPERT:' + IND.expert.replace(/[\s&]+/g,''), cls: 'ind-tag' });
+  const src = val('ind-source');
+  if (src) tags.push({ label: 'SOURCE:' + src.replace(/\s+/g,''), cls: 'sport-tag' });
+  tags.push({ label: 'STATUS:DiscoveryScheduled', cls: 'status-tag' });
+  tags.push({ label: 'ROLE:FreeProfile', cls: 'status-tag' });
+  return tags;
+}
+
+function indSubmit(btn) {
+  btn.disabled = true;
+  btn.textContent = 'Creating your profile...';
+  const payload = {
+    firstName: val('ind-fullname').split(' ')[0],
+    lastName: val('ind-fullname').split(' ').slice(1).join(' '),
+    email: val('ind-email'),
+    phone: '+' + val('ind-cc') + val('ind-phone').replace(/\D/g,''),
+    segment: IND.l1, subType: IND.l2,
+    primarySport: val('ind-sport'),
+    primaryDiscipline: val('ind-discipline') || '',
+    city: val('ind-city'), country: val('ind-country'),
+    source: val('ind-source'),
+    primaryGoal: IND_GOAL_LABELS[IND.goal] || IND.goal,
+    expertType: IND.expert || '',
+    timeline: val('ind-timeline') || '',
+    keyChallenges: val('ind-challenges') || '',
+    linkedin: val('ind-linkedin') || '',
+    pipeline: 'Individuals', pipelineStage: 'Discovery Scheduled',
+    tags: buildIndTags().map(t => t.label)
+  };
+  console.log('[FITNTX Individual Payload]', payload);
+  setTimeout(() => {
+    document.getElementById('success-ind-tags').innerHTML = buildIndTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
+    showScreen('success-ind');
+    document.getElementById('progFill').style.width = '100%';
+    for (let i = 1; i <= 4; i++) { const d = document.getElementById('pd-' + i); if (d) { d.classList.add('done'); d.innerHTML=''; } const l = document.getElementById('pl-' + i); if (l) l.classList.add('done'); const ln = document.getElementById('pline-' + i); if (ln) ln.classList.add('done'); }
+  }, 1400);
+}
+
+const ORG = { solution: null };
+
+const ORG_SOL_LABELS = { talent:'Find or Recruit Talent', events:'Host and Manage Events', media:'Media & Marketing Solutions', partnerships:'Find Sponsors & Partners', growth:'Organizational Growth & Scaling', other:'Other / Multiple Solutions' };
+const ORG_INT_MAP = { talent:'INT:TalentAcquisition', events:'INT:EventsManagement', media:'INT:Media&Marketing', partnerships:'INT:Sponsorships&Partnerships', growth:'INT:StrategicSolutions', other:'INT:StrategicSolutions' };
+
+function orgSelSolution(val, el) {
+  ORG.solution = val;
+  document.querySelectorAll('#org-solutions .oc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function orgGoStep(n) {
+  const map = { 1:'org-s1', 2:'org-s2', 3:'org-s3' };
+  if (n === 3) buildOrgSummary();
+  showScreen(map[n]);
+  updateOrgProgress(n);
+}
+
+function orgValidateS1() {
+  const req = ['org-contact-name','org-email','org-phone','org-name','org-website','org-type','org-sport','org-discipline','org-city','org-country'];
+  let ok = true;
+  req.forEach(id => { const el = document.getElementById(id); el.classList.remove('err'); if (!el.value.trim()) { el.classList.add('err'); ok = false; } });
+  const em = document.getElementById('org-email');
+  if (em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) { em.classList.add('err'); ok = false; }
+  if (!ok) { showErr('org-s1', 'Please fill in all required fields.'); return; }
+  orgGoStep(2);
+}
+
+function orgValidateS2() {
+  if (!ORG.solution) { showErr('org-s2', 'Please select the primary solution you need.'); return; }
+  const req = ['org-objectives','org-challenges','org-timeline','org-budget','org-decision-makers','org-source'];
+  let ok = true;
+  req.forEach(id => { const el = document.getElementById(id); el.classList.remove('err'); if (!el.value.trim()) { el.classList.add('err'); ok = false; } });
+  if (!ok) { showErr('org-s2', 'Please fill in all required fields.'); return; }
+  orgGoStep(3);
+}
+
+function buildOrgSummary() {
+  const name = val('org-name'), contact = val('org-contact-name'), type = val('org-type'), sport = val('org-sport'), country = val('org-country');
+  document.getElementById('org-summary').innerHTML = `<strong>${name}</strong> · ${type} · ${sport} · ${country}<br>Contact: <strong>${contact}</strong> · Solution: <strong>${ORG_SOL_LABELS[ORG.solution]||''}</strong><br>Budget: <strong>${val('org-budget')}</strong> · Timeline: <strong>${val('org-timeline')}</strong>`;
+  const tags = buildOrgTags();
+  document.getElementById('org-tags-preview').innerHTML = tags.map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
+}
+
+function buildOrgTags() {
+  const tags = [];
+  tags.push({ label: 'SEG:Organization', cls: 'org-tag' });
+  const type = val('org-type');
+  if (type) { const tm = {'Sports Club / Academy':'ORG:Club-Academy','Sports School / University':'ORG:School-Uni','Sports Enterprise / Business':'ORG:Enterprise','Other':'ORG:Other'}; tags.push({ label: tm[type]||'ORG:Other', cls: 'org-tag' }); }
+  const sport = val('org-sport');
+  if (sport) tags.push({ label: 'SPORT:' + sport.split('/')[0].trim().replace(/\s+/g,''), cls: 'sport-tag' });
+  const country = val('org-country');
+  if (country) tags.push({ label: 'REG:' + country.replace(/\s+/g,''), cls: 'sport-tag' });
+  if (ORG.solution && ORG_INT_MAP[ORG.solution]) tags.push({ label: ORG_INT_MAP[ORG.solution], cls: 'org-tag' });
+  const budget = val('org-budget');
+  if (budget) tags.push({ label: 'BUDGET:' + budget.replace(/[\s$,]/g,'').replace(/[–]/g,'-'), cls: 'org-tag' });
+  const src = val('org-source');
+  if (src) tags.push({ label: 'SOURCE:' + src.replace(/\s+/g,''), cls: 'sport-tag' });
+  tags.push({ label: 'STATUS:DiscoveryScheduled', cls: 'status-tag' });
+  tags.push({ label: 'ROLE:OrgProfile', cls: 'status-tag' });
+  return tags;
+}
+
+function orgSubmit(btn) {
+  btn.disabled = true;
+  btn.textContent = 'Creating your organization profile...';
+  const payload = {
+    firstName: val('org-contact-name').split(' ')[0],
+    lastName: val('org-contact-name').split(' ').slice(1).join(' '),
+    email: val('org-email'),
+    phone: '+' + val('org-cc') + val('org-phone').replace(/\D/g,''),
+    companyName: val('org-name'),
+    website: val('org-website'),
+    orgType: val('org-type'),
+    primarySport: val('org-sport'),
+    primaryDiscipline: val('org-discipline'),
+    city: val('org-city'), country: val('org-country'),
+    primarySolution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
+    orgObjectives: val('org-objectives'),
+    currentChallenges: val('org-challenges'),
+    timeline: val('org-timeline'),
+    budgetComfort: val('org-budget'),
+    decisionMakers: val('org-decision-makers'),
+    source: val('org-source'),
+    pipeline: 'Organizations', pipelineStage: 'Discovery Scheduled',
+    tags: buildOrgTags().map(t => t.label)
+  };
+  console.log('[FITNTX Org Payload]', payload);
+  setTimeout(() => {
+    document.getElementById('success-org-tags').innerHTML = buildOrgTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
+    showScreen('success-org');
+    document.getElementById('progFill').style.width = '100%';
+    for (let i = 1; i <= 3; i++) { const d = document.getElementById('pd-' + i); if (d) { d.classList.add('done'); d.innerHTML=''; } const l = document.getElementById('pl-' + i); if (l) l.classList.add('done'); const ln = document.getElementById('pline-' + i); if (ln) ln.classList.add('done'); }
+  }, 1400);
+}
+
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function handleFile(inputId, nameId, zoneId) {
+  const file = document.getElementById(inputId).files[0];
+  if (file) {
+    document.getElementById(nameId).textContent = '✓ ' + file.name;
+    document.getElementById(zoneId).classList.add('has-file');
+  }
+}
+
+function showErr(screenId, msg) {
+  const card = document.querySelector('#' + screenId + ' .card-body');
+  if (!card) return;
+  let err = document.getElementById('form-err-' + screenId);
+  if (!err) {
+    err = document.createElement('div');
+    err.id = 'form-err-' + screenId;
+    err.style.cssText = 'background:#fff0f0;border:1px solid #f0c0c0;border-radius:4px;padding:10px 14px;font-size:12px;color:#C0392B;margin-bottom:14px;font-family:var(--mono);letter-spacing:.04em';
+    card.insertBefore(err, card.firstChild);
+  }
+  err.textContent = '⚠ ' + msg;
+  setTimeout(() => { if (err.parentNode) err.remove(); }, 4000);
+}
+
+document.addEventListener('input', e => { if (e.target.classList.contains('err')) e.target.classList.remove('err'); });
+document.addEventListener('change', e => { if (e.target.classList.contains('err')) e.target.classList.remove('err'); });
+
+showScreen('screen-entry');
+</script>
 </body>
 </html>
