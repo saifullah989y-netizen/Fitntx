@@ -68,9 +68,9 @@
   line-height: 0;
 }
 .start-wizard .fhdr-logo {
-  height: clamp(44px, 10vw, 56px);
+  height: clamp(48px, 14vw, 72px);
   width: auto;
-  max-width: min(280px, 88vw);
+  max-width: min(440px, 94vw);
   object-fit: contain;
   display: inline-block;
   vertical-align: top;
