@@ -503,8 +503,45 @@
 
 <script src="main.js"></script>
 <script>
+/** Lead Connector inbound webhooks (Workflow → Webhook). */
+const LC_WEBHOOK_ORG = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/08d7face-5423-46e8-a17f-16010a00db39';
+const LC_WEBHOOK_IND = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/4ad30ccb-9038-4c30-8215-ce03d54a4865';
+
 function startWizardRoot() {
   return document.getElementById('startWizard');
+}
+
+function postLeadConnectorWebhook(url, body, onSuccess, onError) {
+  if (!url || !String(url).trim()) {
+    setTimeout(onSuccess, 600);
+    return;
+  }
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+    .then(async function (res) {
+      const text = await res.text();
+      var data = {};
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (e) {
+        data = { _raw: text };
+      }
+      if (!res.ok) {
+        throw new Error((data && (data.message || data.status)) || text || ('HTTP ' + res.status));
+      }
+      if (data.status && String(data.status).toLowerCase().indexOf('error') !== -1) {
+        throw new Error(typeof data.status === 'string' ? data.status : JSON.stringify(data.status));
+      }
+      return data;
+    })
+    .then(onSuccess)
+    .catch(function (err) {
+      console.error('[FITNTX Webhook]', err);
+      if (onError) onError(err);
+    });
 }
 
 const ALL_SCREENS = ['screen-entry','ind-s1','ind-s2','ind-s3','ind-s4','org-s1','org-s2','org-s3','success-ind','success-org'];
@@ -783,34 +820,61 @@ function buildIndTags() {
   return tags;
 }
 
+function indSubmitCompleteUi() {
+  document.getElementById('success-ind-tags').innerHTML = buildIndTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
+  showScreen('success-ind');
+  document.getElementById('progFill').style.width = '100%';
+  for (var i = 1; i <= 4; i++) {
+    var d = document.getElementById('pd-' + i);
+    if (d) { d.classList.add('done'); d.innerHTML = ''; }
+    var l = document.getElementById('pl-' + i);
+    if (l) l.classList.add('done');
+    var ln = document.getElementById('pline-' + i);
+    if (ln) ln.classList.add('done');
+  }
+}
+
 function indSubmit(btn) {
   btn.disabled = true;
   btn.textContent = 'Creating your profile...';
-  const payload = {
-    firstName: val('ind-fullname').split(' ')[0],
-    lastName: val('ind-fullname').split(' ').slice(1).join(' '),
+  var full = val('ind-fullname');
+  var indData = {
+    firstName: full.split(' ')[0] || full,
     email: val('ind-email'),
-    phone: '+' + val('ind-cc') + val('ind-phone').replace(/\D/g,''),
-    segment: IND.l1, subType: IND.l2,
-    primarySport: val('ind-sport'),
-    primaryDiscipline: val('ind-discipline') || '',
-    city: val('ind-city'), country: val('ind-country'),
-    source: val('ind-source'),
-    primaryGoal: IND_GOAL_LABELS[IND.goal] || IND.goal,
-    expertType: IND.expert || '',
-    timeline: val('ind-timeline') || '',
-    keyChallenges: val('ind-challenges') || '',
-    linkedin: val('ind-linkedin') || '',
-    pipeline: 'Individuals', pipelineStage: 'Discovery Scheduled',
-    tags: buildIndTags().map(t => t.label)
+    phone: '+' + val('ind-cc') + val('ind-phone').replace(/\D/g, ''),
+    sport: val('ind-sport'),
+    goal: IND_GOAL_LABELS[IND.goal] || IND.goal || ''
   };
-  console.log('[FITNTX Individual Payload]', payload);
-  setTimeout(() => {
-    document.getElementById('success-ind-tags').innerHTML = buildIndTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
-    showScreen('success-ind');
-    document.getElementById('progFill').style.width = '100%';
-    for (let i = 1; i <= 4; i++) { const d = document.getElementById('pd-' + i); if (d) { d.classList.add('done'); d.innerHTML=''; } const l = document.getElementById('pl-' + i); if (l) l.classList.add('done'); const ln = document.getElementById('pline-' + i); if (ln) ln.classList.add('done'); }
-  }, 1400);
+  var body = {
+    first_name: indData.firstName,
+    email: indData.email,
+    phone: indData.phone,
+    sport: indData.sport,
+    goal: indData.goal,
+    last_name: full.split(' ').slice(1).join(' '),
+    segment: IND.l1,
+    sub_type: IND.l2,
+    primary_discipline: val('ind-discipline') || '',
+    city: val('ind-city'),
+    country: val('ind-country'),
+    source: val('ind-source'),
+    expert_type: IND.expert || '',
+    timeline: val('ind-timeline') || '',
+    key_challenges: val('ind-challenges') || '',
+    linkedin: val('ind-linkedin') || '',
+    pipeline: 'Individuals',
+    pipeline_stage: 'Discovery Scheduled',
+    tags: ['fitntx_individual_intake'].concat(buildIndTags().map(function (t) { return t.label; }))
+  };
+  console.log('[FITNTX Individual Payload]', body);
+  postLeadConnectorWebhook(LC_WEBHOOK_IND, body, function (data) {
+    console.log('Individual Webhook success:', data);
+    indSubmitCompleteUi();
+  }, function () {
+    btn.disabled = false;
+    btn.textContent = 'Confirm & Create My Profile →';
+    alert('Submission failed.');
+  });
 }
 
 const ORG = { solution: null };
@@ -876,37 +940,58 @@ function buildOrgTags() {
   return tags;
 }
 
+function orgSubmitCompleteUi() {
+  document.getElementById('success-org-tags').innerHTML = buildOrgTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
+  showScreen('success-org');
+  document.getElementById('progFill').style.width = '100%';
+  for (var i = 1; i <= 3; i++) {
+    var d = document.getElementById('pd-' + i);
+    if (d) { d.classList.add('done'); d.innerHTML = ''; }
+    var l = document.getElementById('pl-' + i);
+    if (l) l.classList.add('done');
+    var ln = document.getElementById('pline-' + i);
+    if (ln) ln.classList.add('done');
+  }
+}
+
 function orgSubmit(btn) {
   btn.disabled = true;
   btn.textContent = 'Creating your organization profile...';
-  const payload = {
-    firstName: val('org-contact-name').split(' ')[0],
-    lastName: val('org-contact-name').split(' ').slice(1).join(' '),
+  var contactName = val('org-contact-name');
+  var tagList = buildOrgTags().map(function (t) { return t.label; }).concat('fitntx_org_intake');
+  var body = {
+    first_name: contactName.split(' ')[0] || contactName,
+    last_name: contactName.split(' ').slice(1).join(' '),
     email: val('org-email'),
-    phone: '+' + val('org-cc') + val('org-phone').replace(/\D/g,''),
-    companyName: val('org-name'),
+    phone: '+' + val('org-cc') + val('org-phone').replace(/\D/g, ''),
+    company_name: val('org-name'),
     website: val('org-website'),
-    orgType: val('org-type'),
-    primarySport: val('org-sport'),
-    primaryDiscipline: val('org-discipline'),
-    city: val('org-city'), country: val('org-country'),
-    primarySolution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
-    orgObjectives: val('org-objectives'),
-    currentChallenges: val('org-challenges'),
+    team_size: val('org-type'),
+    organization_type: val('org-type'),
+    primary_sport: val('org-sport'),
+    primary_discipline: val('org-discipline'),
+    city: val('org-city'),
+    country: val('org-country'),
+    primary_solution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
+    objectives: val('org-objectives'),
+    current_challenges: val('org-challenges'),
     timeline: val('org-timeline'),
-    budgetComfort: val('org-budget'),
-    decisionMakers: val('org-decision-makers'),
+    budget_comfort: val('org-budget'),
+    decision_makers: val('org-decision-makers'),
     source: val('org-source'),
-    pipeline: 'Organizations', pipelineStage: 'Discovery Scheduled',
-    tags: buildOrgTags().map(t => t.label)
+    pipeline: 'Organizations',
+    pipeline_stage: 'Discovery Scheduled',
+    tags: tagList
   };
-  console.log('[FITNTX Org Payload]', payload);
-  setTimeout(() => {
-    document.getElementById('success-org-tags').innerHTML = buildOrgTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
-    showScreen('success-org');
-    document.getElementById('progFill').style.width = '100%';
-    for (let i = 1; i <= 3; i++) { const d = document.getElementById('pd-' + i); if (d) { d.classList.add('done'); d.innerHTML=''; } const l = document.getElementById('pl-' + i); if (l) l.classList.add('done'); const ln = document.getElementById('pline-' + i); if (ln) ln.classList.add('done'); }
-  }, 1400);
+  console.log('[FITNTX Org Payload]', body);
+  postLeadConnectorWebhook(LC_WEBHOOK_ORG, body, function (data) {
+    console.log('Org webhook:', data);
+    orgSubmitCompleteUi();
+  }, function () {
+    btn.disabled = false;
+    btn.textContent = 'Confirm & Create Our Org Profile →';
+    alert('Submission failed. Please try again or contact support.');
+  });
 }
 
 function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
