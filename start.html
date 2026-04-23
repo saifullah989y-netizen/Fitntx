@@ -256,7 +256,6 @@
       <div class="card-accent-line"></div>
       <div class="card-body">
         <div class="ibox"><div class="ibox-title">Your Profile Summary</div><div class="ibox-text" id="ind-summary"></div></div>
-        <div style="margin-bottom:18px"><div class="flbl" style="margin-bottom:8px">GHL tags to be applied to your profile</div><div class="tags-row" id="ind-tags-preview"></div></div>
         <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
         <div class="qh">Choose a time that works for you.</div>
         <div class="qsub">// 30 minutes · Free · No commitment · Your timezone detected automatically</div>
@@ -435,7 +434,6 @@
       <div class="card-accent-line"></div>
       <div class="card-body">
         <div class="ibox"><div class="ibox-title">Organization Summary</div><div class="ibox-text" id="org-summary"></div></div>
-        <div style="margin-bottom:18px"><div class="flbl" style="margin-bottom:8px">GHL tags to be applied to your organization profile</div><div class="tags-row" id="org-tags-preview"></div></div>
         <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
         <div class="qh">Book your Org Discovery Call.</div>
         <div class="qsub">// 30 minutes · Free · No commitment required · Your timezone detected automatically</div>
@@ -472,7 +470,6 @@
         <div class="sn-row"><div class="sn-key">On the call</div><div class="sn-val">30-min discovery · Goals · Route decision</div></div>
         <div class="sn-row"><div class="sn-key">After the call</div><div class="sn-val">Rep logs route tag + next steps in GHL</div></div>
       </div>
-      <div style="margin-top:20px"><div class="flbl" style="justify-content:center;margin-bottom:8px">GHL tags applied to your profile</div><div class="tags-row" id="success-ind-tags"></div></div>
     </div>
   </div>
 
@@ -491,7 +488,6 @@
         <div class="sn-row"><div class="sn-key">After the call</div><div class="sn-val">SR prepares proposal or next steps</div></div>
         <div class="sn-row"><div class="sn-key">Within 3–5 days</div><div class="sn-val">Scope, timeline, and investment confirmed</div></div>
       </div>
-      <div style="margin-top:20px"><div class="flbl" style="justify-content:center;margin-bottom:8px">GHL tags applied to your org profile</div><div class="tags-row" id="success-org-tags"></div></div>
     </div>
   </div>
 
@@ -796,32 +792,9 @@ function buildIndSummary() {
   const name = val('ind-fullname'), sport = val('ind-sport'), country = val('ind-country');
   const goal = IND_GOAL_LABELS[IND.goal] || IND.goal;
   document.getElementById('ind-summary').innerHTML = `<strong>${name}</strong> · ${IND_L2_LABELS[IND.l2]||''} · ${sport} · ${country}<br>Primary Goal: <strong>${goal}</strong>${IND.expert ? ` · Expert needed: <strong>${IND.expert}</strong>` : ''}`;
-  const tags = buildIndTags();
-  document.getElementById('ind-tags-preview').innerHTML = tags.map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
-}
-
-function buildIndTags() {
-  const tags = [];
-  const segMap = { student:'SEG:Student', athlete:'SEG:Athlete', professional:'SEG:Professional' };
-  if (IND.l1) tags.push({ label: segMap[IND.l1], cls: 'ind-tag' });
-  const subMap = { high_school:'SUB:HighSchool', university:'SUB:University', student_athlete:'SUB:StudentAthlete', semi_pro:'SUB:SemiPro', professional_athlete:'SUB:ProAthlete', working_professional:'SUB:WorkingPro', recent_graduate:'SUB:RecentGrad', manager_director:'SUB:Manager' };
-  if (IND.l2 && subMap[IND.l2]) tags.push({ label: subMap[IND.l2], cls: 'ind-tag' });
-  const sport = val('ind-sport');
-  if (sport) tags.push({ label: 'SPORT:' + sport.split('/')[0].trim().replace(/\s+/g,''), cls: 'sport-tag' });
-  const country = val('ind-country');
-  if (country) tags.push({ label: 'REG:' + country.replace(/\s+/g,''), cls: 'sport-tag' });
-  const intMap = { career_roadmap:'INT:CareerAdvisory', internship_job:'INT:OpportunityPlacement', playing_opportunity:'INT:OpportunityPlacement', branding:'INT:Media&Marketing', scholarship:'INT:OpportunityPlacement', network:'INT:Networking&Events', events:'INT:Networking&Events', showcase_events:'INT:Networking&Events', career_consulting:'INT:CareerAdvisory', new_job:'INT:OpportunityPlacement', expert:'INT:CareerAdvisory', other:'INT:CareerAdvisory' };
-  if (IND.goal && intMap[IND.goal]) tags.push({ label: intMap[IND.goal], cls: 'ind-tag' });
-  if (IND.expert) tags.push({ label: 'EXPERT:' + IND.expert.replace(/[\s&]+/g,''), cls: 'ind-tag' });
-  const src = val('ind-source');
-  if (src) tags.push({ label: 'SOURCE:' + src.replace(/\s+/g,''), cls: 'sport-tag' });
-  tags.push({ label: 'STATUS:DiscoveryScheduled', cls: 'status-tag' });
-  tags.push({ label: 'ROLE:FreeProfile', cls: 'status-tag' });
-  return tags;
 }
 
 function indSubmitCompleteUi() {
-  document.getElementById('success-ind-tags').innerHTML = buildIndTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
   showScreen('success-ind');
   document.getElementById('progFill').style.width = '100%';
   for (var i = 1; i <= 4; i++) {
@@ -838,33 +811,25 @@ function indSubmit(btn) {
   btn.disabled = true;
   btn.textContent = 'Creating your profile...';
   var full = val('ind-fullname');
-  var indData = {
-    firstName: full.split(' ')[0] || full,
+  var body = {
+    first_name: full.split(' ')[0] || full,
+    last_name: full.split(' ').slice(1).join(' '),
     email: val('ind-email'),
     phone: '+' + val('ind-cc') + val('ind-phone').replace(/\D/g, ''),
-    sport: val('ind-sport'),
-    goal: IND_GOAL_LABELS[IND.goal] || IND.goal || ''
-  };
-  var body = {
-    first_name: indData.firstName,
-    email: indData.email,
-    phone: indData.phone,
-    sport: indData.sport,
-    goal: indData.goal,
-    last_name: full.split(' ').slice(1).join(' '),
-    segment: IND.l1,
-    sub_type: IND.l2,
+    primary_sport_intake_webhook: val('ind-sport'),
     primary_discipline: val('ind-discipline') || '',
     city: val('ind-city'),
     country: val('ind-country'),
-    source: val('ind-source'),
+    how_did_you_hear_us: val('ind-source'),
+    goal: IND_GOAL_LABELS[IND.goal] || IND.goal || '',
+    segment: IND.l1,
+    sub_type: IND.l2,
     expert_type: IND.expert || '',
     timeline: val('ind-timeline') || '',
     key_challenges: val('ind-challenges') || '',
     linkedin: val('ind-linkedin') || '',
     pipeline: 'Individuals',
-    pipeline_stage: 'Discovery Scheduled',
-    tags: ['fitntx_individual_intake'].concat(buildIndTags().map(function (t) { return t.label; }))
+    pipeline_stage: 'Discovery Scheduled'
   };
   console.log('[FITNTX Individual Payload]', body);
   postLeadConnectorWebhook(LC_WEBHOOK_IND, body, function (data) {
@@ -917,8 +882,6 @@ function orgValidateS2() {
 function buildOrgSummary() {
   const name = val('org-name'), contact = val('org-contact-name'), type = val('org-type'), sport = val('org-sport'), country = val('org-country');
   document.getElementById('org-summary').innerHTML = `<strong>${name}</strong> · ${type} · ${sport} · ${country}<br>Contact: <strong>${contact}</strong> · Solution: <strong>${ORG_SOL_LABELS[ORG.solution]||''}</strong><br>Budget: <strong>${val('org-budget')}</strong> · Timeline: <strong>${val('org-timeline')}</strong>`;
-  const tags = buildOrgTags();
-  document.getElementById('org-tags-preview').innerHTML = tags.map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
 }
 
 function buildOrgTags() {
@@ -941,7 +904,6 @@ function buildOrgTags() {
 }
 
 function orgSubmitCompleteUi() {
-  document.getElementById('success-org-tags').innerHTML = buildOrgTags().map(t => `<div class="pipe-tag ${t.cls}">${t.label}</div>`).join('');
   showScreen('success-org');
   document.getElementById('progFill').style.width = '100%';
   for (var i = 1; i <= 3; i++) {
