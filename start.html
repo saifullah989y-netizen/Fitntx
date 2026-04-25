@@ -372,43 +372,47 @@
         <p style="font-size:12px;color:var(--txt3);margin-bottom:18px;font-family:var(--mono);letter-spacing:.04em">// These details help your Senior Representative prepare for your discovery call</p>
 
         <div class="fgrp" style="margin-bottom:14px">
+          <label class="flbl">Tell Us More <span class="req">*</span></label>
+          <textarea class="ftxt" id="org-tell-more" name="tell_us_more" placeholder="Tell us more about your organization..." required></textarea>
+        </div>
+        <div class="fgrp" style="margin-bottom:14px">
           <label class="flbl">Primary Objectives <span class="req">*</span></label>
-          <textarea class="ftxt" id="org-objectives" placeholder="What are you hoping to achieve with FITNTX in the next 12–24 months? What does success look like for your organization?" required></textarea>
+          <textarea class="ftxt" id="org-objectives" name="select_primary_objectives" placeholder="What are you hoping to achieve with FITNTX in the next 12–24 months?" required></textarea>
         </div>
         <div class="fgrp" style="margin-bottom:14px">
           <label class="flbl">Current Approach &amp; Challenges <span class="req">*</span></label>
-          <textarea class="ftxt" id="org-challenges" placeholder="How are you currently handling recruitment, events, media, or growth? Where are the main gaps or frustrations?" required></textarea>
+          <textarea class="ftxt" id="org-challenges" name="select_current_approach__challenges" placeholder="How are you currently handling recruitment, events, media, or growth?" required></textarea>
         </div>
         <div class="fg c2" style="margin-bottom:14px">
           <div class="fgrp">
             <label class="flbl">Timeline <span class="req">*</span></label>
-            <select class="fsel" id="org-timeline" required>
+            <select class="fsel" id="org-timeline" name="select_timeline" required>
               <option value="">When do you want to start?</option>
-              <option value="Immediate">Immediate — ready to move now</option>
-              <option value="3-6 months">3–6 months</option>
-              <option value="6-12 months">6–12 months</option>
-              <option value="1+ years">1+ years — exploring options</option>
+              <option value="Immediate — ready to move now">Immediate — ready to move now</option>
+              <option value="3–6 months">3–6 months</option>
+              <option value="6–12 months">6–12 months</option>
+              <option value="1+ years — exploring options">1+ years — exploring options</option>
             </select>
           </div>
           <div class="fgrp">
             <label class="flbl">Budget Comfort <span class="req">*</span></label>
-            <select class="fsel" id="org-budget" required>
+            <select class="fsel" id="org-budget" name="select_budget_comfort" required>
               <option value="">Select budget range</option>
-              <option value="Under $5K">Under $5,000</option>
-              <option value="$5K–$15K">$5,000 – $15,000</option>
-              <option value="$20K–$50K">$20,000 – $50,000</option>
-              <option value="$50K+">$50,000+</option>
+              <option value="Under $5,000">Under $5,000</option>
+              <option value="$5,000 – $15,000">$5,000 – $15,000</option>
+              <option value="$20,000 – $50,000">$20,000 – $50,000</option>
+              <option value="$50,000+">$50,000+</option>
             </select>
           </div>
         </div>
         <div class="fgrp" style="margin-bottom:14px">
           <label class="flbl">Decision Makers <span class="req">*</span></label>
-          <input class="finp" id="org-decision-makers" placeholder="Who approves decisions at your organization? (e.g. Director, Head Coach, Owner, Board)" required>
+          <input class="finp" id="org-decision-makers" name="select_decision_makers" placeholder="Who approves decisions at your organization? (e.g. Director, Head Coach, Owner, Board)" required>
           <div class="fnote">Helps us understand who should be on the discovery call</div>
         </div>
         <div class="fgrp" style="margin-bottom:4px">
           <label class="flbl">How did you hear about us? <span class="req">*</span></label>
-          <select class="fsel" id="org-source" required>
+          <select class="fsel" id="org-source" name="where_did_you_first_discover_us" required>
             <option value="">Select source</option>
             <option>Website</option><option>Event</option><option>Referral</option><option>Organization</option><option>Social Media</option><option>Other</option>
           </select>
@@ -895,7 +899,7 @@ function orgValidateS1() {
 
 function orgValidateS2() {
   if (!ORG.solution) { showErr('org-s2', 'Please select the primary solution you need.'); return; }
-  const req = ['org-objectives','org-challenges','org-timeline','org-budget','org-decision-makers','org-source'];
+  const req = ['org-tell-more','org-objectives','org-challenges','org-timeline','org-budget','org-decision-makers','org-source'];
   let ok = true;
   req.forEach(id => { const el = document.getElementById(id); el.classList.remove('err'); if (!el.value.trim()) { el.classList.add('err'); ok = false; } });
   if (!ok) { showErr('org-s2', 'Please fill in all required fields.'); return; }
@@ -958,12 +962,13 @@ function orgSubmit(btn) {
     city: val('org-city'),
     country: val('org-country'),
     primary_solution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
-    objectives: val('org-objectives'),
-    current_challenges: val('org-challenges'),
-    timeline: val('org-timeline'),
-    budget_comfort: val('org-budget'),
-    decision_makers: val('org-decision-makers'),
-    source: val('org-source'),
+    tell_us_more: val('org-tell-more'),
+    select_primary_objectives: val('org-objectives'),
+    select_current_approach__challenges: val('org-challenges'),
+    select_timeline: val('org-timeline'),
+    select_budget_comfort: val('org-budget'),
+    select_decision_makers: val('org-decision-makers'),
+    where_did_you_first_discover_us: val('org-source'),
     pipeline: 'Organizations',
     pipeline_stage: 'Discovery Scheduled',
     tags: tagList
