@@ -182,14 +182,15 @@
 
           <div id="ind-expert-wrap" style="display:none;margin-bottom:16px">
             <label class="flbl" style="margin-bottom:8px">Select the type of expert you need <span class="req">*</span></label>
+            <input type="hidden" id="ind-expert-value" name="select_the_type_of_expert_you_need" value="">
             <div class="expert-grid" id="ind-expert-grid">
               <div class="exp-opt" onclick="selExpert('Sports Medicine &amp; Rehab',this)">🩺 Sports Medicine &amp; Rehab</div>
               <div class="exp-opt" onclick="selExpert('Mental Performance &amp; Psychology',this)">🧠 Mental Performance &amp; Psychology</div>
               <div class="exp-opt" onclick="selExpert('Nutrition &amp; Dietetics',this)">🥗 Nutrition &amp; Dietetics</div>
               <div class="exp-opt" onclick="selExpert('Athletic Performance &amp; Coaching',this)">⚡ Athletic Performance &amp; Coaching</div>
               <div class="exp-opt" onclick="selExpert('Sports Science &amp; Analytics',this)">📊 Sports Science &amp; Analytics</div>
-              <div class="exp-opt" onclick="selExpert('Sports Media &amp; Content',this)">📸 Sports Media &amp; Content</div>
-              <div class="exp-opt" onclick="selExpert('Other',this)" style="grid-column:1/-1">🔍 Other — I'll explain on the call</div>
+              <div class="exp-opt" onclick="selExpert('Sports Media &amp; Content',this)">🎥 Sports Media &amp; Content</div>
+              <div class="exp-opt" onclick="selExpert('Other - I&#39;ll explain on the call',this)" style="grid-column:1/-1">🔎 Other - I&#39;ll explain on the call</div>
             </div>
           </div>
 
@@ -235,7 +236,7 @@
           <div id="ind-challenges-wrap" style="display:none;margin-bottom:4px">
             <div class="fgrp">
               <label class="flbl">Key Challenges You Are Facing <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
-              <textarea class="ftxt" id="ind-challenges" placeholder="Describe the main obstacles or challenges you're currently facing in your sports career..."></textarea>
+              <textarea class="ftxt" id="ind-challenges" name="key_challenges_you_are_facing_individuals" placeholder="Describe the main obstacles or challenges you're currently facing in your sports career..."></textarea>
               <div class="fnote">This helps your Representative prepare for your discovery call</div>
             </div>
           </div>
@@ -761,6 +762,8 @@ function buildIndExtras(goal) {
 
 function selExpert(val, el) {
   IND.expert = val;
+  var expertInput = document.getElementById('ind-expert-value');
+  if (expertInput) expertInput.value = val;
   document.querySelectorAll('#ind-expert-grid .exp-opt').forEach(e => e.classList.remove('sel'));
   el.classList.add('sel');
 }
@@ -800,37 +803,71 @@ function indSubmitCompleteUi() {
 
 function indSubmit(btn) {
   btn.disabled = true;
-  btn.textContent = 'Creating your profile...';
+  btn.textContent = 'Submitting...';
   var full = val('ind-fullname');
-  var body = {
-    first_name: full.split(' ')[0] || full,
-    last_name: full.split(' ').slice(1).join(' '),
-    email: val('ind-email'),
-    phone: '+' + val('ind-cc') + val('ind-phone').replace(/\D/g, ''),
-    primary_sport_intake_webhook: val('ind-sport'),
-    primary_discipline: val('ind-discipline') || '',
-    city: val('ind-city'),
-    country: val('ind-country'),
-    how_did_you_hear_us: val('ind-source'),
-    goal: IND_GOAL_LABELS[IND.goal] || IND.goal || '',
-    segment: IND.l1,
-    sub_type: IND.l2,
-    expert_type: IND.expert || '',
-    timeline: val('ind-timeline') || '',
-    key_challenges: val('ind-challenges') || '',
-    linkedin: val('ind-linkedin') || '',
-    pipeline: 'Individuals',
-    pipeline_stage: 'Discovery Scheduled'
-  };
-  console.log('[FITNTX Individual Payload]', body);
-  postLeadConnectorWebhook(LC_WEBHOOK_IND, body, function (data) {
-    console.log('Individual Webhook success:', data);
-    indSubmitCompleteUi();
-  }, function () {
-    btn.disabled = false;
-    btn.textContent = 'Confirm & Create My Profile →';
-    alert('Submission failed.');
-  });
+  var formData = new FormData();
+
+  // Basic info
+  formData.append('first_name', full.split(' ')[0] || full);
+  formData.append('last_name', full.split(' ').slice(1).join(' '));
+  formData.append('email', val('ind-email'));
+  formData.append('phone', '+' + val('ind-cc') + val('ind-phone').replace(/\D/g, ''));
+
+  // Sports info
+  formData.append('primary_sport_intake_webhook', val('ind-sport'));
+  formData.append('primary_discipline', val('ind-discipline') || '');
+  formData.append('city', val('ind-city'));
+  formData.append('country', val('ind-country'));
+  formData.append('how_did_you_hear_us', val('ind-source'));
+
+  // Goal + type
+  formData.append('goal', IND_GOAL_LABELS[IND.goal] || IND.goal || '');
+  formData.append('segment', IND.l1 || '');
+  formData.append('sub_type', IND.l2 || '');
+  formData.append('expert_type', IND.expert || '');
+
+  // Extra fields
+  formData.append('individual_timeline', val('ind-timeline') || '');
+  formData.append('individual_key_challenges', val('ind-challenges') || '');
+  formData.append('linkedin_social_profile', val('ind-linkedin') || '');
+  formData.append('pipeline', 'Individuals');
+  formData.append('pipeline_stage', 'Discovery Scheduled');
+
+  // Real file upload
+  var cvFile = document.getElementById('ind-cv-file');
+  if (cvFile && cvFile.files && cvFile.files.length > 0) {
+    formData.append('individual_cv_file', cvFile.files[0]);
+  }
+  var hlFile = document.getElementById('ind-hl-file');
+  if (hlFile && hlFile.files && hlFile.files.length > 0) {
+    formData.append('individual_highlight_file', hlFile.files[0]);
+  }
+
+  fetch(LC_WEBHOOK_IND, {
+    method: 'POST',
+    body: formData
+  })
+    .then(function (res) {
+      return res.text().then(function (text) {
+        var data = {};
+        try { data = text ? JSON.parse(text) : {}; } catch (e) { data = { _raw: text }; }
+        if (!res.ok) throw new Error((data && (data.message || data.status)) || text || ('HTTP ' + res.status));
+        if (data.status && String(data.status).toLowerCase().indexOf('error') !== -1) {
+          throw new Error(typeof data.status === 'string' ? data.status : JSON.stringify(data.status));
+        }
+        return data;
+      });
+    })
+    .then(function (data) {
+      console.log('Individual FormData webhook success:', data);
+      indSubmitCompleteUi();
+    })
+    .catch(function (err) {
+      console.error('[FITNTX Individual FormData Webhook]', err);
+      btn.disabled = false;
+      btn.textContent = 'Confirm & Create My Profile →';
+      alert('Submission failed. Please try again.');
+    });
 }
 
 const ORG = { solution: null };
