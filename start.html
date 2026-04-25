@@ -182,15 +182,14 @@
 
           <div id="ind-expert-wrap" style="display:none;margin-bottom:16px">
             <label class="flbl" style="margin-bottom:8px">Select the type of expert you need <span class="req">*</span></label>
-            <input type="hidden" id="ind-expert-value" name="select_the_type_of_expert_you_need" value="">
             <div class="expert-grid" id="ind-expert-grid">
-              <div class="exp-opt" onclick="selExpert('Sports Medicine &amp; Rehab',this)">🩺 Sports Medicine &amp; Rehab</div>
-              <div class="exp-opt" onclick="selExpert('Mental Performance &amp; Psychology',this)">🧠 Mental Performance &amp; Psychology</div>
-              <div class="exp-opt" onclick="selExpert('Nutrition &amp; Dietetics',this)">🥗 Nutrition &amp; Dietetics</div>
-              <div class="exp-opt" onclick="selExpert('Athletic Performance &amp; Coaching',this)">⚡ Athletic Performance &amp; Coaching</div>
-              <div class="exp-opt" onclick="selExpert('Sports Science &amp; Analytics',this)">📊 Sports Science &amp; Analytics</div>
-              <div class="exp-opt" onclick="selExpert('Sports Media &amp; Content',this)">🎥 Sports Media &amp; Content</div>
-              <div class="exp-opt" onclick="selExpert('Other - I&#39;ll explain on the call',this)" style="grid-column:1/-1">🔎 Other - I&#39;ll explain on the call</div>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Sports Medicine &amp; Rehab">🩺 Sports Medicine &amp; Rehab</label>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Mental Performance &amp; Psychology">🧠 Mental Performance &amp; Psychology</label>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Nutrition &amp; Dietetics">🥗 Nutrition &amp; Dietetics</label>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Athletic Performance &amp; Coaching">⚡ Athletic Performance &amp; Coaching</label>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Sports Science &amp; Analytics">📊 Sports Science &amp; Analytics</label>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Sports Media &amp; Content">🎥 Sports Media &amp; Content</label>
+              <label class="exp-opt" style="grid-column:1/-1"><input type="radio" name="select_the_type_of_expert_you_need" value="Other - I'll explain on the call">🔎 Other - I'll explain on the call</label>
             </div>
           </div>
 
@@ -236,7 +235,7 @@
           <div id="ind-challenges-wrap" style="display:none;margin-bottom:4px">
             <div class="fgrp">
               <label class="flbl">Key Challenges You Are Facing <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
-              <textarea class="ftxt" id="ind-challenges" name="key_challenges_you_are_facing_individuals" placeholder="Describe the main obstacles or challenges you're currently facing in your sports career..."></textarea>
+              <textarea class="ftxt" id="ind-challenges" name="key_challenges_you_are_facing_individuals" required placeholder="Describe the main obstacles you're facing..."></textarea>
               <div class="fnote">This helps your Representative prepare for your discovery call</div>
             </div>
           </div>
@@ -720,7 +719,11 @@ function indSelectL2(val, el) {
 function indGoStep(n) {
   const map = { 1:'ind-s1', 2:'ind-s2', 3:'ind-s3', 4:'ind-s4' };
   if (n === 3) buildIndGoals();
-  if (n === 4) buildIndSummary();
+  if (n === 4) {
+    var selectedExpert = document.querySelector('input[name="select_the_type_of_expert_you_need"]:checked');
+    IND.expert = selectedExpert ? selectedExpert.value : null;
+    buildIndSummary();
+  }
   showScreen(map[n]);
   updateIndProgress(n);
 }
@@ -756,16 +759,8 @@ function buildIndExtras(goal) {
   show('ind-challenges-wrap', GOALS_WITH.challenges.includes(goal));
   if (!GOALS_WITH.expert.includes(goal)) {
     IND.expert = null;
-    document.querySelectorAll('#ind-expert-grid .exp-opt').forEach(e => e.classList.remove('sel'));
+    document.querySelectorAll('#ind-expert-grid input[name="select_the_type_of_expert_you_need"]').forEach(function (e) { e.checked = false; });
   }
-}
-
-function selExpert(val, el) {
-  IND.expert = val;
-  var expertInput = document.getElementById('ind-expert-value');
-  if (expertInput) expertInput.value = val;
-  document.querySelectorAll('#ind-expert-grid .exp-opt').forEach(e => e.classList.remove('sel'));
-  el.classList.add('sel');
 }
 
 function indValidateS2() {
@@ -824,11 +819,11 @@ function indSubmit(btn) {
   formData.append('goal', IND_GOAL_LABELS[IND.goal] || IND.goal || '');
   formData.append('segment', IND.l1 || '');
   formData.append('sub_type', IND.l2 || '');
-  formData.append('expert_type', IND.expert || '');
+  formData.append('select_the_type_of_expert_you_need', IND.expert || '');
 
   // Extra fields
   formData.append('individual_timeline', val('ind-timeline') || '');
-  formData.append('individual_key_challenges', val('ind-challenges') || '');
+  formData.append('key_challenges_you_are_facing_individuals', val('ind-challenges') || '');
   formData.append('linkedin_social_profile', val('ind-linkedin') || '');
   formData.append('pipeline', 'Individuals');
   formData.append('pipeline_stage', 'Discovery Scheduled');
