@@ -66,14 +66,20 @@
 .start-wizard .fhdr-logo-wrap {
   margin-bottom: 20px;
   line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 .start-wizard .fhdr-logo {
   height: clamp(48px, 14vw, 72px);
   width: auto;
-  max-width: min(440px, 94vw);
+  max-width: min(440px, 100%);
   object-fit: contain;
-  display: inline-block;
-  vertical-align: top;
+  object-position: center center;
+  display: block;
+  flex-shrink: 0;
+  margin: 0 auto;
 }
 .start-wizard .fhdr h1 {
   font-family: var(--disp);
@@ -888,6 +894,8 @@
 @media (max-width: 600px) {
   .start-wizard .pw {
     padding-top: 16px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
   .start-wizard .entry-split,
   .start-wizard .og.c2,

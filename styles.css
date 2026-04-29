@@ -42,6 +42,8 @@ img{display:block;max-width:100%;height:auto;object-fit:cover}
 .w{max-width:1240px;margin:0 auto;padding:0 48px}
 .w-sm{max-width:860px;margin:0 auto;padding:0 48px}
 .w-xs{max-width:640px;margin:0 auto;padding:0 48px}
+/* Inner page hero — first block below nav + ticker (desktop; tighter on mobile) */
+.page-hero{padding:80px 0 60px}
 .g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -152,6 +154,8 @@ body.nav-menu-open{overflow:hidden}
 .hero-tag::before{content:'';width:24px;height:2px;background:var(--red)}
 .hero-h{margin-bottom:28px}
 .hero-h .line2{display:block;color:var(--whi);font-style:italic}
+/* Homepage hero H1 — smaller than global .d1 (THE NETWORK / THAT MOVES / SPORT FORWARD.) */
+.hero-body .hero-h.d1{font-size:clamp(38px,7vw,90px);line-height:.9}
 .hero-p{font-size:18px;font-weight:300;color:var(--txt2);line-height:1.75;max-width:100%;margin-bottom:40px}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
 .hero-stats{display:flex;gap:48px}
@@ -328,7 +332,8 @@ body.nav-menu-open{overflow:hidden}
 /* ════════════════════════════════════════
    HUB SECTION
 ════════════════════════════════════════ */
-.hub-section{padding:100px 0;background:var(--blk3);position:relative;overflow:hidden}
+.hub-section{padding:100px 0;background:var(--blk3);position:relative;overflow:hidden;min-height:calc(100vh - var(--nav-h) - 38px)}
+.hub-hero-inner{padding-top:80px}
 .hub-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--disp);font-size:280px;font-weight:900;color:rgba(192,57,43,.04);white-space:nowrap;pointer-events:none;letter-spacing:.05em;user-select:none}
 .hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
 .hub-card{background:var(--surf);border:.5px solid var(--brd);border-radius:var(--rlg);padding:28px;transition:all .2s;position:relative;overflow:hidden}
@@ -543,6 +548,56 @@ body.nav-menu-open{overflow:hidden}
 .val-title{font-family:var(--disp);font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .val-desc{font-size:13px;color:var(--txt2);font-weight:300;line-height:1.6}
 
+.about-team-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.about-team-grid > *{min-width:0}
+.about-page-stories.stories-shell{margin-top:20px}
+.about-team-media{
+  height:220px;
+  background:var(--surf2);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.about-team-body{padding:24px}
+.about-team-role{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:6px;
+  overflow-wrap:anywhere;
+}
+.about-team-name{
+  font-family:var(--disp);
+  font-size:24px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  margin-bottom:8px;
+  line-height:1.15;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+.about-team-bio{font-size:13px;color:var(--txt2);font-weight:300;line-height:1.6;margin:0;overflow-wrap:anywhere}
+.about-team-av{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:var(--red);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--disp);
+  font-size:32px;
+  font-weight:900;
+  color:var(--whi);
+  flex-shrink:0;
+}
+.about-team-intro{max-width:560px;margin-bottom:56px}
+
 /* ════════════════════════════════════════
    PROCESS / PIPELINE
 ════════════════════════════════════════ */
@@ -598,6 +653,9 @@ body.nav-menu-open{overflow:hidden}
 .fcopy a{color:rgba(255,255,255,.72);text-decoration:none}
 .fcopy a:hover{color:var(--whi)}
 
+/* Services — Quick FAQ (stack on small screens) */
+.quick-faq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+
 /* ════════════════════════════════════════
    MOBILE STICKY + RESPONSIVE
 ════════════════════════════════════════ */
@@ -606,12 +664,18 @@ body.nav-menu-open{overflow:hidden}
 
 @media(max-width:1024px){
   .w,.w-sm,.w-xs{padding:0 28px}
+  .page-hero{padding:36px 0 48px}
+  .sec{padding-top:56px;padding-bottom:56px}
+  .sec-sm{padding-top:48px;padding-bottom:48px}
+  .hub-section{min-height:0;padding-top:16px;padding-bottom:72px}
+  .hub-hero-inner{padding-top:24px}
+  .hero.hero-simple{padding-top:36px!important;padding-bottom:44px!important;min-height:0!important}
   .hero{align-items:flex-start;overflow:visible;min-height:0;padding-bottom:40px}
   .hero-body{padding-top:24px;padding-bottom:56px;max-width:100%}
   .nav{height:auto;min-height:var(--nav-h);padding-top:max(8px,env(safe-area-inset-top,0px));padding-bottom:8px;box-sizing:border-box}
   .logo-img{height:28px;max-width:104px;width:auto;object-fit:contain}
-  .ticker{margin-top:calc(var(--nav-h) + max(8px,env(safe-area-inset-top,0px)) + 16px)}
-  .nav-in{padding:0 24px;align-items:center;gap:10px;isolation:isolate;position:relative}
+  .ticker{margin-top:calc(var(--nav-h) + max(8px,env(safe-area-inset-top,0px)) + 8px)}
+  .nav-in{padding:0 max(24px,env(safe-area-inset-right,0px)) 0 max(24px,env(safe-area-inset-left,0px));align-items:center;gap:10px;isolation:isolate;position:relative}
   .nav.is-open .nav-in{z-index:570}
   .logo,.nav-r{position:relative;z-index:1}
   .nav.is-open .logo,.nav.is-open .nav-r{z-index:580}
@@ -636,7 +700,14 @@ body.nav-menu-open{overflow:hidden}
   .nav-links a.active{color:var(--whi)}
   .nav-links a.active::after{content:'';position:absolute;left:0;top:50%;right:auto;bottom:auto;width:4px;height:22px;transform:translateY(-50%);background:var(--red)}
   .g2,.contact-grid,.rep-grid{grid-template-columns:1fr;gap:40px}
-  .g3,.g4,.svc-grid,.hub-grid,.mem-grid,.stories-grid,.evt-grid,.about-values{grid-template-columns:1fr}
+  .g3,.g4,.svc-grid,.hub-grid,.mem-grid,.stories-grid,.evt-grid,.about-values,.about-team-grid{grid-template-columns:1fr}
+  .about-team-grid{gap:16px}
+  .about-team-media{height:176px}
+  .about-team-body{padding:18px 16px}
+  .about-team-name{font-size:21px}
+  .about-team-av{width:68px;height:68px;font-size:27px}
+  .about-team-intro{margin-bottom:28px}
+  .quick-faq-grid{grid-template-columns:1fr}
   .process-steps,.careers-grid,.opp-grid{grid-template-columns:1fr 1fr}
   .stats-inner{grid-template-columns:repeat(3,1fr)}
   .footer-g{grid-template-columns:1fr 1fr;gap:36px}
@@ -674,7 +745,7 @@ body.nav-menu-open{overflow:hidden}
 
 @media(max-width:480px){
   .logo-img{height:22px;max-width:82px}
-  .nav-in{padding:0 18px;gap:6px}
+  .nav-in{padding:0 max(20px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px));gap:6px}
   .nav-cta{max-width:min(148px,38vw);font-size:9px;padding:7px 8px;letter-spacing:.05em}
   .nav-r .btn-ghost.btn-sm{padding:6px 8px;font-size:10px;letter-spacing:.05em}
 }

@@ -180,56 +180,57 @@ function initHeroCycle() {
 
 initHeroCycle();
 
-// ── Stories carousel (auto + arrow controls) ──────────────────────────
+// ── Stories carousel (auto + arrow controls) — each .stories-shell is independent ──
 function initStoriesCarousel() {
-  const shell = document.querySelector('.stories-shell');
-  const track = shell?.querySelector('.stories-track');
-  if (!shell || !track) return;
+  document.querySelectorAll('.stories-shell').forEach((shell) => {
+    const track = shell.querySelector('.stories-track');
+    if (!track) return;
 
-  const prevBtn = shell.querySelector('.stories-edge-arrow.left');
-  const nextBtn = shell.querySelector('.stories-edge-arrow.right');
+    const prevBtn = shell.querySelector('.stories-edge-arrow.left');
+    const nextBtn = shell.querySelector('.stories-edge-arrow.right');
 
-  let x = 0;
-  let last = null;
-  let pauseUntil = 0;
-  const speed = 26; // px/s
-  const step = 340; // px per click
+    let x = 0;
+    let last = null;
+    let pauseUntil = 0;
+    const speed = 26; // px/s
+    const step = 340; // px per click
 
-  function getSetWidth() {
-    return track.scrollWidth / 2;
-  }
+    function getSetWidth() {
+      return track.scrollWidth / 2;
+    }
 
-  function clampLoop(setWidth) {
-    if (!setWidth) return;
-    while (x <= -setWidth) x += setWidth;
-    while (x > 0) x -= setWidth;
-  }
+    function clampLoop(setWidth) {
+      if (!setWidth) return;
+      while (x <= -setWidth) x += setWidth;
+      while (x > 0) x -= setWidth;
+    }
 
-  function moveBy(delta) {
-    x += delta;
-    clampLoop(getSetWidth());
-    pauseUntil = performance.now() + 1800; // pause auto briefly after click
-    track.style.transform = `translateX(${x}px)`;
-  }
-
-  prevBtn?.addEventListener('click', () => moveBy(step));
-  nextBtn?.addEventListener('click', () => moveBy(-step));
-
-  function tick(ts) {
-    if (last === null) last = ts;
-    const dt = ts - last;
-    last = ts;
-
-    if (ts > pauseUntil) {
-      x -= speed * (dt / 1000);
+    function moveBy(delta) {
+      x += delta;
       clampLoop(getSetWidth());
+      pauseUntil = performance.now() + 1800; // pause auto briefly after click
       track.style.transform = `translateX(${x}px)`;
     }
 
-    requestAnimationFrame(tick);
-  }
+    prevBtn?.addEventListener('click', () => moveBy(step));
+    nextBtn?.addEventListener('click', () => moveBy(-step));
 
-  requestAnimationFrame(tick);
+    function tick(ts) {
+      if (last === null) last = ts;
+      const dt = ts - last;
+      last = ts;
+
+      if (ts > pauseUntil) {
+        x -= speed * (dt / 1000);
+        clampLoop(getSetWidth());
+        track.style.transform = `translateX(${x}px)`;
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  });
 }
 
 initStoriesCarousel();
