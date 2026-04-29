@@ -737,39 +737,6 @@
   line-height: 1.6;
 }
 
-/* ─── PIPELINE TAG ─── */
-.start-wizard .pipe-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.start-wizard .pipe-tag.ind-tag {
-  background: var(--red-a);
-  border: 1px solid rgba(192, 57, 43, 0.25);
-  color: var(--red);
-}
-.start-wizard .pipe-tag.org-tag {
-  background: var(--blue-a);
-  border: 1px solid rgba(26, 111, 168, 0.25);
-  color: var(--blue);
-}
-.start-wizard .pipe-tag.status-tag {
-  background: var(--grn-a);
-  border: 1px solid rgba(26, 138, 74, 0.25);
-  color: var(--grn);
-}
-.start-wizard .pipe-tag.sport-tag {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--brd2);
-  color: var(--txt2);
-}
-
 /* ─── BUTTONS (wizard) ─── */
 .start-wizard .btn {
   display: inline-flex;
@@ -900,54 +867,7 @@
   color: var(--txt2);
   line-height: 1.7;
   max-width: 480px;
-  margin: 0 auto 24px;
-}
-.start-wizard .success-next {
-  background: var(--surf2);
-  border: 1px solid var(--brd);
-  border-radius: var(--rlg);
-  padding: 20px;
-  text-align: left;
-  max-width: 480px;
-  margin: 24px auto 0;
-}
-.start-wizard .sn-title {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--txt3);
-  margin-bottom: 12px;
-}
-.start-wizard .sn-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--brd);
-  gap: 12px;
-}
-.start-wizard .sn-row:last-child {
-  border-bottom: none;
-}
-.start-wizard .sn-key {
-  font-size: 11px;
-  color: var(--txt3);
-  font-family: var(--mono);
-  letter-spacing: 0.04em;
-}
-.start-wizard .sn-val {
-  font-size: 12px;
-  color: var(--txt);
-  font-weight: 500;
-  text-align: right;
-  flex: 1;
-}
-.start-wizard .tags-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: center;
-  margin-top: 16px;
+  margin: 0 auto 0;
 }
 
 /* ─── FORM STEP ANIM ─── */
@@ -966,6 +886,9 @@
 }
 
 @media (max-width: 600px) {
+  .start-wizard .pw {
+    padding-top: 16px;
+  }
   .start-wizard .entry-split,
   .start-wizard .og.c2,
   .start-wizard .og.c3,
