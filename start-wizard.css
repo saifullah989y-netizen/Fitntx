@@ -10,6 +10,7 @@
 .start-wizard {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + 8px);
   --red: #C0392B;
   --red-dk: #96281B;
   --red-lt: #E74C3C;
@@ -55,16 +56,16 @@
 .start-wizard .pw {
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px 24px 100px;
+  padding: 8px 24px 100px;
 }
 
-/* ─── LOGO / HEADER ─── */
+/* ─── LOGO / HEADER (compact — form visible above the fold) ─── */
 .start-wizard .fhdr {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 14px;
 }
 .start-wizard .fhdr-logo-wrap {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   line-height: 0;
   display: flex;
   justify-content: center;
@@ -72,41 +73,111 @@
   width: 100%;
 }
 .start-wizard .fhdr-logo {
-  height: clamp(48px, 14vw, 72px);
+  height: clamp(40px, 11vw, 56px);
   width: auto;
-  max-width: min(440px, 100%);
+  max-width: min(360px, 100%);
   object-fit: contain;
   object-position: center center;
   display: block;
   flex-shrink: 0;
   margin: 0 auto;
 }
+.start-wizard .fhdr-text {
+  max-width: 520px;
+  margin: 0 auto;
+}
 .start-wizard .fhdr h1 {
   font-family: var(--disp);
-  font-size: 44px;
+  font-size: clamp(28px, 7vw, 38px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--blk);
-  line-height: 0.95;
-  margin-bottom: 10px;
+  line-height: 1;
+  margin-bottom: 6px;
 }
 .start-wizard .fhdr h1 .accent {
   color: var(--accent);
   transition: color 0.3s;
 }
 .start-wizard .fhdr p {
-  font-size: 15px;
+  font-size: 13px;
   color: var(--txt2);
-  font-weight: 300;
-  line-height: 1.6;
-  max-width: 480px;
+  font-weight: 400;
+  line-height: 1.35;
+  max-width: 42em;
   margin: 0 auto;
+}
+
+@media (min-width: 680px) {
+  .start-wizard .fhdr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 14px 24px;
+    text-align: left;
+    flex-wrap: nowrap;
+    margin-bottom: 12px;
+  }
+  .start-wizard .fhdr-logo-wrap {
+    margin-bottom: 0;
+    width: auto;
+    flex-shrink: 0;
+  }
+  .start-wizard .fhdr-text {
+    margin: 0;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 400px;
+  }
+  .start-wizard .fhdr h1 {
+    margin-bottom: 4px;
+  }
+  .start-wizard .fhdr p {
+    margin: 0;
+  }
 }
 
 /* ─── PROGRESS ─── */
 .start-wizard .prog-wrap {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
+}
+
+/* Entry step: tighter vertical rhythm so path cards fit in view */
+#screen-entry .card-body {
+  padding: 18px 22px 22px;
+}
+#screen-entry .slbl {
+  margin-bottom: 10px;
+}
+#screen-entry .qh {
+  font-size: clamp(18px, 4.2vw, 22px);
+  margin-bottom: 2px;
+}
+#screen-entry .entry-split {
+  margin-top: 12px;
+  gap: 12px;
+}
+#screen-entry .entry-card {
+  padding: 22px 18px;
+}
+#screen-entry .ec-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+#screen-entry .ec-title {
+  font-size: 20px;
+}
+#screen-entry .ec-desc {
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+#screen-entry .card-body > p:last-child {
+  margin-top: 12px;
+}
+#screen-entry .card-hdr {
+  padding: 12px 20px;
 }
 .start-wizard .prog-steps {
   display: flex;
@@ -638,6 +709,45 @@
   padding: 0;
 }
 
+/* intl-tel-input (country / WhatsApp on start wizard) — list appended to body to avoid card overflow clipping */
+body .iti__country-list {
+  z-index: 5600;
+}
+.start-wizard .fgrp-phone .iti {
+  width: 100%;
+}
+.start-wizard .fgrp-phone .iti__tel-input {
+  padding: 11px 14px;
+  padding-left: calc(11px + 2px);
+  background: var(--surf2);
+  border: 1.5px solid var(--brd);
+  border-radius: 0 var(--r) var(--r) 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.start-wizard .fgrp-phone .iti__tel-input.err {
+  border-color: var(--red);
+}
+.start-wizard .fgrp-phone .iti__country-container button.iti__selected-country {
+  background: var(--surf2);
+  border: 1.5px solid var(--brd);
+  border-right: none;
+  border-radius: var(--r) 0 0 var(--r);
+  padding-inline: 9px;
+  min-height: 44px;
+}
+.start-wizard .fgrp-phone .iti:focus-within .iti__tel-input,
+.start-wizard .fgrp-phone .iti:focus-within .iti__selected-country {
+  border-color: var(--accent);
+}
+.start-wizard .fgrp-phone .iti:focus-within .iti__tel-input {
+  background: var(--whi);
+  box-shadow: 0 0 0 3px var(--red-a);
+}
+.start-wizard.org-mode .fgrp-phone .iti:focus-within .iti__tel-input {
+  box-shadow: 0 0 0 3px var(--blue-a);
+}
+
 /* ─── EXPERT GRID ─── */
 .start-wizard .expert-grid {
   display: grid;
@@ -893,7 +1003,7 @@
 
 @media (max-width: 600px) {
   .start-wizard .pw {
-    padding-top: 16px;
+    padding-top: 6px;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
@@ -903,9 +1013,6 @@
   .start-wizard .fg.c2,
   .start-wizard .expert-grid {
     grid-template-columns: 1fr;
-  }
-  .start-wizard .fhdr h1 {
-    font-size: 34px;
   }
   .start-wizard .card-body {
     padding: 20px 25px;

@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="start-wizard.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/css/intlTelInput.min.css">
 </head>
 <body>
 <div id="site-header"></div>
@@ -22,8 +23,10 @@
     <div class="fhdr-logo-wrap">
       <img src="https://assets.cdn.filesafe.space/81r2CoRm2OQyAznwMKrx/media/69e95a1aa1636a6c654f4ad2.png" alt="FITNTX" class="fhdr-logo" width="320" height="146" loading="eager" decoding="async">
     </div>
-    <h1>Start <span class="accent" id="hdrAccent">Here.</span></h1>
-    <p id="hdrSub">Tell us who you are — we'll guide you to the right path, representative, and discovery call.</p>
+    <div class="fhdr-text">
+      <h1>Start <span class="accent" id="hdrAccent">Here.</span></h1>
+      <p id="hdrSub">Tell us who you are — we'll guide you to the right path, representative, and discovery call.</p>
+    </div>
   </div>
 
   <!-- ══════════ PROGRESS ══════════ -->
@@ -113,13 +116,10 @@
           <div class="fgrp"><label class="flbl">Full Name <span class="req">*</span></label><input class="finp" id="ind-fullname" placeholder="Alex Chen" required></div>
           <div class="fgrp"><label class="flbl">Email Address <span class="req">*</span></label><input class="finp" type="email" id="ind-email" placeholder="alex@example.com" required></div>
         </div>
-        <div class="fgrp" style="margin-bottom:14px">
+        <div class="fgrp fgrp-phone" style="margin-bottom:14px">
           <label class="flbl">WhatsApp Number <span class="req">*</span></label>
-          <div class="phone-row">
-            <div class="phone-cc">🌍 +<input id="ind-cc" value="1" placeholder="1"></div>
-            <input class="finp" type="tel" id="ind-phone" placeholder="416 555 0100" style="flex:1" required>
-          </div>
-          <div class="fnote">Used for WhatsApp reminders and discovery call coordination</div>
+          <input class="finp" type="tel" id="ind-phone" autocomplete="tel" placeholder="416 555 0100">
+          <div class="fnote">Pick your country flag, then enter your number · Used for WhatsApp and call coordination</div>
         </div>
         <div class="divider-lbl">Sport &amp; Location</div>
         <div class="fg c2" style="margin-bottom:14px">
@@ -136,7 +136,7 @@
             <label class="flbl">Primary Discipline <span class="req" id="ind-disc-req">*</span></label>
             <select class="fsel" id="ind-discipline">
               <option value="">Select your discipline</option>
-              <option>Sports Medicine &amp; Rehab</option><option>Mental Performance &amp; Psychology</option><option>Nutrition &amp; Dietetics</option><option>Athletic Performance &amp; Coaching</option><option>Sports Science &amp; Analytics</option><option>Sports Media &amp; Content</option>
+              <option>Sports Medicine &amp; Rehab</option><option>Mental Performance &amp; Psychology</option><option>Nutrition &amp; Dietetics</option><option>Athletic Performance &amp; Coaching</option><option>Sports Science &amp; Analytics</option><option>Sports Media &amp; Content</option><option>Sport Management &amp; Agencies</option>
             </select>
             <div class="fnote" id="ind-disc-note"></div>
           </div>
@@ -189,6 +189,7 @@
               <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Athletic Performance &amp; Coaching">⚡ Athletic Performance &amp; Coaching</label>
               <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Sports Science &amp; Analytics">📊 Sports Science &amp; Analytics</label>
               <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Sports Media &amp; Content">🎥 Sports Media &amp; Content</label>
+              <label class="exp-opt"><input type="radio" name="select_the_type_of_expert_you_need" value="Sport Management &amp; Agencies">🏢 Sport Management &amp; Agencies</label>
               <label class="exp-opt" style="grid-column:1/-1"><input type="radio" name="select_the_type_of_expert_you_need" value="Other - I'll explain on the call">🔎 Other - I'll explain on the call</label>
             </div>
           </div>
@@ -203,11 +204,18 @@
           </div>
 
           <div id="ind-hl-wrap" style="display:none;margin-bottom:14px">
-            <label class="flbl" style="margin-bottom:8px">Player Highlights / Profile <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
-            <div class="fua" id="ind-hl-zone" onclick="document.getElementById('ind-hl-file').click()">
-              <div class="fua-icon">🎬</div><div class="fua-title">Upload Highlights or Profile</div><div class="fua-sub">PDF, MP4, MOV · Max 50MB</div>
-              <div class="fua-name" id="ind-hl-name"></div>
-              <input type="file" id="ind-hl-file" accept=".pdf,.mp4,.mov,.avi,.doc,.docx" onchange="handleFile('ind-hl-file','ind-hl-name','ind-hl-zone')">
+            <label class="flbl" style="margin-bottom:6px">Player highlights / profile <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
+            <p class="fnote" style="margin-bottom:12px;line-height:1.45">Add a PDF profile link (Google Drive / Dropbox etc.) and/or a YouTube highlights link — one or both is fine.</p>
+            <div class="fg c2">
+              <div class="fgrp">
+                <label class="flbl">📄 CV / profile PDF link</label>
+                <input class="finp" type="url" id="ind-hl-cv-link" inputmode="url" placeholder="https://drive.google.com/...">
+                <div class="fnote">Paste a shareable view link</div>
+              </div>
+              <div class="fgrp">
+                <label class="flbl">🎬 YouTube / video highlights link</label>
+                <input class="finp" type="url" id="ind-hl-video-link" inputmode="url" placeholder="https://www.youtube.com/watch?v=…">
+              </div>
             </div>
           </div>
 
@@ -258,14 +266,11 @@
         <div class="ibox"><div class="ibox-title">Your Profile Summary</div><div class="ibox-text" id="ind-summary"></div></div>
         <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
         <div class="qh">Choose a time that works for you.</div>
-        <div class="qsub">// 30 minutes · Free · No commitment · Your timezone detected automatically</div>
         <div class="cal-wrap">
           <iframe src="https://api.leadconnectorhq.com/widget/booking/mFZEvXHly26bBUqjZkOI" style="width:100%;border:none;overflow:hidden;min-height:700px" scrolling="no" id="mFZEvXHly26bBUqjZkOI_1777078543224"></iframe>
-          <div class="fnote" style="text-align:center">After selecting a time, your profile is created in the FITNTX CRM → Individuals Pipeline → Discovery Scheduled</div>
         </div>
         <div style="margin-top:20px">
           <button type="button" class="btn btn-primary btn-full" onclick="indSubmit(this)">Confirm &amp; Create My Profile →</button>
-          <p style="text-align:center;font-size:11px;color:var(--txt3);margin-top:10px;font-family:var(--mono);letter-spacing:.05em;line-height:1.5">Logged to Individuals Pipeline → Discovery Scheduled · No spam · Unsubscribe anytime</p>
         </div>
         <div class="btn-actions" style="margin-top:10px"><button type="button" class="btn btn-ghost btn-full" onclick="indGoStep(3)">← Back</button></div>
       </div>
@@ -283,13 +288,10 @@
           <div class="fgrp"><label class="flbl">Your Full Name <span class="req">*</span></label><input class="finp" id="org-contact-name" placeholder="Sarah Chen" required></div>
           <div class="fgrp"><label class="flbl">Email Address <span class="req">*</span></label><input class="finp" type="email" id="org-email" placeholder="sarah@academy.com" required></div>
         </div>
-        <div class="fgrp" style="margin-bottom:14px">
+        <div class="fgrp fgrp-phone" style="margin-bottom:14px">
           <label class="flbl">WhatsApp Number <span class="req">*</span></label>
-          <div class="phone-row">
-            <div class="phone-cc">🌍 +<input id="org-cc" value="1" placeholder="1"></div>
-            <input class="finp" type="tel" id="org-phone" placeholder="416 555 0100" style="flex:1" required>
-          </div>
-          <div class="fnote">Used for WhatsApp coordination and discovery call reminders</div>
+          <input class="finp" type="tel" id="org-phone" autocomplete="tel" placeholder="416 555 0100">
+          <div class="fnote">Pick your country flag, then enter your number · Used for WhatsApp and call coordination</div>
         </div>
         <div class="divider-lbl">Organization Details</div>
         <div class="fg c2" style="margin-bottom:14px">
@@ -327,6 +329,7 @@
             <option>Athletic Performance &amp; Coaching</option>
             <option>Sports Science &amp; Analytics</option>
             <option>Sports Media &amp; Content</option>
+            <option>Sport Management &amp; Agencies</option>
             <option>Other / Multiple Disciplines</option>
           </select>
         </div>
@@ -474,11 +477,50 @@
 <div id="site-footer"></div>
 
 <script src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/js/intlTelInput.min.js"></script>
 <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 <script>
 /** Lead Connector inbound webhooks (Workflow → Webhook). */
 const LC_WEBHOOK_ORG = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/08d7face-5423-46e8-a17f-16010a00db39';
 const LC_WEBHOOK_IND = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/4ad30ccb-9038-4c30-8215-ce03d54a4865';
+
+const ITI_UTILS = 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/js/utils.js';
+
+(function initWizardIntlTel() {
+  const inputInd = document.getElementById('ind-phone');
+  const inputOrg = document.getElementById('org-phone');
+  function boot(el) {
+    if (!el || typeof intlTelInput !== 'function') return null;
+    return intlTelInput(el, {
+      utilsScript: ITI_UTILS,
+      initialCountry: 'ca',
+      preferredCountries: ['ca','us','gb','jm','bb','ng','gh','za','ke','eg','ae','au','in','de','fr','es','br','mx','ar','tt'],
+      separateDialCode: true,
+      dropdownContainer: document.body,
+      strictMode: false,
+      nationalMode: true,
+      formatOnDisplay: true,
+      autoPlaceholder: 'polite'
+    });
+  }
+  window._fitIndPhoneIti = boot(inputInd);
+  window._fitOrgPhoneIti = boot(inputOrg);
+})();
+
+/** E.164 for Lead Connector webhook; validates when libphonenumber utils are loaded */
+function wizardPhoneNumber(inputEl, itiInstance) {
+  if (itiInstance && typeof itiInstance.getNumber === 'function') return itiInstance.getNumber().trim();
+  return inputEl ? String(inputEl.value || '').trim() : '';
+}
+
+function wizardPhoneValid(el, itiInstance) {
+  if (!el || !String(el.value || '').trim()) return false;
+  if (itiInstance && typeof intlTelInputUtils !== 'undefined' && typeof itiInstance.isValidNumber === 'function') {
+    return itiInstance.isValidNumber();
+  }
+  var d = String(el.value || '').replace(/\D/g, '');
+  return d.length >= 8;
+}
 
 function startWizardRoot() {
   return document.getElementById('startWizard');
@@ -750,7 +792,14 @@ function buildIndExtras(goal) {
 }
 
 function indValidateS2() {
-  const req = ['ind-fullname','ind-email','ind-phone','ind-sport','ind-city','ind-country','ind-source'];
+  var phEl = document.getElementById('ind-phone');
+  phEl.classList.remove('err');
+  if (!wizardPhoneValid(phEl, window._fitIndPhoneIti)) {
+    phEl.classList.add('err');
+    showErr('ind-s2', typeof intlTelInputUtils !== 'undefined' ? 'Please enter a valid WhatsApp number.' : 'Please enter your WhatsApp number.');
+    return;
+  }
+  const req = ['ind-fullname','ind-email','ind-sport','ind-city','ind-country','ind-source'];
   if (IND.l1 !== 'athlete') req.push('ind-discipline');
   let ok = true;
   req.forEach(id => { const el = document.getElementById(id); el.classList.remove('err'); if (!el.value.trim()) { el.classList.add('err'); ok = false; } });
@@ -766,7 +815,11 @@ const IND_L2_LABELS = { high_school:'High School Student', university:'Universit
 function buildIndSummary() {
   const name = val('ind-fullname'), sport = val('ind-sport'), country = val('ind-country');
   const goal = IND_GOAL_LABELS[IND.goal] || IND.goal;
-  document.getElementById('ind-summary').innerHTML = `<strong>${name}</strong> · ${IND_L2_LABELS[IND.l2]||''} · ${sport} · ${country}<br>Primary Goal: <strong>${goal}</strong>${IND.expert ? ` · Expert needed: <strong>${IND.expert}</strong>` : ''}`;
+  var hl = '';
+  var cvLink = val('ind-hl-cv-link'), vidLink = val('ind-hl-video-link');
+  if (cvLink) hl += `<br><span title="${cvLink.replace(/"/g,'&quot;')}">📄 Profile / CV link saved</span>`;
+  if (vidLink) hl += `<br><span title="${vidLink.replace(/"/g,'&quot;')}">🎬 Highlights / YouTube link saved</span>`;
+  document.getElementById('ind-summary').innerHTML = `<strong>${name}</strong> · ${IND_L2_LABELS[IND.l2]||''} · ${sport} · ${country}<br>Primary Goal: <strong>${goal}</strong>${IND.expert ? ` · Expert needed: <strong>${IND.expert}</strong>` : ''}${hl}`;
 }
 
 function indSubmitCompleteUi() {
@@ -786,69 +839,38 @@ function indSubmit(btn) {
   btn.disabled = true;
   btn.textContent = 'Submitting...';
   var full = val('ind-fullname');
-  var formData = new FormData();
 
-  // Basic info
-  formData.append('first_name', full.split(' ')[0] || full);
-  formData.append('last_name', full.split(' ').slice(1).join(' '));
-  formData.append('email', val('ind-email'));
-  formData.append('phone', '+' + val('ind-cc') + val('ind-phone').replace(/\D/g, ''));
+  var body = {
+    first_name: full.split(' ')[0] || full,
+    last_name: full.split(' ').slice(1).join(' '),
+    email: val('ind-email'),
+    phone: wizardPhoneNumber(document.getElementById('ind-phone'), window._fitIndPhoneIti),
+    player_cv_profile_pdf_link: val('ind-hl-cv-link'),
+    player_highlights_video_link: val('ind-hl-video-link'),
+    primary_sport_intake_webhook: val('ind-sport'),
+    primary_discipline: val('ind-discipline'),
+    city: val('ind-city'),
+    country: val('ind-country'),
+    how_did_you_hear_us: val('ind-source'),
+    goal: IND_GOAL_LABELS[IND.goal] || IND.goal || '',
+    segment: IND.l1 || '',
+    sub_type: IND.l2 || '',
+    individual_timeline: val('ind-timeline'),
+    linkedin_social_profile: val('ind-linkedin'),
+    select_the_type_of_expert_you_need: IND.expert || '',
+    key_challenges_you_are_facing_individuals: val('ind-challenges'),
+    pipeline: 'Individuals',
+    pipeline_stage: 'Discovery Scheduled'
+  };
 
-  // Sports info
-  formData.append('primary_sport_intake_webhook', val('ind-sport'));
-  formData.append('primary_discipline', val('ind-discipline') || '');
-  formData.append('city', val('ind-city'));
-  formData.append('country', val('ind-country'));
-  formData.append('how_did_you_hear_us', val('ind-source'));
-
-  // Goal + type
-  formData.append('goal', IND_GOAL_LABELS[IND.goal] || IND.goal || '');
-  formData.append('segment', IND.l1 || '');
-  formData.append('sub_type', IND.l2 || '');
-  formData.append('select_the_type_of_expert_you_need', IND.expert || '');
-
-  // Extra fields
-  formData.append('individual_timeline', val('ind-timeline') || '');
-  formData.append('key_challenges_you_are_facing_individuals', val('ind-challenges') || '');
-  formData.append('linkedin_social_profile', val('ind-linkedin') || '');
-  formData.append('pipeline', 'Individuals');
-  formData.append('pipeline_stage', 'Discovery Scheduled');
-
-  // Real file upload
-  var cvFile = document.getElementById('ind-cv-file');
-  if (cvFile && cvFile.files && cvFile.files.length > 0) {
-    formData.append('individual_cv_file', cvFile.files[0]);
-  }
-  var hlFile = document.getElementById('ind-hl-file');
-  if (hlFile && hlFile.files && hlFile.files.length > 0) {
-    formData.append('individual_highlight_file', hlFile.files[0]);
-  }
-
-  fetch(LC_WEBHOOK_IND, {
-    method: 'POST',
-    body: formData
-  })
-    .then(function (res) {
-      return res.text().then(function (text) {
-        var data = {};
-        try { data = text ? JSON.parse(text) : {}; } catch (e) { data = { _raw: text }; }
-        if (!res.ok) throw new Error((data && (data.message || data.status)) || text || ('HTTP ' + res.status));
-        if (data.status && String(data.status).toLowerCase().indexOf('error') !== -1) {
-          throw new Error(typeof data.status === 'string' ? data.status : JSON.stringify(data.status));
-        }
-        return data;
-      });
-    })
-    .then(function (data) {
-      console.log('Individual FormData webhook success:', data);
-      indSubmitCompleteUi();
-    })
-    .catch(function (err) {
-      console.error('[FITNTX Individual FormData Webhook]', err);
-      btn.disabled = false;
-      btn.textContent = 'Confirm & Create My Profile →';
-      alert('Submission failed. Please try again.');
-    });
+  postLeadConnectorWebhook(LC_WEBHOOK_IND, body, function (data) {
+    console.log('Individual JSON webhook success:', data);
+    indSubmitCompleteUi();
+  }, function () {
+    btn.disabled = false;
+    btn.textContent = 'Confirm & Create My Profile →';
+    alert('Submission failed. Please try again.');
+  });
 }
 
 const ORG = { solution: null };
@@ -870,7 +892,14 @@ function orgGoStep(n) {
 }
 
 function orgValidateS1() {
-  const req = ['org-contact-name','org-email','org-phone','org-name','org-website','org-type','org-sport','org-discipline','org-city','org-country'];
+  var phEl = document.getElementById('org-phone');
+  phEl.classList.remove('err');
+  if (!wizardPhoneValid(phEl, window._fitOrgPhoneIti)) {
+    phEl.classList.add('err');
+    showErr('org-s1', typeof intlTelInputUtils !== 'undefined' ? 'Please enter a valid WhatsApp number.' : 'Please enter your WhatsApp number.');
+    return;
+  }
+  const req = ['org-contact-name','org-email','org-name','org-website','org-type','org-sport','org-discipline','org-city','org-country'];
   let ok = true;
   req.forEach(id => { const el = document.getElementById(id); el.classList.remove('err'); if (!el.value.trim()) { el.classList.add('err'); ok = false; } });
   const em = document.getElementById('org-email');
@@ -934,7 +963,7 @@ function orgSubmit(btn) {
     first_name: contactName.split(' ')[0] || contactName,
     last_name: contactName.split(' ').slice(1).join(' '),
     email: val('org-email'),
-    phone: '+' + val('org-cc') + val('org-phone').replace(/\D/g, ''),
+    phone: wizardPhoneNumber(document.getElementById('org-phone'), window._fitOrgPhoneIti),
     company_name: val('org-name'),
     website: val('org-website'),
     team_size: val('org-type'),
