@@ -203,13 +203,21 @@
           </div>
 
           <div id="ind-hl-wrap" style="display:none;margin-bottom:14px">
-            <label class="flbl" style="margin-bottom:6px">Player highlights / profile <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
-            <p class="fnote" style="margin-bottom:12px;line-height:1.45">Add a PDF profile link (Google Drive / Dropbox etc.) and/or a YouTube highlights link — one or both is fine.</p>
+            <label class="flbl" style="margin-bottom:6px">Player profile &amp; highlights <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
+            <p class="fnote" style="margin-bottom:12px;line-height:1.45">Upload your CV or profile PDF (stored on your FITNTX contact in GHL). Optionally add a shareable PDF link and/or a YouTube highlights link.</p>
+            <div class="fgrp" style="margin-bottom:14px">
+              <label class="flbl" style="margin-bottom:8px">Upload CV / profile PDF</label>
+              <div class="fua" id="ind-hl-cv-zone" onclick="openCVUploader()">
+                <div class="fua-icon">📄</div>
+                <div class="fua-title">Upload CV / Profile PDF</div>
+                <div class="fua-sub">Secure upload · Use the same email you entered above</div>
+              </div>
+            </div>
             <div class="fg c2">
               <div class="fgrp">
-                <label class="flbl">📄 CV / profile PDF link</label>
+                <label class="flbl">Or paste a PDF link</label>
                 <input class="finp" type="url" id="ind-hl-cv-link" inputmode="url" placeholder="https://drive.google.com/...">
-                <div class="fnote">Paste a shareable view link</div>
+                <div class="fnote">Google Drive / Dropbox etc. if you prefer not to upload a file</div>
               </div>
               <div class="fgrp">
                 <label class="flbl">🎬 YouTube / video highlights link</label>
