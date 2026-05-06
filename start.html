@@ -490,7 +490,7 @@
 /** Lead Connector inbound webhooks (Workflow → Webhook). */
 const LC_WEBHOOK_ORG = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/08d7face-5423-46e8-a17f-16010a00db39';
 const LC_WEBHOOK_IND = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/4ad30ccb-9038-4c30-8215-ce03d54a4865';
-/** GHL CV upload widget — email query matches contact from main intake webhook */
+/** GHL CV upload widget — email via ?email= (match field key in builder). Hide email field in GHL so only file shows. */
 const GHL_CV_FORM_ID = 'AMjN4eI6dcZypq5yjCD2';
 
 function openCVUploader() {
@@ -501,23 +501,73 @@ function openCVUploader() {
     return;
   }
   closeUploader();
+
+  var root = document.createElement('div');
+  root.id = 'ghl-cv-uploader-modal';
+  root.className = 'ghl-upload-modal';
+  root.setAttribute('role', 'dialog');
+  root.setAttribute('aria-modal', 'true');
+  root.setAttribute('aria-labelledby', 'ghl-upload-modal-title');
+
+  var backdrop = document.createElement('div');
+  backdrop.className = 'ghl-upload-modal-backdrop';
+  backdrop.addEventListener('click', closeUploader);
+
+  var panel = document.createElement('div');
+  panel.className = 'ghl-upload-modal-panel';
+
+  var toolbar = document.createElement('div');
+  toolbar.className = 'ghl-upload-modal-toolbar';
+
+  var title = document.createElement('span');
+  title.id = 'ghl-upload-modal-title';
+  title.className = 'ghl-upload-modal-title';
+  title.textContent = 'Upload CV';
+
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'ghl-upload-modal-close';
+  closeBtn.setAttribute('aria-label', 'Close');
+  closeBtn.textContent = '\u00D7';
+  closeBtn.addEventListener('click', function (ev) {
+    ev.stopPropagation();
+    closeUploader();
+  });
+
+  toolbar.appendChild(title);
+  toolbar.appendChild(closeBtn);
+
   var iframe = document.createElement('iframe');
   iframe.id = 'ghl-cv-uploader-iframe';
+  iframe.className = 'ghl-upload-modal-iframe';
+  iframe.setAttribute('title', 'CV upload');
   iframe.src = 'https://api.leadconnectorhq.com/widget/form/' + GHL_CV_FORM_ID + '?email=' + encodeURIComponent(email);
-  iframe.style.position = 'fixed';
-  iframe.style.top = '0';
-  iframe.style.left = '0';
-  iframe.style.width = '100%';
-  iframe.style.height = '100%';
-  iframe.style.zIndex = '9999';
-  iframe.style.border = 'none';
-  iframe.style.background = '#fff';
-  document.body.appendChild(iframe);
+
+  panel.appendChild(toolbar);
+  panel.appendChild(iframe);
+  root.appendChild(backdrop);
+  root.appendChild(panel);
+
+  root._cvEsc = function (e) {
+    if (e.key === 'Escape') closeUploader();
+  };
+  document.addEventListener('keydown', root._cvEsc);
+
+  root._prevOverflow = document.body.style.overflow || '';
+  document.body.appendChild(root);
+  document.body.style.overflow = 'hidden';
 }
 
 function closeUploader() {
-  var iframe = document.getElementById('ghl-cv-uploader-iframe');
-  if (iframe) iframe.remove();
+  var root = document.getElementById('ghl-cv-uploader-modal');
+  if (root) {
+    if (typeof root._cvEsc === 'function') document.removeEventListener('keydown', root._cvEsc);
+    root.remove();
+    document.body.style.overflow = root._prevOverflow;
+    return;
+  }
+  var orphaned = document.getElementById('ghl-cv-uploader-iframe');
+  if (orphaned) orphaned.remove();
 }
 
 const ITI_UTILS = 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/js/utils.js';

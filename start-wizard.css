@@ -1027,7 +1027,87 @@ body .iti__country-list {
   .start-wizard .btn-actions {
     flex-direction: column;
   }
-  .start-wizard .btn-actions .btn-ghost {
+  .start-wizard   .btn-actions .btn-ghost {
     width: 100%;
+  }
+}
+
+/* ─── GHL CV modal (appended on body — same-page upload, wizard visible behind) ─── */
+.ghl-upload-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+  font-family: "Barlow", system-ui, sans-serif;
+}
+.ghl-upload-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.48);
+}
+.ghl-upload-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  height: min(640px, calc(100dvh - 32px));
+  max-height: calc(100vh - 32px);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ghl-upload-modal-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  background: #f7f6f3;
+}
+.ghl-upload-modal-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0a0a0a;
+}
+.ghl-upload-modal-close {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin: -6px -6px -6px 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ghl-upload-modal-close:hover {
+  background: rgba(192, 57, 43, 0.1);
+  color: #c0392b;
+}
+.ghl-upload-modal-iframe {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: none;
+  background: #fff;
+}
+@media (max-width: 540px) {
+  .ghl-upload-modal-panel {
+    width: 100%;
+    height: min(90dvh, calc(100dvh - 24px));
   }
 }
