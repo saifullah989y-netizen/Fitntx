@@ -828,13 +828,33 @@ body .iti__country-list {
   margin-top: 6px;
 }
 
+/* CV widget: crop iframe + bottom mask so GHL submit stays out of sight (cross-origin; visual-only). */
 .start-wizard .cv-inline-host {
+  position: relative;
   margin-top: 4px;
-  min-height: 260px;
+  min-height: 220px;
   border-radius: 8px;
   overflow: hidden;
   background: var(--surf);
   border: 2px dashed var(--brd2);
+}
+.start-wizard .cv-inline-host iframe {
+  display: block;
+  width: 100%;
+  height: 220px;
+  border: none;
+  border-radius: 6px;
+}
+.start-wizard .cv-inline-host::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background: var(--surf);
+  pointer-events: none;
+  border-radius: 0 0 6px 6px;
 }
 
 /* ─── INFO BOX ─── */

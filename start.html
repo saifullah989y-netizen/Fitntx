@@ -196,7 +196,7 @@
 
           <div id="ind-cv-wrap" style="display:none;margin-bottom:14px">
             <label class="flbl" style="margin-bottom:8px">Upload CV / Resume <span style="color:var(--txt3);font-weight:300">(Optional — recommended)</span></label>
-            <p class="fnote" style="margin-bottom:8px;line-height:1.45">Upload here, then use <strong>Continue</strong> below to move on. Use the same email you entered above.</p>
+            <p class="fnote" style="margin-bottom:8px;line-height:1.45">Select your file → tap <strong>Upload CV</strong> in the box → then <strong>Continue →</strong> below. Same email as step 2.</p>
             <div id="cv-inline-container" class="cv-inline-host"></div>
           </div>
 
@@ -205,7 +205,7 @@
             <p class="fnote" style="margin-bottom:12px;line-height:1.45">Upload your CV or profile PDF (stored on your FITNTX contact in GHL). Optionally add a shareable PDF link and/or a YouTube highlights link.</p>
             <div class="fgrp" style="margin-bottom:14px">
               <label class="flbl" style="margin-bottom:8px">Upload CV / profile PDF</label>
-              <p class="fnote" style="margin-bottom:8px;line-height:1.45">Upload below, then <strong>Continue</strong>. Same email as step 2.</p>
+              <p class="fnote" style="margin-bottom:8px;line-height:1.45">Select file → <strong>Upload CV</strong> in the box → then <strong>Continue →</strong>. Same email as step 2.</p>
               <div id="cv-inline-container-ath" class="cv-inline-host"></div>
             </div>
             <div class="fg c2">
@@ -251,7 +251,7 @@
           </div>
         </div>
 
-        <p id="ind-s3-cv-continue-hint" class="fnote" style="display:none;margin:12px 0 0;line-height:1.45">Upload your CV using the form above, then use <strong>Continue →</strong> below.</p>
+        <p id="ind-s3-cv-continue-hint" class="fnote" style="display:none;margin:12px 0 0;line-height:1.45">Select file → <strong>Upload CV</strong> (in the box above) → then <strong>Continue →</strong>.</p>
 
         <div class="btn-actions">
           <button type="button" class="btn btn-ghost" onclick="indGoStep(2)">← Back</button>
@@ -824,7 +824,6 @@ function loadInlineCV() {
   iframe.src = url;
   iframe.setAttribute('title', 'CV upload');
   iframe.style.width = '100%';
-  iframe.style.height = '260px';
   iframe.style.border = 'none';
   iframe.style.borderRadius = '8px';
 
