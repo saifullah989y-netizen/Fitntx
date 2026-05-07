@@ -255,7 +255,7 @@
 
         <div class="btn-actions">
           <button type="button" class="btn btn-ghost" onclick="indGoStep(2)">← Back</button>
-          <button type="button" class="btn btn-primary" style="flex:1" id="ind-s3-next" onclick="indGoStep(4)" disabled>Continue →</button>
+          <button type="button" class="btn btn-primary" style="flex:1" id="ind-s3-next" onclick="onContinueStep3()" disabled>Continue →</button>
         </div>
       </div>
     </div>
@@ -798,6 +798,22 @@ function syncIndStep3ContinueBtn() {
   var needCv = needsCvIframeForGoal(IND.goal);
   if (hint) hint.style.display = needCv && !cvUploaded ? 'block' : 'none';
 }
+
+/** Continue handler for step 3. Prompts to confirm CV upload only when a CV is
+ *  expected for the chosen goal AND we haven't already auto-detected the upload
+ *  (2nd iframe load → markCvUploaded). Cross-origin iframe means we can't trigger
+ *  the GHL submit ourselves, so the confirm is the cleanest UX safeguard. */
+function onContinueStep3() {
+  if (needsCvIframeForGoal(IND.goal) && !cvUploaded) {
+    var ok = confirm(
+      "Have you clicked 'Upload CV' after selecting your file?\n\n" +
+      "Click OK to continue, or Cancel to upload now."
+    );
+    if (!ok) return;
+  }
+  indGoStep(4);
+}
+window.onContinueStep3 = onContinueStep3;
 
 /** Mount iframe for step 3; clears hosts first. After GHL submit, second iframe load or session marks CV done. */
 function loadInlineCV() {
