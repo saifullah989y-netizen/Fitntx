@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="start-wizard.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/css/intlTelInput.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.9.3/build/css/intlTelInput.min.css">
 </head>
 <body>
 <div id="site-header"></div>
@@ -251,7 +251,7 @@
           </div>
         </div>
 
-        <p id="ind-s3-cv-continue-hint" class="fnote" style="display:none;margin:12px 0 0;line-height:1.45">Select file → <strong>Upload CV</strong> (in the box above) → then <strong>Continue →</strong>.</p>
+        <p id="ind-s3-cv-continue-hint" class="fnote" style="display:none;margin:12px 0 0;line-height:1.45">Select file → tap <strong>Upload CV</strong> (in the box above) → then click <strong>Continue →</strong>. Upload is optional — you can also skip and continue.</p>
 
         <div class="btn-actions">
           <button type="button" class="btn btn-ghost" onclick="indGoStep(2)">← Back</button>
@@ -271,7 +271,7 @@
         <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
         <div class="qh">Choose a time that works for you.</div>
         <div class="cal-wrap">
-          <iframe src="https://api.leadconnectorhq.com/widget/booking/mFZEvXHly26bBUqjZkOI" style="width:100%;border:none;overflow:hidden;min-height:700px" scrolling="no" id="mFZEvXHly26bBUqjZkOI_1777078543224"></iframe>
+          <iframe src="https://api.leadconnectorhq.com/widget/booking/mFZEvXHly26bBUqjZkOI" style="width:100%;border:none;overflow:hidden;min-height:700px" scrolling="no" id="bk_mFZEvXHly26bBUqjZkOI_1777078543224"></iframe>
         </div>
         <div style="margin-top:20px">
           <button type="button" class="btn btn-primary btn-full" onclick="indSubmit(this)">Confirm &amp; Create My Profile →</button>
@@ -444,7 +444,7 @@
         <div class="qh">Book your Org Discovery Call.</div>
         <div class="qsub">// 30 minutes · Free · No commitment required · Your timezone detected automatically</div>
         <div class="cal-wrap">
-          <iframe src="https://api.leadconnectorhq.com/widget/booking/2bWNfEN5P1576wbEaVbs" style="width:100%;border:none;overflow:hidden;min-height:700px" scrolling="no" id="2bWNfEN5P1576wbEaVbs_1777078524167"></iframe>
+          <iframe src="https://api.leadconnectorhq.com/widget/booking/2bWNfEN5P1576wbEaVbs" style="width:100%;border:none;overflow:hidden;min-height:700px" scrolling="no" id="bk_2bWNfEN5P1576wbEaVbs_1777078524167"></iframe>
           <div class="fnote" style="text-align:center">After booking, your org profile is created → Organizations Pipeline → Discovery Scheduled</div>
         </div>
         <div style="margin-top:20px">
@@ -481,17 +481,15 @@
 <div id="site-footer"></div>
 
 <script src="main.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.9.3/build/js/intlTelInput.min.js"></script>
 <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 <script>
 /** Lead Connector inbound webhooks (Workflow → Webhook). */
 const LC_WEBHOOK_ORG = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/08d7face-5423-46e8-a17f-16010a00db39';
 const LC_WEBHOOK_IND = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/4ad30ccb-9038-4c30-8215-ce03d54a4865';
-const ITI_UTILS = 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/js/utils.js';
+const ITI_UTILS = 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.9.3/build/js/utils.js';
 
 (function initWizardIntlTel() {
-  const inputInd = document.getElementById('ind-phone');
-  const inputOrg = document.getElementById('org-phone');
   function boot(el) {
     if (!el || typeof intlTelInput !== 'function') return null;
     return intlTelInput(el, {
@@ -506,8 +504,20 @@ const ITI_UTILS = 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.11.4/build/js/
       autoPlaceholder: 'polite'
     });
   }
-  window._fitIndPhoneIti = boot(inputInd);
-  window._fitOrgPhoneIti = boot(inputOrg);
+  function bootAll() {
+    var inputInd = document.getElementById('ind-phone');
+    var inputOrg = document.getElementById('org-phone');
+    if (inputInd && !window._fitIndPhoneIti) window._fitIndPhoneIti = boot(inputInd);
+    if (inputOrg && !window._fitOrgPhoneIti) window._fitOrgPhoneIti = boot(inputOrg);
+  }
+  var attempts = 0;
+  (function tryBoot() {
+    if (typeof intlTelInput === 'function') {
+      bootAll();
+      return;
+    }
+    if (attempts++ < 40) setTimeout(tryBoot, 150);
+  })();
 })();
 
 /** E.164 for Lead Connector webhook; validates when libphonenumber utils are loaded */
@@ -780,8 +790,12 @@ function syncIndStep3ContinueBtn() {
     if (hint) hint.style.display = 'none';
     return;
   }
+  // CV upload is optional: enable Continue once a goal is selected.
+  // GHL iframe is cross-origin — we can't reliably detect upload completion,
+  // so we don't block the user. Hint stays visible until 2nd iframe load
+  // (markCvUploaded) confirms the submit, then it auto-hides.
+  btn.disabled = false;
   var needCv = needsCvIframeForGoal(IND.goal);
-  btn.disabled = needCv && !cvUploaded;
   if (hint) hint.style.display = needCv && !cvUploaded ? 'block' : 'none';
 }
 
