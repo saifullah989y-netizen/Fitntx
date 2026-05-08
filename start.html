@@ -1016,8 +1016,10 @@ function indSubmit(btn) {
     country: val('ind-country'),
     how_did_you_hear_us: val('ind-source'),
     goal: IND_GOAL_LABELS[IND.goal] || IND.goal || '',
-    segment: IND.l1 || '',
-    sub_type: IND.l2 || '',
+    segment_individual: IND.l1
+      ? IND.l1.charAt(0).toUpperCase() + IND.l1.slice(1)
+      : '',
+    sub_type: IND_L2_LABELS[IND.l2] || '',
     individual_timeline: val('ind-timeline'),
     linkedin_social_profile: val('ind-linkedin'),
     select_the_type_of_expert_you_need: IND.expert || '',
@@ -1128,6 +1130,7 @@ function orgSubmit(btn) {
     last_name: contactName.split(' ').slice(1).join(' '),
     email: val('org-email'),
     phone: orgPhone,
+    organization_solution: ORG_SOL_LABELS[ORG.solution] || '',
     company_name: val('org-name'),
     website: val('org-website'),
     team_size: val('org-type'),
@@ -1157,6 +1160,7 @@ function orgSubmit(btn) {
       primary_discipline: val('org-discipline'),
       primary_sport: val('org-sport'),
       organization_type: val('org-type'),
+      organization_solution: ORG_SOL_LABELS[ORG.solution] || '',
       primary_solution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
       select_budget_comfort: val('org-budget'),
       select_timeline: val('org-timeline'),
