@@ -1125,17 +1125,14 @@ function orgSubmit(btn) {
   var contactName = val('org-contact-name');
   var tagList = buildOrgTags().map(function (t) { return t.label; }).concat('fitntx_org_intake');
   var orgPhone = wizardPhoneNumber(document.getElementById('org-phone'), window._fitOrgPhoneIti);
-  var elOrgName = document.getElementById('org-name');
-  var elOrgWeb = document.getElementById('org-website');
-  var elOrgDisc = document.getElementById('org-discipline');
   var body = {
     first_name: contactName.split(' ')[0] || contactName,
     last_name: contactName.split(' ').slice(1).join(' '),
     email: val('org-email'),
     phone: orgPhone,
-    organization_name: elOrgName ? elOrgName.value.trim() : '',
-    organization_website: elOrgWeb ? elOrgWeb.value.trim() : '',
-    primary_discipline: elOrgDisc ? elOrgDisc.value.trim() : '',
+    organization_name: document.getElementById('org-name')?.value?.trim() || '',
+    organization_website: document.getElementById('org-website')?.value?.trim() || '',
+    primary_discipline: document.getElementById('org-discipline')?.value?.trim() || '',
     organization_solution: ORG_SOL_LABELS[ORG.solution] || '',
     company_name: val('org-name'),
     website: val('org-website'),
