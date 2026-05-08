@@ -294,8 +294,8 @@
         </div>
         <div class="divider-lbl">Organization Details</div>
         <div class="fg c2" style="margin-bottom:14px">
-          <div class="fgrp"><label class="flbl">Organization Name <span class="req">*</span></label><input class="finp" id="org-name" placeholder="Elite Sports Academy" required></div>
-          <div class="fgrp"><label class="flbl">Organization Website <span class="req">*</span></label><input class="finp" type="url" id="org-website" placeholder="https://eliteacademy.com" required></div>
+          <div class="fgrp"><label class="flbl">Organization Name <span class="req">*</span></label><input class="finp" id="org-name" name="organization_name" placeholder="Elite Sports Academy" required></div>
+          <div class="fgrp"><label class="flbl">Organization Website <span class="req">*</span></label><input class="finp" type="url" id="org-website" name="organization_website" placeholder="https://eliteacademy.com" required></div>
         </div>
         <div class="fg c2" style="margin-bottom:14px">
           <div class="fgrp">
@@ -315,7 +315,7 @@
         </div>
         <div class="fgrp" style="margin-bottom:14px">
           <label class="flbl">Discipline of Your Organization / Solution Needed <span class="req">*</span></label>
-          <select class="fsel" id="org-discipline" required>
+          <select class="fsel" id="org-discipline" name="primary_discipline" required>
             <option value="">Select primary discipline</option>
             <option>Sports Medicine &amp; Rehab</option>
             <option>Mental Performance &amp; Psychology</option>
@@ -1125,18 +1125,23 @@ function orgSubmit(btn) {
   var contactName = val('org-contact-name');
   var tagList = buildOrgTags().map(function (t) { return t.label; }).concat('fitntx_org_intake');
   var orgPhone = wizardPhoneNumber(document.getElementById('org-phone'), window._fitOrgPhoneIti);
+  var elOrgName = document.getElementById('org-name');
+  var elOrgWeb = document.getElementById('org-website');
+  var elOrgDisc = document.getElementById('org-discipline');
   var body = {
     first_name: contactName.split(' ')[0] || contactName,
     last_name: contactName.split(' ').slice(1).join(' '),
     email: val('org-email'),
     phone: orgPhone,
     organization_solution: ORG_SOL_LABELS[ORG.solution] || '',
-    company_name: val('org-name'),
-    website: val('org-website'),
+    organization_name: elOrgName ? String(elOrgName.value || '').trim() : '',
+    organization_website: elOrgWeb ? String(elOrgWeb.value || '').trim() : '',
+    primary_discipline: elOrgDisc ? String(elOrgDisc.value || '').trim() : '',
+    company_name: elOrgName ? String(elOrgName.value || '').trim() : '',
+    website: elOrgWeb ? String(elOrgWeb.value || '').trim() : '',
     team_size: val('org-type'),
     organization_type: val('org-type'),
     primary_sport: val('org-sport'),
-    primary_discipline: val('org-discipline'),
     city: val('org-city'),
     country: val('org-country'),
     primary_solution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
