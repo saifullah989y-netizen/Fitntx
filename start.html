@@ -125,7 +125,11 @@
         <div class="fg c2" style="margin-bottom:14px">
           <div class="fgrp">
             <label class="flbl">Primary Sport <span class="req">*</span></label>
-            <select class="fsel" id="ind-sport" required>
+            <div class="sport-picker" data-select="ind-sport">
+              <input class="finp sport-search" type="text" placeholder="Search sport..." autocomplete="off" inputmode="search" aria-label="Search sport">
+              <div class="sport-list" role="listbox" aria-label="Select sport"></div>
+            </div>
+            <select class="fsel sport-select" id="ind-sport" required>
               <option value="">Select your sport</option>
               <optgroup label="Team Sports"><option>Soccer / Football</option><option>Basketball</option><option>American Football</option><option>Ice Hockey</option><option>Rugby</option><option>Volleyball</option><option>Baseball</option><option>Softball</option><option>Lacrosse</option><option>Field Hockey</option><option>Handball</option><option>Water Polo</option><option>Cricket</option></optgroup>
               <optgroup label="Individual Sports"><option>Tennis</option><option>Golf</option><option>Track &amp; Field</option><option>Swimming</option><option>Gymnastics</option><option>Boxing</option><option>MMA / Combat Sports</option><option>Wrestling</option><option>Judo</option><option>Taekwondo</option><option>Cycling</option><option>Triathlon</option><option>Rowing</option><option>Badminton</option><option>Table Tennis</option><option>Squash</option></optgroup>
@@ -315,7 +319,11 @@
           </div>
           <div class="fgrp">
             <label class="flbl">Primary Sport <span class="req">*</span></label>
-            <select class="fsel" id="org-sport" required>
+            <div class="sport-picker" data-select="org-sport">
+              <input class="finp sport-search" type="text" placeholder="Search sport..." autocomplete="off" inputmode="search" aria-label="Search sport">
+              <div class="sport-list" role="listbox" aria-label="Select sport"></div>
+            </div>
+            <select class="fsel sport-select" id="org-sport" required>
               <option value="">Select primary sport</option>
               <optgroup label="Team Sports"><option>Soccer / Football</option><option>Basketball</option><option>American Football</option><option>Ice Hockey</option><option>Rugby</option><option>Volleyball</option><option>Baseball</option><option>Softball</option><option>Lacrosse</option><option>Field Hockey</option><option>Handball</option><option>Cricket</option></optgroup>
               <optgroup label="Individual Sports"><option>Tennis</option><option>Golf</option><option>Track &amp; Field</option><option>Swimming</option><option>Gymnastics</option><option>Boxing</option><option>MMA / Combat Sports</option><option>Wrestling</option><option>Cycling</option><option>Triathlon</option><option>Rowing</option><option>Badminton</option></optgroup>
@@ -1132,11 +1140,12 @@ function orgSubmit(btn) {
   btn.textContent = 'Creating your organization profile...';
   var contactName = val('org-contact-name');
   var tagList = buildOrgTags().map(function (t) { return t.label; }).concat('fitntx_org_intake');
+  var orgPhone = wizardPhoneNumber(document.getElementById('org-phone'), window._fitOrgPhoneIti);
   var body = {
     first_name: contactName.split(' ')[0] || contactName,
     last_name: contactName.split(' ').slice(1).join(' '),
     email: val('org-email'),
-    phone: wizardPhoneNumber(document.getElementById('org-phone'), window._fitOrgPhoneIti),
+    phone: orgPhone,
     company_name: val('org-name'),
     website: val('org-website'),
     team_size: val('org-type'),
@@ -1155,7 +1164,23 @@ function orgSubmit(btn) {
     where_did_you_first_discover_us: val('org-source'),
     pipeline: 'Organizations',
     pipeline_stage: 'Discovery Scheduled',
-    tags: tagList
+    tags: tagList,
+    // GHL custom field mapping expects these under customData
+    customData: {
+      organization_name: val('org-name'),
+      organization_website: val('org-website'),
+      whatsapp_number: orgPhone,
+      city: val('org-city'),
+      country: val('org-country'),
+      primary_discipline: val('org-discipline'),
+      primary_sport: val('org-sport'),
+      organization_type: val('org-type'),
+      primary_solution: ORG_SOL_LABELS[ORG.solution] || ORG.solution,
+      select_budget_comfort: val('org-budget'),
+      select_timeline: val('org-timeline'),
+      select_decision_makers: val('org-decision-makers'),
+      where_did_you_first_discover_us: val('org-source')
+    }
   };
   console.log('[FITNTX Org Payload]', body);
   postLeadConnectorWebhook(LC_WEBHOOK_ORG, body, function (data) {
@@ -1195,6 +1220,72 @@ function showErr(screenId, msg) {
 document.addEventListener('input', e => { if (e.target.classList.contains('err')) e.target.classList.remove('err'); });
 document.addEventListener('change', e => { if (e.target.classList.contains('err')) e.target.classList.remove('err'); });
 
+function initOpenSportPickers() {
+  document.querySelectorAll('.sport-picker[data-select]').forEach(function (picker) {
+    var selectId = picker.getAttribute('data-select');
+    var select = document.getElementById(selectId);
+    if (!select) return;
+
+    var list = picker.querySelector('.sport-list');
+    var search = picker.querySelector('.sport-search');
+    if (!list || !search) return;
+
+    // Hide the native select but keep it for validation + submission.
+    select.classList.add('sport-select');
+
+    function allOptions() {
+      return Array.from(select.querySelectorAll('option'))
+        .map(function (o) {
+          return {
+            value: (o.getAttribute('value') || o.textContent || '').trim(),
+            label: (o.textContent || '').trim()
+          };
+        })
+        .filter(function (o) { return o.value && o.label; });
+    }
+
+    var opts = allOptions();
+
+    function setValue(val) {
+      select.value = val;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      select.dispatchEvent(new Event('input', { bubbles: true }));
+      render();
+    }
+
+    function render() {
+      var q = String(search.value || '').trim().toLowerCase();
+      var current = (select.value || '').trim();
+
+      var filtered = opts.filter(function (o) {
+        if (!q) return true;
+        return o.label.toLowerCase().indexOf(q) !== -1;
+      });
+
+      list.innerHTML = filtered.map(function (o) {
+        var sel = o.value === current ? ' sel' : '';
+        return '<button type="button" class="sport-opt' + sel + '" role="option" aria-selected="' + (o.value === current ? 'true' : 'false') + '" data-value="' + encodeURIComponent(o.value) + '">' +
+          o.label.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+        '</button>';
+      }).join('');
+    }
+
+    list.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('.sport-opt') : null;
+      if (!btn) return;
+      var v = btn.getAttribute('data-value') || '';
+      try { v = decodeURIComponent(v); } catch (err) {}
+      setValue(v);
+    });
+
+    search.addEventListener('input', function () { render(); });
+
+    // Preselect shows in list.
+    render();
+  });
+}
+
+initOpenSportPickers();
 showScreen('screen-entry');
 </script>
 </body>

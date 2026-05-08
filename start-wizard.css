@@ -655,6 +655,60 @@
   padding-right: 36px;
   cursor: pointer;
 }
+
+/* Open sport picker (replaces dropdown UX while keeping select for validation) */
+.start-wizard .sport-select {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.start-wizard .sport-picker {
+  background: var(--whi);
+  border: 1.5px solid var(--brd);
+  border-radius: var(--r);
+  padding: 10px;
+}
+.start-wizard .sport-picker .sport-search {
+  margin-bottom: 10px;
+}
+.start-wizard .sport-picker .sport-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  max-height: 220px;
+  overflow: auto;
+  padding-right: 2px;
+}
+.start-wizard .sport-picker .sport-opt {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: var(--whi);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: 14px;
+  color: #111;
+  transition: background .12s, border-color .12s, transform .12s;
+}
+.start-wizard .sport-picker .sport-opt:hover {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.18);
+}
+.start-wizard .sport-picker .sport-opt.sel {
+  border-color: var(--accent);
+  background: var(--red-a);
+}
+.start-wizard.org-mode .sport-picker .sport-opt.sel {
+  background: var(--blue-a);
+}
 .start-wizard .fsel option {
   background: var(--whi);
   color: var(--txt);
