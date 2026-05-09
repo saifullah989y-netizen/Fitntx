@@ -1068,8 +1068,8 @@ body .iti__country.iti__highlight {
 @media (max-width: 600px) {
   .start-wizard .pw {
     padding-top: 6px;
-    padding-left: max(16px, env(safe-area-inset-left, 0px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-left: max(10px, env(safe-area-inset-left, 0px));
+    padding-right: max(10px, env(safe-area-inset-right, 0px));
   }
   .start-wizard .entry-split,
   .start-wizard .og.c2,
@@ -1080,6 +1080,18 @@ body .iti__country.iti__highlight {
   }
   .start-wizard .card-body {
     padding: 20px 25px;
+  }
+  /* Booking iframe: bleed past card-body padding so the embed isn’t squeezed by triple horizontal padding */
+  .start-wizard .card-body .cal-wrap {
+    margin-left: -25px;
+    margin-right: -25px;
+    width: calc(100% + 50px);
+    max-width: none;
+    padding: 10px max(6px, env(safe-area-inset-right, 0px)) 10px max(6px, env(safe-area-inset-left, 0px));
+    box-sizing: border-box;
+  }
+  .start-wizard .cal-scroll {
+    scrollbar-gutter: auto;
   }
   .start-wizard .card-hdr {
     padding-left: 25px;
