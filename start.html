@@ -983,6 +983,9 @@ function indSubmit(btn) {
     pipeline: 'Individuals',
     pipeline_stage: 'Discovery Scheduled'
   };
+  console.log('FINAL WEBHOOK BODY:', body);
+  console.log('WEBHOOK KEYS:', Object.keys(body));
+  console.table(body);
 
   postLeadConnectorWebhook(LC_WEBHOOK_IND, body, function (data) {
     console.log('Individual JSON webhook success:', data);
