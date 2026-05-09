@@ -198,11 +198,11 @@
 
           <div id="ind-hl-wrap" style="display:none;margin-bottom:14px">
             <label class="flbl" style="margin-bottom:6px">Player profile &amp; highlights <span style="color:var(--txt3);font-weight:300">(Optional)</span></label>
-            <p class="fnote" style="margin-bottom:12px;line-height:1.45">Upload your CV or profile PDF (stored on your FITNTX contact in GHL). Optionally add a shareable PDF link and/or a YouTube highlights link.</p>
+            <p class="fnote" style="margin-bottom:12px;line-height:1.45">Upload your CV/profile file directly to our secure VPS. Optionally add a shareable PDF link and/or a YouTube highlights link.</p>
             <div class="fgrp" style="margin-bottom:14px">
               <label class="flbl" style="margin-bottom:8px">Upload CV / profile PDF</label>
-              <p class="fnote" style="margin-bottom:8px;line-height:1.45">Select file → <strong>Upload CV</strong> in the box → then <strong>Continue →</strong>. Same email as step 2.</p>
-              <div id="cv-inline-container-ath" class="cv-inline-host"></div>
+              <input class="finp" type="file" id="ind-cv-upload-ath" accept=".pdf,.doc,.docx,.txt,.rtf,.odt" style="margin-bottom:8px">
+              <div id="ind-cv-upload-status-ath" class="fnote"></div>
             </div>
             <div class="fg c2">
               <div class="fgrp">
@@ -247,7 +247,7 @@
           </div>
         </div>
 
-        <p id="ind-s3-cv-continue-hint" class="fnote" style="display:none;margin:12px 0 0;line-height:1.45">Select file → tap <strong>Upload CV</strong> (in the box above) → then click <strong>Continue →</strong>. Upload is optional — you can also skip and continue.</p>
+        <p id="ind-s3-cv-continue-hint" class="fnote" style="display:none;margin:12px 0 0;line-height:1.45">If you choose to upload a file, wait for upload success before clicking <strong>Continue →</strong>. Upload is optional — you can also skip and continue.</p>
 
         <div class="btn-actions">
           <button type="button" class="btn btn-ghost" onclick="indGoStep(2)">← Back</button>
@@ -473,7 +473,6 @@
 
 <script src="main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.9.3/build/js/intlTelInput.min.js"></script>
-<script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 <script>
 /** Lead Connector inbound webhooks (Workflow → Webhook). */
 const LC_WEBHOOK_ORG = 'https://services.leadconnectorhq.com/hooks/81r2CoRm2OQyAznwMKrx/webhook-trigger/08d7face-5423-46e8-a17f-16010a00db39';
@@ -718,7 +717,7 @@ const IND_GOALS = {
 };
 
 const GOALS_WITH = {
-  cv: ['career_roadmap','internship_job','career_consulting','new_job','other'],
+  cv: ['career_roadmap','internship_job','career_consulting','new_job','other','playing_opportunity','scholarship','showcase_events','branding','expert'],
   hl: ['playing_opportunity','scholarship','showcase_events','branding','expert'],
   li: ['career_roadmap','internship_job','network','career_consulting','new_job','other'],
   timeline: ['career_roadmap','internship_job','playing_opportunity','branding','scholarship','network','showcase_events','career_consulting','new_job','expert','other','events'],
@@ -726,105 +725,71 @@ const GOALS_WITH = {
   expert: ['expert']
 };
 
-/** GHL CV form — inline iframe. Prefill: both contact.email and email (form-dependent). Hide email in GHL. */
-const GHL_CV_FORM_ID = 'AMjN4eI6dcZypq5yjCD2';
-const IND_CV_UPLOAD_URL = 'https://upload.fitntx.com/upload';
+const IND_CV_UPLOAD_URL = '/api/upload';
 
 var cvUploaded = false;
 var uploadedCVUrl = '';
 var uploadedCVUploading = false;
 
-function clearInlineCvHosts() {
-  ['cv-inline-container', 'cv-inline-container-ath'].forEach(function (id) {
-    var node = document.getElementById(id);
-    if (node) node.innerHTML = '';
-  });
-}
-
-function needsCvIframeForGoal(goal) {
-  if (!goal || !IND || !IND.l1) return false;
-  var isAth = IND.l1 === 'athlete';
-  return GOALS_WITH.hl.includes(goal) && isAth;
-}
-
 function setIndCvUploadStatus(msg, isError) {
-  var el = document.getElementById('ind-cv-upload-status');
-  if (!el) return;
-  el.textContent = msg || '';
-  el.style.color = isError ? '#C0392B' : '';
+  ['ind-cv-upload-status', 'ind-cv-upload-status-ath'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg || '';
+    el.style.color = isError ? '#C0392B' : '';
+  });
 }
 
 function bindIndCvAutoUpload() {
-  var input = document.getElementById('ind-cv-upload');
-  if (!input || input.dataset.bound === '1') return;
-  input.dataset.bound = '1';
+  ['ind-cv-upload', 'ind-cv-upload-ath'].forEach(function (inputId) {
+    var input = document.getElementById(inputId);
+    if (!input || input.dataset.bound === '1') return;
+    input.dataset.bound = '1';
 
-  input.addEventListener('change', async function () {
-    var file = input.files && input.files[0];
-    if (!file) {
+    input.addEventListener('change', async function () {
+      var file = input.files && input.files[0];
+      if (!file) {
+        uploadedCVUrl = '';
+        uploadedCVUploading = false;
+        cvUploaded = !GOALS_WITH.cv.includes(IND.goal);
+        setIndCvUploadStatus('');
+        syncIndStep3ContinueBtn();
+        return;
+      }
+
+      uploadedCVUploading = true;
       uploadedCVUrl = '';
-      uploadedCVUploading = false;
-      setIndCvUploadStatus('');
-      return;
-    }
+      setIndCvUploadStatus('Uploading CV...');
 
-    uploadedCVUploading = true;
-    uploadedCVUrl = '';
-    setIndCvUploadStatus('Uploading CV...');
+      try {
+        var fd = new FormData();
+        fd.append('cv', file);
 
-    try {
-      var fd = new FormData();
-      fd.append('cv', file);
+        var res = await fetch(IND_CV_UPLOAD_URL, {
+          method: 'POST',
+          body: fd
+        });
+        if (!res.ok) throw new Error('Upload failed with status ' + res.status);
 
-      var res = await fetch(IND_CV_UPLOAD_URL, {
-        method: 'POST',
-        body: fd
-      });
-      if (!res.ok) throw new Error('Upload failed with status ' + res.status);
+        var data = await res.json();
+        uploadedCVUrl = (data && data.url) ? String(data.url).trim() : '';
+        if (!uploadedCVUrl) throw new Error('Upload response missing URL');
 
-      var data = await res.json();
-      uploadedCVUrl = (data && data.url) ? String(data.url).trim() : '';
-      if (!uploadedCVUrl) throw new Error('Upload response missing URL');
-
-      setIndCvUploadStatus('CV uploaded successfully.');
-      console.log('Uploaded CV URL:', uploadedCVUrl);
-    } catch (err) {
-      uploadedCVUrl = '';
-      setIndCvUploadStatus('CV upload failed. You can continue and upload later.', true);
-      console.error('[FITNTX CV Upload]', err);
-    } finally {
-      uploadedCVUploading = false;
-    }
+        cvUploaded = true;
+        setIndCvUploadStatus('CV uploaded successfully.');
+        console.log('Uploaded CV URL:', uploadedCVUrl);
+        syncIndStep3ContinueBtn();
+      } catch (err) {
+        uploadedCVUrl = '';
+        cvUploaded = false;
+        setIndCvUploadStatus('CV upload failed. You can continue and upload later.', true);
+        console.error('[FITNTX CV Upload]', err);
+      } finally {
+        uploadedCVUploading = false;
+      }
+    });
   });
 }
-
-function cvUploadSessionKeyFor(goal) {
-  var emailEl = document.getElementById('ind-email');
-  var em = emailEl ? String(emailEl.value || '').trim() : '';
-  return 'fitntx_cv_' + GHL_CV_FORM_ID + '_' + encodeURIComponent(em || '_') + '_' + String(goal || '_');
-}
-
-function hydrateCvUploadedFromStorage() {
-  if (!needsCvIframeForGoal(IND.goal)) {
-    cvUploaded = true;
-    return;
-  }
-  try {
-    cvUploaded = sessionStorage.getItem(cvUploadSessionKeyFor(IND.goal)) === '1';
-  } catch (e) {
-    cvUploaded = false;
-  }
-}
-
-function markCvUploaded() {
-  if (!needsCvIframeForGoal(IND.goal)) return;
-  cvUploaded = true;
-  try {
-    sessionStorage.setItem(cvUploadSessionKeyFor(IND.goal), '1');
-  } catch (e) {}
-  syncIndStep3ContinueBtn();
-}
-window.markCvUploaded = markCvUploaded;
 
 function syncIndStep3ContinueBtn() {
   var btn = document.getElementById('ind-s3-next');
@@ -836,85 +801,15 @@ function syncIndStep3ContinueBtn() {
     return;
   }
   // CV upload is optional: enable Continue once a goal is selected.
-  // GHL iframe is cross-origin — we can't reliably detect upload completion,
-  // so we don't block the user. Hint stays visible until 2nd iframe load
-  // (markCvUploaded) confirms the submit, then it auto-hides.
   btn.disabled = false;
-  var needCv = needsCvIframeForGoal(IND.goal);
+  var needCv = GOALS_WITH.cv.includes(IND.goal);
   if (hint) hint.style.display = needCv && !cvUploaded ? 'block' : 'none';
 }
 
-/** Continue handler for step 3. Prompts to confirm CV upload only when a CV is
- *  expected for the chosen goal AND we haven't already auto-detected the upload
- *  (2nd iframe load → markCvUploaded). Cross-origin iframe means we can't trigger
- *  the GHL submit ourselves, so the confirm is the cleanest UX safeguard. */
 function onContinueStep3() {
-  if (needsCvIframeForGoal(IND.goal) && !cvUploaded) {
-    var ok = confirm(
-      "Have you clicked 'Upload CV' after selecting your file?\n\n" +
-      "Click OK to continue, or Cancel to upload now."
-    );
-    if (!ok) return;
-  }
   indGoStep(4);
 }
 window.onContinueStep3 = onContinueStep3;
-
-/** Mount iframe for step 3; clears hosts first. After GHL submit, second iframe load or session marks CV done. */
-function loadInlineCV() {
-  clearInlineCvHosts();
-  if (!IND || !IND.goal) {
-    syncIndStep3ContinueBtn();
-    return;
-  }
-  var goal = IND.goal;
-  var isAth = IND.l1 === 'athlete';
-  var needsPro = GOALS_WITH.cv.includes(goal) && !isAth;
-  var needsAth = GOALS_WITH.hl.includes(goal) && isAth;
-  if (!needsPro && !needsAth) {
-    hydrateCvUploadedFromStorage();
-    syncIndStep3ContinueBtn();
-    return;
-  }
-
-  var target = document.getElementById(needsPro ? 'cv-inline-container' : 'cv-inline-container-ath');
-  if (!target) {
-    syncIndStep3ContinueBtn();
-    return;
-  }
-
-  var emailEl = document.getElementById('ind-email');
-  var email = emailEl ? String(emailEl.value || '').trim() : '';
-  if (!email) {
-    target.innerHTML = '<p class="fnote">Go back one step and add your email — then we can match your CV to your profile.</p>';
-    cvUploaded = false;
-    syncIndStep3ContinueBtn();
-    return;
-  }
-
-  var enc = encodeURIComponent(email);
-  var url = 'https://api.leadconnectorhq.com/widget/form/' + GHL_CV_FORM_ID + '?contact.email=' + enc + '&email=' + enc;
-
-  var iframe = document.createElement('iframe');
-  iframe.src = url;
-  iframe.setAttribute('title', 'CV upload');
-  iframe.style.width = '100%';
-  iframe.style.border = 'none';
-  iframe.style.borderRadius = '8px';
-
-  var loads = 0;
-  iframe.addEventListener('load', function () {
-    if (!needsCvIframeForGoal(IND.goal)) return;
-    loads++;
-    hydrateCvUploadedFromStorage();
-    if (cvUploaded) return;
-    if (loads >= 2) markCvUploaded();
-  });
-
-  target.appendChild(iframe);
-  hydrateCvUploadedFromStorage();
-  syncIndStep3ContinueBtn();
-}
 
 function indSelectL1(val, el) {
   IND.l1 = val; IND.l2 = null; IND.goal = null;
@@ -942,7 +837,6 @@ function indGoStep(n) {
   const map = { 1:'ind-s1', 2:'ind-s2', 3:'ind-s3', 4:'ind-s4' };
   if (n === 3) {
     buildIndGoals();
-    clearInlineCvHosts();
     if (IND.goal) {
       var goalsList = IND_GOALS[IND.l1] || [];
       var gi = goalsList.findIndex(function (g) { return g.v === IND.goal; });
@@ -951,7 +845,6 @@ function indGoStep(n) {
         document.querySelectorAll('#ind-goals .oc').forEach(function (c) { c.classList.remove('sel'); });
         ocNodes[gi].classList.add('sel');
         buildIndExtras(IND.goal);
-        loadInlineCV();
       }
     } else syncIndStep3ContinueBtn();
   }
@@ -981,23 +874,18 @@ function indSelGoal(val, el) {
   var needsIndividualCv = GOALS_WITH.cv.includes(val) && IND.l1 !== 'athlete';
   document.querySelectorAll('#ind-goals .oc').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
-  if (needsCvIframeForGoal(val)) {
-    cvUploaded = false;
-    try {
-      sessionStorage.removeItem(cvUploadSessionKeyFor(val));
-    } catch (e) {}
-  } else {
-    cvUploaded = true;
-  }
+  cvUploaded = !GOALS_WITH.cv.includes(val);
   if (!needsIndividualCv) {
     uploadedCVUrl = '';
     uploadedCVUploading = false;
     var cvInput = document.getElementById('ind-cv-upload');
     if (cvInput) cvInput.value = '';
+    var cvInputAth = document.getElementById('ind-cv-upload-ath');
+    if (cvInputAth) cvInputAth.value = '';
     setIndCvUploadStatus('');
   }
   buildIndExtras(val);
-  loadInlineCV();
+  syncIndStep3ContinueBtn();
 }
 
 function buildIndExtras(goal) {
