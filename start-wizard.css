@@ -742,8 +742,10 @@ body .iti__country.iti__highlight {
   width: 100%;
 }
 .start-wizard .fgrp-phone .iti__tel-input {
-  padding: 11px 14px;
+  height: 46px;
+  padding: 0 14px;
   padding-left: calc(11px + 2px);
+  line-height: 46px;
   background: var(--surf2);
   border: 1.5px solid var(--brd);
   border-radius: 0 var(--r) var(--r) 0;
@@ -759,7 +761,8 @@ body .iti__country.iti__highlight {
   border-right: none;
   border-radius: var(--r) 0 0 var(--r);
   padding-inline: 9px;
-  min-height: 44px;
+  height: 46px;
+  min-height: 46px;
 }
 .start-wizard .fgrp-phone .iti:focus-within .iti__tel-input,
 .start-wizard .fgrp-phone .iti:focus-within .iti__selected-country {
