@@ -191,8 +191,9 @@
 
           <div id="ind-cv-wrap" style="display:none;margin-bottom:14px">
             <label class="flbl" style="margin-bottom:8px">Upload CV / Resume <span style="color:var(--txt3);font-weight:300">(Optional — recommended)</span></label>
-            <p class="fnote" style="margin-bottom:8px;line-height:1.45">Select your file → tap <strong>Upload CV</strong> in the box → then <strong>Continue →</strong> below. Same email as step 2.</p>
-            <div id="cv-inline-container" class="cv-inline-host"></div>
+            <p class="fnote" style="margin-bottom:8px;line-height:1.45">Select your CV file and it will auto-upload to our secure server. The generated URL is attached to your profile submission.</p>
+            <input class="finp" type="file" id="ind-cv-upload" accept=".pdf,.doc,.docx,.txt,.rtf,.odt" style="margin-bottom:8px">
+            <div id="ind-cv-upload-status" class="fnote"></div>
           </div>
 
           <div id="ind-hl-wrap" style="display:none;margin-bottom:14px">
@@ -727,8 +728,11 @@ const GOALS_WITH = {
 
 /** GHL CV form — inline iframe. Prefill: both contact.email and email (form-dependent). Hide email in GHL. */
 const GHL_CV_FORM_ID = 'AMjN4eI6dcZypq5yjCD2';
+const IND_CV_UPLOAD_URL = 'http://177.7.54.98:3000/upload';
 
 var cvUploaded = false;
+var uploadedCVUrl = '';
+var uploadedCVUploading = false;
 
 function clearInlineCvHosts() {
   ['cv-inline-container', 'cv-inline-container-ath'].forEach(function (id) {
@@ -740,7 +744,58 @@ function clearInlineCvHosts() {
 function needsCvIframeForGoal(goal) {
   if (!goal || !IND || !IND.l1) return false;
   var isAth = IND.l1 === 'athlete';
-  return GOALS_WITH.cv.includes(goal) && !isAth || GOALS_WITH.hl.includes(goal) && isAth;
+  return GOALS_WITH.hl.includes(goal) && isAth;
+}
+
+function setIndCvUploadStatus(msg, isError) {
+  var el = document.getElementById('ind-cv-upload-status');
+  if (!el) return;
+  el.textContent = msg || '';
+  el.style.color = isError ? '#C0392B' : '';
+}
+
+function bindIndCvAutoUpload() {
+  var input = document.getElementById('ind-cv-upload');
+  if (!input || input.dataset.bound === '1') return;
+  input.dataset.bound = '1';
+
+  input.addEventListener('change', async function () {
+    var file = input.files && input.files[0];
+    if (!file) {
+      uploadedCVUrl = '';
+      uploadedCVUploading = false;
+      setIndCvUploadStatus('');
+      return;
+    }
+
+    uploadedCVUploading = true;
+    uploadedCVUrl = '';
+    setIndCvUploadStatus('Uploading CV...');
+
+    try {
+      var fd = new FormData();
+      fd.append('cv', file);
+
+      var res = await fetch(IND_CV_UPLOAD_URL, {
+        method: 'POST',
+        body: fd
+      });
+      if (!res.ok) throw new Error('Upload failed with status ' + res.status);
+
+      var data = await res.json();
+      uploadedCVUrl = (data && data.url) ? String(data.url).trim() : '';
+      if (!uploadedCVUrl) throw new Error('Upload response missing URL');
+
+      setIndCvUploadStatus('CV uploaded successfully.');
+      console.log('Uploaded CV URL:', uploadedCVUrl);
+    } catch (err) {
+      uploadedCVUrl = '';
+      setIndCvUploadStatus('CV upload failed. You can continue and upload later.', true);
+      console.error('[FITNTX CV Upload]', err);
+    } finally {
+      uploadedCVUploading = false;
+    }
+  });
 }
 
 function cvUploadSessionKeyFor(goal) {
@@ -923,6 +978,7 @@ function buildIndGoals() {
 function indSelGoal(val, el) {
   IND.goal = val;
   IND.expert = null;
+  var needsIndividualCv = GOALS_WITH.cv.includes(val) && IND.l1 !== 'athlete';
   document.querySelectorAll('#ind-goals .oc').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
   if (needsCvIframeForGoal(val)) {
@@ -932,6 +988,13 @@ function indSelGoal(val, el) {
     } catch (e) {}
   } else {
     cvUploaded = true;
+  }
+  if (!needsIndividualCv) {
+    uploadedCVUrl = '';
+    uploadedCVUploading = false;
+    var cvInput = document.getElementById('ind-cv-upload');
+    if (cvInput) cvInput.value = '';
+    setIndCvUploadStatus('');
   }
   buildIndExtras(val);
   loadInlineCV();
@@ -999,6 +1062,10 @@ function indSubmitCompleteUi() {
 }
 
 function indSubmit(btn) {
+  if (uploadedCVUploading) {
+    alert('Your CV is still uploading. Please wait a moment and submit again.');
+    return;
+  }
   btn.disabled = true;
   btn.textContent = 'Submitting...';
   var full = val('ind-fullname');
@@ -1010,6 +1077,7 @@ function indSubmit(btn) {
     phone: wizardPhoneNumber(document.getElementById('ind-phone'), window._fitIndPhoneIti),
     player_cv_profile_pdf_link: val('ind-hl-cv-link'),
     player_highlights_video_link: val('ind-hl-video-link'),
+    cv_file: uploadedCVUrl,
     primary_sport_intake_webhook: val('ind-sport'),
     primary_discipline: val('ind-discipline'),
     city: val('ind-city'),
@@ -1210,6 +1278,7 @@ function showErr(screenId, msg) {
 document.addEventListener('input', e => { if (e.target.classList.contains('err')) e.target.classList.remove('err'); });
 document.addEventListener('change', e => { if (e.target.classList.contains('err')) e.target.classList.remove('err'); });
 
+bindIndCvAutoUpload();
 showScreen('screen-entry');
 </script>
 </body>
