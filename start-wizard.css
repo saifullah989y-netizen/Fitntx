@@ -943,6 +943,42 @@ body .iti__country.iti__highlight {
   padding: 28px;
   text-align: center;
 }
+/* Outer scroll: cross-origin booking iframes often won’t scroll reliably inside the frame on mobile; this wrapper scrolls instead. */
+.start-wizard .cal-scroll {
+  max-height: min(1320px, calc(100vh - 220px));
+  max-height: min(1320px, calc(100dvh - 220px));
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+  text-align: left;
+  scrollbar-gutter: stable;
+  border-radius: var(--r);
+}
+.start-wizard .cal-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.start-wizard .cal-scroll::-webkit-scrollbar-track {
+  background: var(--surf3);
+  border-radius: 5px;
+}
+.start-wizard .cal-scroll::-webkit-scrollbar-thumb {
+  background: var(--brd3);
+  border-radius: 5px;
+}
+.start-wizard .cal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--txt3);
+}
+.start-wizard .cal-wrap iframe {
+  display: block;
+  width: 100%;
+  min-height: 1000px;
+  height: 1400px;
+  border: none;
+  overflow: auto;
+}
 .start-wizard .cal-ph {
   background: var(--surf3);
   border: 2px dashed var(--brd2);
