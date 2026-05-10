@@ -550,6 +550,12 @@ a.evt-card{color:inherit;text-decoration:none;display:block}
 .val-desc{font-size:13px;color:var(--txt2);font-weight:300;line-height:1.6}
 
 .about-team-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.about-team-grid--single{
+  grid-template-columns:minmax(0,520px);
+  justify-content:center;
+  margin-inline:auto;
+}
+.about-team-grid--single .about-team-media{height:360px}
 .about-team-grid > *{min-width:0}
 .about-page-stories.stories-shell{margin-top:20px}
 .about-team-media{
@@ -560,6 +566,15 @@ a.evt-card{color:inherit;text-decoration:none;display:block}
   align-items:center;
   justify-content:center;
   overflow:hidden;
+}
+.about-team-photo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  display:block;
 }
 .about-team-body{padding:24px}
 .about-team-role{
@@ -701,9 +716,11 @@ a.evt-card{color:inherit;text-decoration:none;display:block}
   .nav-links a.active{color:var(--whi)}
   .nav-links a.active::after{content:'';position:absolute;left:0;top:50%;right:auto;bottom:auto;width:4px;height:22px;transform:translateY(-50%);background:var(--red)}
   .g2,.contact-grid,.rep-grid{grid-template-columns:1fr;gap:40px}
-  .g3,.g4,.svc-grid,.hub-grid,.mem-grid,.stories-grid,.evt-grid,.about-values,.about-team-grid{grid-template-columns:1fr}
+  .g3,.g4,.svc-grid,.hub-grid,.shop-grid,.mem-grid,.stories-grid,.evt-grid,.about-values,  .about-team-grid{grid-template-columns:1fr}
   .about-team-grid{gap:16px}
+  .about-team-grid--single{grid-template-columns:1fr;max-width:520px}
   .about-team-media{height:176px}
+  .about-team-grid--single .about-team-media{height:280px}
   .about-team-body{padding:18px 16px}
   .about-team-name{font-size:21px}
   .about-team-av{width:68px;height:68px;font-size:27px}
@@ -758,7 +775,7 @@ a.evt-card{color:inherit;text-decoration:none;display:block}
 }
 
 /* ════════════════════════════════════════
-   QUICK SHOP / RESOURCES
+   SHOP / RESOURCES
 ════════════════════════════════════════ */
 .shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
 .shop-card{background:var(--surf);border:.5px solid var(--brd);border-radius:var(--rlg);overflow:hidden;cursor:pointer;transition:all .2s}

@@ -4,6 +4,7 @@
     { "source": "/start", "destination": "/start.html" },
     { "source": "/services", "destination": "/services.html" },
     { "source": "/hub", "destination": "/hub.html" },
+    { "source": "/shop", "destination": "/shop.html" },
     { "source": "/opportunities", "destination": "/opportunities.html" },
     { "source": "/events", "destination": "/events.html" },
     { "source": "/about", "destination": "/about.html" },

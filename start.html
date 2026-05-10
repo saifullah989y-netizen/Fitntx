@@ -478,9 +478,6 @@
       <iframe id="booking-modal-iframe-ind" class="booking-modal__iframe" title="Book your discovery call" scrolling="yes" data-booking-src="https://api.leadconnectorhq.com/widget/booking/mFZEvXHly26bBUqjZkOI"></iframe>
       <iframe id="booking-modal-iframe-org" class="booking-modal__iframe booking-modal__iframe--hidden" title="Book your organization discovery call" scrolling="yes" data-booking-src="https://api.leadconnectorhq.com/widget/booking/2bWNfEN5P1576wbEaVbs"></iframe>
     </div>
-    <footer class="booking-modal__foot">
-      <button type="button" class="btn btn-primary btn-full" id="booking-modal-done">I&rsquo;m done scheduling &rarr;</button>
-    </footer>
   </div>
 </div>
 
@@ -621,14 +618,12 @@ function closeBookingModalAndFinish() {
   var modal = document.getElementById('booking-modal');
   var backdrop = document.getElementById('booking-modal-backdrop');
   var btnClose = document.getElementById('booking-modal-close');
-  var btnDone = document.getElementById('booking-modal-done');
-  if (!modal || !backdrop || !btnClose || !btnDone) return;
+  if (!modal || !backdrop || !btnClose) return;
   function onClose() {
     closeBookingModalAndFinish();
   }
   backdrop.addEventListener('click', onClose);
   btnClose.addEventListener('click', onClose);
-  btnDone.addEventListener('click', onClose);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !modal.hidden) {
       e.preventDefault();
