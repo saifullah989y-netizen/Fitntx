@@ -1097,6 +1097,7 @@ body .iti__country.iti__highlight {
 }
 
 /* ─── Booking modal (GHL calendar after profile save) — full-height on small screens ─── */
+/* Modal sits outside .start-wizard: don’t use global --surf (dark); use a light sheet so GHL + footer match. */
 .booking-modal {
   position: fixed;
   inset: 0;
@@ -1106,6 +1107,8 @@ body .iti__country.iti__highlight {
   justify-content: center;
   padding: 0;
   box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
 }
 .booking-modal[hidden] {
   display: none !important;
@@ -1122,13 +1125,15 @@ body .iti__country.iti__highlight {
   width: 100%;
   max-width: 720px;
   margin: 0 auto;
-  background: var(--surf);
+  background: #fff;
+  color: #111;
   display: flex;
   flex-direction: column;
   max-height: 100vh;
   max-height: 100dvh;
   box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.18);
   border-radius: var(--rxl) var(--rxl) 0 0;
+  box-sizing: border-box;
 }
 .booking-modal__head {
   display: flex;
@@ -1176,9 +1181,10 @@ body .iti__country.iti__highlight {
   margin: 0;
   padding: 10px 18px;
   font-size: 12px;
-  color: var(--txt2);
+  color: #555;
   line-height: 1.35;
   flex-shrink: 0;
+  background: #fff;
 }
 /* One scroll surface: outer wrapper does not scroll; iframe fills remaining height and GHL scrolls inside. */
 .booking-modal__scroll {
@@ -1187,9 +1193,10 @@ body .iti__country.iti__highlight {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 0 8px;
+  padding: 0;
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
+  background: #fff;
 }
 .booking-modal__iframe {
   display: block;
@@ -1197,7 +1204,7 @@ body .iti__country.iti__highlight {
   min-height: 0;
   width: 100%;
   border: none;
-  background: var(--surf2);
+  background: #fff;
 }
 .booking-modal__iframe--hidden {
   display: none !important;
@@ -1205,8 +1212,26 @@ body .iti__country.iti__highlight {
 .booking-modal__foot {
   flex-shrink: 0;
   padding: 12px 16px calc(16px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--brd);
-  background: var(--surf);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+/* .btn-primary is scoped to .start-wizard — footer button needs its own styles */
+.booking-modal__foot .btn-full {
+  background: var(--red);
+  color: #fff;
+  border-radius: var(--r);
+  font-family: var(--disp);
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  width: 100%;
+  justify-content: center;
+}
+.booking-modal__foot .btn-full:hover {
+  background: var(--red-dk);
+}
+.booking-modal__foot .btn-full:active {
+  opacity: 0.95;
 }
 @media (min-width: 601px) {
   .booking-modal {
@@ -1222,21 +1247,38 @@ body .iti__country.iti__highlight {
     box-shadow: var(--shadow-lg);
   }
   .booking-modal__scroll {
-    padding: 0 12px 8px;
+    padding: 0 0 8px;
   }
 }
 @media (max-width: 600px) {
+  .booking-modal {
+    justify-content: stretch;
+    align-items: stretch;
+    padding: 0;
+  }
+  .booking-modal__backdrop {
+    display: none;
+  }
   .booking-modal__dialog {
     border-radius: 0;
     min-height: 100vh;
     min-height: 100dvh;
+    min-height: 100svh;
     max-height: 100vh;
     max-height: 100dvh;
+    max-height: 100svh;
     height: 100vh;
     height: 100dvh;
+    height: 100svh;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    flex: 1 1 auto;
+    align-self: stretch;
+    box-shadow: none;
   }
   .booking-modal__head {
-    padding: 10px 12px 8px;
+    padding: 10px max(12px, env(safe-area-inset-right, 0px)) 8px max(12px, env(safe-area-inset-left, 0px));
     padding-top: max(10px, env(safe-area-inset-top, 0px));
     gap: 8px;
   }
@@ -1262,12 +1304,12 @@ body .iti__country.iti__highlight {
     border: 0;
   }
   .booking-modal__scroll {
-    padding-left: max(0px, env(safe-area-inset-left, 0px));
-    padding-right: max(0px, env(safe-area-inset-right, 0px));
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
     padding-bottom: 0;
   }
   .booking-modal__foot {
-    padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    padding: 8px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
   }
   .booking-modal__foot .btn-full {
     padding-top: 12px;
