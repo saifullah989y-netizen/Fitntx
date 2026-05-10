@@ -264,15 +264,11 @@
       <div class="card-accent-line"></div>
       <div class="card-body">
         <div class="ibox"><div class="ibox-title">Your Profile Summary</div><div class="ibox-text" id="ind-summary"></div></div>
-        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
-        <div class="qh">Choose a time that works for you.</div>
-        <div class="cal-wrap">
-          <div class="cal-scroll" aria-label="Booking calendar — scroll to see all fields">
-            <iframe src="https://api.leadconnectorhq.com/widget/booking/mFZEvXHly26bBUqjZkOI" id="bk_mFZEvXHly26bBUqjZkOI_1777078543224" title="Book your discovery call" scrolling="yes"></iframe>
-          </div>
-        </div>
-        <div style="margin-top:20px">
-          <button type="button" class="btn btn-primary btn-full" onclick="indSubmit(this)">Confirm &amp; Create My Profile →</button>
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Final step</span></div>
+        <div class="qh">Save your profile &amp; book your call</div>
+        <p class="qsub" style="margin-bottom:20px">Confirm below to save your details. A calendar will open so you can pick a time — full screen on your phone for the best experience.</p>
+        <div style="margin-top:8px">
+          <button type="button" class="btn btn-primary btn-full" onclick="indSubmit(this)">Confirm and book my call</button>
         </div>
         <div class="btn-actions" style="margin-top:10px"><button type="button" class="btn btn-ghost btn-full" onclick="indGoStep(3)">← Back</button></div>
       </div>
@@ -433,18 +429,12 @@
       <div class="card-accent-line"></div>
       <div class="card-body">
         <div class="ibox"><div class="ibox-title">Organization Summary</div><div class="ibox-text" id="org-summary"></div></div>
-        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Select Your Time</span></div>
-        <div class="qh">Book your Org Discovery Call.</div>
-        <div class="qsub">// 30 minutes · Free · No commitment required · Your timezone detected automatically</div>
-        <div class="cal-wrap">
-          <div class="cal-scroll" aria-label="Booking calendar — scroll to see all fields">
-            <iframe src="https://api.leadconnectorhq.com/widget/booking/2bWNfEN5P1576wbEaVbs" id="bk_2bWNfEN5P1576wbEaVbs_1777078524167" title="Book your organization discovery call" scrolling="yes"></iframe>
-          </div>
-          <div class="fnote" style="text-align:center">After booking, your org profile is created → Organizations Pipeline → Discovery Scheduled</div>
-        </div>
-        <div style="margin-top:20px">
-          <button type="button" class="btn btn-primary btn-full" onclick="orgSubmit(this)" style="background:var(--blue)">Confirm &amp; Create Our Org Profile →</button>
-          <p style="text-align:center;font-size:11px;color:var(--txt3);margin-top:10px;font-family:var(--mono);letter-spacing:.05em;line-height:1.5">Logged to Organizations Pipeline → Discovery Scheduled · No spam · Unsubscribe anytime</p>
+        <div class="slbl"><div class="slbl-line"></div><span class="slbl-text">Final step</span></div>
+        <div class="qh">Save your organization &amp; book your call</div>
+        <p class="qsub" style="margin-bottom:20px">30 minutes · Free · No commitment · Confirm below to save your org profile, then pick a time in the calendar.</p>
+        <div style="margin-top:8px">
+          <button type="button" class="btn btn-primary btn-full" onclick="orgSubmit(this)" style="background:var(--blue)">Confirm and book my call</button>
+          <p style="text-align:center;font-size:11px;color:var(--txt3);margin-top:10px;font-family:var(--mono);letter-spacing:.05em;line-height:1.5">Logged to Organizations Pipeline · No spam · Unsubscribe anytime</p>
         </div>
         <div class="btn-actions" style="margin-top:10px"><button type="button" class="btn btn-ghost btn-full" onclick="orgGoStep(2)">← Back</button></div>
       </div>
@@ -472,6 +462,25 @@
 </div><!-- /pw -->
 
 </main>
+
+<!-- GHL booking calendars open here after profile webhook succeeds (cleaner on mobile than inline iframe). -->
+<div id="booking-modal" class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title" hidden>
+  <div class="booking-modal__backdrop" id="booking-modal-backdrop"></div>
+  <div class="booking-modal__dialog">
+    <header class="booking-modal__head">
+      <h2 id="booking-modal-title" class="booking-modal__title">Schedule your discovery call</h2>
+      <button type="button" class="booking-modal__close" id="booking-modal-close" aria-label="Close calendar">&times;</button>
+    </header>
+    <p class="booking-modal__lead" id="booking-modal-lead">Your profile is saved. Pick a time below.</p>
+    <div class="booking-modal__scroll" aria-label="Booking calendar">
+      <iframe id="booking-modal-iframe-ind" class="booking-modal__iframe" title="Book your discovery call" scrolling="yes" data-booking-src="https://api.leadconnectorhq.com/widget/booking/mFZEvXHly26bBUqjZkOI"></iframe>
+      <iframe id="booking-modal-iframe-org" class="booking-modal__iframe booking-modal__iframe--hidden" title="Book your organization discovery call" scrolling="yes" data-booking-src="https://api.leadconnectorhq.com/widget/booking/2bWNfEN5P1576wbEaVbs"></iframe>
+    </div>
+    <footer class="booking-modal__foot">
+      <button type="button" class="btn btn-primary btn-full" id="booking-modal-done">I&rsquo;m done scheduling &rarr;</button>
+    </footer>
+  </div>
+</div>
 
 <div id="site-footer"></div>
 
@@ -566,6 +575,66 @@ function postLeadConnectorWebhook(url, body, onSuccess, onError) {
     });
 }
 
+var _bookingModalMode = null;
+
+function ensureBookingIframeLoaded(iframe) {
+  if (!iframe) return;
+  var u = iframe.getAttribute('data-booking-src');
+  if (!u) return;
+  var cur = iframe.getAttribute('src') || '';
+  if (!cur || cur === 'about:blank') iframe.src = u;
+}
+
+function openBookingModal(mode) {
+  _bookingModalMode = mode;
+  var modal = document.getElementById('booking-modal');
+  var elInd = document.getElementById('booking-modal-iframe-ind');
+  var elOrg = document.getElementById('booking-modal-iframe-org');
+  var title = document.getElementById('booking-modal-title');
+  var lead = document.getElementById('booking-modal-lead');
+  if (!modal || !elInd || !elOrg) return;
+  if (title) title.textContent = mode === 'org' ? 'Schedule your organization call' : 'Schedule your discovery call';
+  if (lead) lead.textContent = 'Your profile is saved. Pick a time that works for you — scroll inside the calendar if needed.';
+  elInd.classList.toggle('booking-modal__iframe--hidden', mode !== 'ind');
+  elOrg.classList.toggle('booking-modal__iframe--hidden', mode !== 'org');
+  if (mode === 'ind') ensureBookingIframeLoaded(elInd);
+  else ensureBookingIframeLoaded(elOrg);
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  var closeBtn = document.getElementById('booking-modal-close');
+  if (closeBtn) closeBtn.focus();
+}
+
+function closeBookingModalAndFinish() {
+  var modal = document.getElementById('booking-modal');
+  if (!modal || modal.hidden) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+  if (_bookingModalMode === 'ind') indSubmitCompleteUi();
+  else if (_bookingModalMode === 'org') orgSubmitCompleteUi();
+  _bookingModalMode = null;
+}
+
+(function initBookingModalUi() {
+  var modal = document.getElementById('booking-modal');
+  var backdrop = document.getElementById('booking-modal-backdrop');
+  var btnClose = document.getElementById('booking-modal-close');
+  var btnDone = document.getElementById('booking-modal-done');
+  if (!modal || !backdrop || !btnClose || !btnDone) return;
+  function onClose() {
+    closeBookingModalAndFinish();
+  }
+  backdrop.addEventListener('click', onClose);
+  btnClose.addEventListener('click', onClose);
+  btnDone.addEventListener('click', onClose);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hidden) {
+      e.preventDefault();
+      onClose();
+    }
+  });
+})();
+
 const ALL_SCREENS = ['screen-entry','ind-s1','ind-s2','ind-s3','ind-s4','org-s1','org-s2','org-s3','success-ind','success-org'];
 
 function showScreen(id) {
@@ -582,6 +651,12 @@ function showScreen(id) {
 }
 
 function resetAll() {
+  var bm = document.getElementById('booking-modal');
+  if (bm && !bm.hidden) {
+    bm.hidden = true;
+    document.body.style.overflow = '';
+    _bookingModalMode = null;
+  }
   const root = startWizardRoot();
   if (root) root.classList.remove('org-mode');
   document.getElementById('hdrAccent').textContent = 'Here.';
@@ -959,7 +1034,7 @@ function indSubmit(btn) {
     return;
   }
   btn.disabled = true;
-  btn.textContent = 'Submitting...';
+  btn.textContent = 'Saving your profile...';
   var full = val('ind-fullname');
 
   var body = {
@@ -993,10 +1068,12 @@ function indSubmit(btn) {
 
   postLeadConnectorWebhook(LC_WEBHOOK_IND, body, function (data) {
     console.log('Individual JSON webhook success:', data);
-    indSubmitCompleteUi();
+    btn.disabled = false;
+    btn.textContent = 'Confirm and book my call';
+    openBookingModal('ind');
   }, function () {
     btn.disabled = false;
-    btn.textContent = 'Confirm & Create My Profile →';
+    btn.textContent = 'Confirm and book my call';
     alert('Submission failed. Please try again.');
   });
 }
@@ -1084,7 +1161,7 @@ function orgSubmitCompleteUi() {
 
 function orgSubmit(btn) {
   btn.disabled = true;
-  btn.textContent = 'Creating your organization profile...';
+  btn.textContent = 'Saving your profile...';
   var contactName = val('org-contact-name');
   var tagList = buildOrgTags().map(function (t) { return t.label; }).concat('fitntx_org_intake');
   var orgPhone = wizardPhoneNumber(document.getElementById('org-phone'), window._fitOrgPhoneIti);
@@ -1138,10 +1215,12 @@ function orgSubmit(btn) {
   console.log('[FITNTX Org Payload]', body);
   postLeadConnectorWebhook(LC_WEBHOOK_ORG, body, function (data) {
     console.log('Org webhook:', data);
-    orgSubmitCompleteUi();
+    btn.disabled = false;
+    btn.textContent = 'Confirm and book my call';
+    openBookingModal('org');
   }, function () {
     btn.disabled = false;
-    btn.textContent = 'Confirm & Create Our Org Profile →';
+    btn.textContent = 'Confirm and book my call';
     alert('Submission failed. Please try again or contact support.');
   });
 }
